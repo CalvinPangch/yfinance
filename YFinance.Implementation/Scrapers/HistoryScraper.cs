@@ -104,7 +104,7 @@ public class HistoryScraper : IHistoryScraper
 
         // Navigate to chart.result[0]
         var result = root.GetProperty("chart").GetProperty("result")[0];
-        
+
         // Get timezone
         var meta = result.GetProperty("meta");
         var timezone = meta.GetProperty("exchangeTimezoneName").GetString() ?? "UTC";
@@ -119,7 +119,7 @@ public class HistoryScraper : IHistoryScraper
 
         // Get quote data (OHLC)
         var quote = result.GetProperty("indicators").GetProperty("quote")[0];
-        
+
         var open = ParseDecimalArray(quote, "open");
         var high = ParseDecimalArray(quote, "high");
         var low = ParseDecimalArray(quote, "low");

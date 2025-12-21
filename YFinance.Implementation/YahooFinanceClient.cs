@@ -71,7 +71,7 @@ public class YahooFinanceClient : IYahooFinanceClient
 
             // Get initial cookies from Yahoo Finance
             var response = await tempClient.GetAsync("https://fc.yahoo.com", cancellationToken);
-            
+
             // Try to get crumb
             try
             {

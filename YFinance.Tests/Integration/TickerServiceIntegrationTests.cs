@@ -63,7 +63,7 @@ public class TickerServiceIntegrationTests : IDisposable
         Console.WriteLine($"\n{new string('=', 80)}");
         Console.WriteLine($"{"Date",-12} {"Open",10} {"High",10} {"Low",10} {"Close",10} {"Adj Close",12} {"Volume",15}");
         Console.WriteLine($"{new string('-', 80)}");
-        
+
         for (int i = 0; i < result.Timestamps.Length; i++)
         {
             Console.WriteLine($"{result.Timestamps[i]:yyyy-MM-dd}  " +
@@ -103,7 +103,7 @@ public class TickerServiceIntegrationTests : IDisposable
             result.Volume[i].Should().BeGreaterThan(0, $"Volume at index {i} should be positive");
 
             // High should be >= Low
-            result.High[i].Should().BeGreaterThanOrEqualTo(result.Low[i], 
+            result.High[i].Should().BeGreaterThanOrEqualTo(result.Low[i],
                 $"High price should be >= Low price at index {i}");
 
             // Open, High, Low, Close should be within reasonable range
@@ -114,7 +114,7 @@ public class TickerServiceIntegrationTests : IDisposable
         }
 
         // Verify dates are within requested range
-        result.Timestamps.Should().OnlyContain(timestamp => 
+        result.Timestamps.Should().OnlyContain(timestamp =>
             timestamp >= startDate && timestamp <= endDate);
 
         // Verify timezone is set
