@@ -1,5 +1,4 @@
 # YFinance - C# Port
-# YFinance - C# Port
 
 [![CI](https://github.com/CalvinPangch/yfinance/actions/workflows/ci.yml/badge.svg)](https://github.com/CalvinPangch/yfinance/actions/workflows/ci.yml)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple)](https://dotnet.microsoft.com/download/dotnet/10.0)
