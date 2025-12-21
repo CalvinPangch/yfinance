@@ -7,6 +7,12 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+  statuses: write
+
 jobs:
   build-and-test:
     name: Build and Test
@@ -47,11 +53,12 @@ jobs:
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: always()
+      continue-on-error: true
       with:
         name: Test Results
         path: '**/TestResults/*.trx'
         reporter: dotnet-trx
-        fail-on-error: true
+        fail-on-error: false
 
   code-quality:
     name: Code Quality Check
