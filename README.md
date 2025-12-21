@@ -1,4 +1,9 @@
 # YFinance - C# Port
+# YFinance - C# Port
+
+[![CI](https://github.com/CalvinPangch/yfinance/actions/workflows/ci.yml/badge.svg)](https://github.com/CalvinPangch/yfinance/actions/workflows/ci.yml)
+[![.NET](https://img.shields.io/badge/.NET-10.0-purple)](https://dotnet.microsoft.com/download/dotnet/10.0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 A C# port of the popular [yfinance Python library](https://github.com/ranaroussi/yfinance) for accessing Yahoo! Finance market and financial data. This library provides a clean, dependency-injection-based API for retrieving stock quotes, historical prices, financial statements, and other market data.
 
@@ -25,11 +30,6 @@ A C# port of the popular [yfinance Python library](https://github.com/ranaroussi
 
 ### From Source
 
-1. **Clone the repository:**
-```bash
-git clone https://github.com/yourusername/yfinance-csharp.git
-cd yfinance-csharp
-```
 
 2. **Build the solution:**
 ```bash
