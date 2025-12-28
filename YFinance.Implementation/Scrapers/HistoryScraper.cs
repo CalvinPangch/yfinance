@@ -228,6 +228,11 @@ public class HistoryScraper : IHistoryScraper
             }
         }
 
+        if (request.Interval == Interval.OneWeek || request.Interval == Interval.OneMonth || request.Interval == Interval.ThreeMonths)
+        {
+            return ResampleHistoricalData(symbol, timestampArray, open, high, low, close, adjClose, volume, dividends, splits, timezone, request.Interval);
+        }
+
         return new HistoricalData
         {
             Symbol = symbol,
@@ -261,6 +266,97 @@ public class HistoryScraper : IHistoryScraper
             low[i] *= factor;
             close[i] = adjClose[i];
         }
+    }
+
+    private static HistoricalData ResampleHistoricalData(
+        string symbol,
+        DateTime[] timestamps,
+        decimal[] open,
+        decimal[] high,
+        decimal[] low,
+        decimal[] close,
+        decimal[] adjClose,
+        long[] volume,
+        Dictionary<DateTime, decimal> dividends,
+        Dictionary<DateTime, decimal> splits,
+        string timezone,
+        Interval interval)
+    {
+        if (timestamps.Length == 0)
+        {
+            return new HistoricalData
+            {
+                Symbol = symbol,
+                Timestamps = Array.Empty<DateTime>(),
+                Open = Array.Empty<decimal>(),
+                High = Array.Empty<decimal>(),
+                Low = Array.Empty<decimal>(),
+                Close = Array.Empty<decimal>(),
+                AdjustedClose = Array.Empty<decimal>(),
+                Volume = Array.Empty<long>(),
+                Dividends = dividends,
+                StockSplits = splits,
+                TimeZone = timezone
+            };
+        }
+
+        var grouped = timestamps
+            .Select((ts, idx) => new { ts, idx })
+            .GroupBy(item => GetBucketStart(item.ts, interval))
+            .OrderBy(group => group.Key)
+            .ToList();
+
+        var resampledTimestamps = new List<DateTime>();
+        var resampledOpen = new List<decimal>();
+        var resampledHigh = new List<decimal>();
+        var resampledLow = new List<decimal>();
+        var resampledClose = new List<decimal>();
+        var resampledAdjClose = new List<decimal>();
+        var resampledVolume = new List<long>();
+
+        foreach (var group in grouped)
+        {
+            var indices = group.Select(item => item.idx).OrderBy(index => index).ToList();
+            if (indices.Count == 0)
+                continue;
+
+            resampledTimestamps.Add(group.Key);
+            resampledOpen.Add(open[indices.First()]);
+            resampledHigh.Add(indices.Select(index => high[index]).Max());
+            resampledLow.Add(indices.Select(index => low[index]).Min());
+            resampledClose.Add(close[indices.Last()]);
+            resampledAdjClose.Add(adjClose[indices.Last()]);
+            resampledVolume.Add(indices.Select(index => volume[index]).Sum());
+        }
+
+        return new HistoricalData
+        {
+            Symbol = symbol,
+            Timestamps = resampledTimestamps.ToArray(),
+            Open = resampledOpen.ToArray(),
+            High = resampledHigh.ToArray(),
+            Low = resampledLow.ToArray(),
+            Close = resampledClose.ToArray(),
+            AdjustedClose = resampledAdjClose.ToArray(),
+            Volume = resampledVolume.ToArray(),
+            Dividends = dividends,
+            StockSplits = splits,
+            TimeZone = timezone
+        };
+    }
+
+    private static DateTime GetBucketStart(DateTime timestamp, Interval interval)
+    {
+        var date = timestamp.Date;
+
+        return interval switch
+        {
+            Interval.OneWeek => DateTime.SpecifyKind(date.AddDays(-(int)date.DayOfWeek), DateTimeKind.Utc),
+            Interval.OneMonth => new DateTime(date.Year, date.Month, 1, 0, 0, 0, DateTimeKind.Utc),
+            Interval.ThreeMonths =>
+                new DateTime(date.Year, ((date.Month - 1) / 3) * 3 + 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            _ => DateTime.SpecifyKind(date, DateTimeKind.Utc)
+        };
     }
 
     private static void ApplyCorporateActions(

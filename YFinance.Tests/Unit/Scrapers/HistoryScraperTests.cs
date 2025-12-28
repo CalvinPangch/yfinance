@@ -224,6 +224,46 @@ public class HistoryScraperTests
         result.Close[1].Should().BeApproximately(50m, 0.01m);
     }
 
+    [Fact]
+    public async Task GetHistoryAsync_WeeklyInterval_ResamplesToWeeklyBars()
+    {
+        // Arrange
+        var symbol = "WEEKLY";
+        var bars = new[]
+        {
+            new PriceBar(new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), 100m, 110m, 95m, 105m, 1000),
+            new PriceBar(new DateTime(2024, 1, 3, 0, 0, 0, DateTimeKind.Utc), 106m, 112m, 104m, 110m, 2000),
+            new PriceBar(new DateTime(2024, 1, 10, 0, 0, 0, DateTimeKind.Utc), 111m, 120m, 108m, 118m, 1500)
+        };
+
+        var response = TestDataBuilder.BuildValidChartResponse(symbol, bars);
+        _mockClient.Setup(c => c.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(response);
+
+        var realScraper = new HistoryScraper(
+            _mockClient.Object,
+            new DataParser(),
+            new PriceRepair(),
+            new TimezoneHelper());
+
+        var request = new HistoryRequest { Period = Period.OneMonth, Interval = Interval.OneWeek };
+
+        // Act
+        var result = await realScraper.GetHistoryAsync(symbol, request);
+
+        // Assert
+        result.Timestamps.Length.Should().Be(2);
+        result.Open.Length.Should().Be(2);
+        result.Volume.Length.Should().Be(2);
+        result.High[0].Should().Be(112m);
+        result.Low[0].Should().Be(95m);
+        result.Close[0].Should().Be(110m);
+        result.Volume[0].Should().Be(3000);
+    }
+
     #endregion
 
     #region Edge Cases
