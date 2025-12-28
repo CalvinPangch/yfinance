@@ -1,8 +1,11 @@
 using System.Text.Json;
 using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
+using YFinance.Interfaces.Utils;
+using YFinance.Implementation.Constants;
 using YFinance.Models;
 using YFinance.Models.Enums;
+using YFinance.Models.Exceptions;
 using YFinance.Models.Requests;
 
 namespace YFinance.Implementation.Scrapers;
@@ -13,20 +16,33 @@ namespace YFinance.Implementation.Scrapers;
 public class HistoryScraper : IHistoryScraper
 {
     private readonly IYahooFinanceClient _client;
+    private readonly IDataParser _dataParser;
 
-    public HistoryScraper(IYahooFinanceClient client)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HistoryScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
+    /// <exception cref="ArgumentNullException">Thrown when any parameter is null.</exception>
+    public HistoryScraper(IYahooFinanceClient client, IDataParser dataParser)
     {
-        _client = client;
+        _client = client ?? throw new ArgumentNullException(nameof(client));
+        _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
     }
 
+    /// <inheritdoc />
     public async Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+
+        ArgumentNullException.ThrowIfNull(request);
         request.Validate();
 
         var queryParams = BuildQueryParameters(request);
         var endpoint = $"/v8/finance/chart/{symbol}";
 
-        var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken);
+        var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken).ConfigureAwait(false);
         return ParseHistoricalData(symbol, jsonResponse);
     }
 
@@ -46,13 +62,13 @@ public class HistoryScraper : IHistoryScraper
         }
 
         // Set interval
-        parameters["interval"] = ConvertIntervalToString(request.Interval);
+        parameters[YahooFinanceConstants.QueryParams.Interval] = ConvertIntervalToString(request.Interval);
 
         // Set events (include dividends and splits)
-        parameters["events"] = "div,split";
+        parameters["events"] = YahooFinanceConstants.QueryParams.Events;
 
         // Include premarket and postmarket
-        parameters["includePrePost"] = "false";
+        parameters["includePrePost"] = YahooFinanceConstants.QueryParams.IncludePrePost;
 
         return parameters;
     }
@@ -120,22 +136,27 @@ public class HistoryScraper : IHistoryScraper
         // Get quote data (OHLC)
         var quote = result.GetProperty("indicators").GetProperty("quote")[0];
 
-        var open = ParseDecimalArray(quote, "open");
-        var high = ParseDecimalArray(quote, "high");
-        var low = ParseDecimalArray(quote, "low");
-        var close = ParseDecimalArray(quote, "close");
-        var volume = ParseLongArray(quote, "volume");
+        var open = _dataParser.ParseDecimalArray(quote, "open");
+        var high = _dataParser.ParseDecimalArray(quote, "high");
+        var low = _dataParser.ParseDecimalArray(quote, "low");
+        var close = _dataParser.ParseDecimalArray(quote, "close");
+        var volume = _dataParser.ParseLongArray(quote, "volume");
 
-        // Get adjusted close
+        // Get adjusted close - use regular close as fallback if unavailable
         decimal[] adjClose;
         try
         {
             var adjCloseData = result.GetProperty("indicators").GetProperty("adjclose")[0];
-            adjClose = ParseDecimalArray(adjCloseData, "adjclose");
+            adjClose = _dataParser.ParseDecimalArray(adjCloseData, "adjclose");
         }
-        catch
+        catch (JsonException)
         {
-            // If no adjusted close, use regular close
+            // If no adjusted close data available, use regular close as fallback
+            adjClose = close;
+        }
+        catch (KeyNotFoundException)
+        {
+            // Missing adjclose property, use regular close
             adjClose = close;
         }
 
@@ -185,43 +206,4 @@ public class HistoryScraper : IHistoryScraper
         };
     }
 
-    private decimal[] ParseDecimalArray(JsonElement element, string propertyName)
-    {
-        var property = element.GetProperty(propertyName);
-        var result = new List<decimal>();
-
-        foreach (var item in property.EnumerateArray())
-        {
-            if (item.ValueKind == JsonValueKind.Null)
-            {
-                result.Add(0);
-            }
-            else
-            {
-                result.Add(item.GetDecimal());
-            }
-        }
-
-        return result.ToArray();
-    }
-
-    private long[] ParseLongArray(JsonElement element, string propertyName)
-    {
-        var property = element.GetProperty(propertyName);
-        var result = new List<long>();
-
-        foreach (var item in property.EnumerateArray())
-        {
-            if (item.ValueKind == JsonValueKind.Null)
-            {
-                result.Add(0);
-            }
-            else
-            {
-                result.Add(item.GetInt64());
-            }
-        }
-
-        return result.ToArray();
-    }
 }

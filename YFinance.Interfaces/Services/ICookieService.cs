@@ -1,27 +1,32 @@
+using System.Net;
+
 namespace YFinance.Interfaces.Services;
 
 /// <summary>
-/// Service interface for managing Yahoo Finance authentication cookies and crumbs.
-/// Implements both basic and CSRF cookie acquisition strategies with automatic fallback.
+/// Service for managing Yahoo Finance authentication cookies and crumb tokens.
+/// Implements thread-safe singleton pattern for cookie sharing across all requests.
 /// </summary>
-public interface ICookieService
+/// <remarks>
+/// This service should be registered as Singleton in the DI container.
+/// It maintains a shared CookieContainer and crumb token that persist
+/// across all HTTP requests to Yahoo Finance, reducing authentication overhead.
+/// </remarks>
+public interface ICookieService : IDisposable
 {
     /// <summary>
-    /// Acquires authentication cookies and crumb using available strategies.
-    /// Tries basic strategy first, falls back to CSRF if needed.
+    /// Gets the shared cookie container, acquiring authentication if needed.
+    /// Thread-safe and idempotent - multiple concurrent calls will only authenticate once.
     /// </summary>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Tuple of (cookies as string, crumb)</returns>
-    Task<(string Cookies, string Crumb)> AcquireCookiesAndCrumbAsync(CancellationToken cancellationToken = default);
+    /// <param name="cancellationToken">Cancellation token to abort authentication.</param>
+    /// <returns>A cookie container with Yahoo Finance authentication cookies.</returns>
+    /// <exception cref="HttpRequestException">Thrown when authentication request fails.</exception>
+    /// <exception cref="OperationCanceledException">Thrown when operation is cancelled.</exception>
+    Task<CookieContainer> GetCookieContainerAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Validates if the current cookies and crumb are still valid.
+    /// Gets the crumb token acquired during authentication.
+    /// Returns null if authentication hasn't been performed yet or if crumb is unavailable.
     /// </summary>
-    /// <returns>True if valid, false otherwise</returns>
-    bool AreCredentialsValid();
-
-    /// <summary>
-    /// Clears cached cookies and crumb, forcing re-acquisition on next request.
-    /// </summary>
-    void ClearCredentials();
+    /// <returns>The crumb token, or null if not available.</returns>
+    string? GetCrumb();
 }

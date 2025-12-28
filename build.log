@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  YFinance.Models -> /home/calvinpangch/workspace/yfinance/YFinance.Models/bin/Debug/net10.0/YFinance.Models.dll
+  YFinance.Interfaces -> /home/calvinpangch/workspace/yfinance/YFinance.Interfaces/bin/Debug/net10.0/YFinance.Interfaces.dll
+  YFinance.Implementation -> /home/calvinpangch/workspace/yfinance/YFinance.Implementation/bin/Debug/net10.0/YFinance.Implementation.dll
+  YFinance.Tests -> /home/calvinpangch/workspace/yfinance/YFinance.Tests/bin/Debug/net10.0/YFinance.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.78

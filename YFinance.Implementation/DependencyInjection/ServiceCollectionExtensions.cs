@@ -2,7 +2,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
 using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
+using YFinance.Interfaces.Services;
+using YFinance.Interfaces.Utils;
 using YFinance.Implementation.Scrapers;
+using YFinance.Implementation.Services;
+using YFinance.Implementation.Utils;
 
 namespace YFinance.Implementation.DependencyInjection;
 
@@ -18,8 +22,17 @@ public static class ServiceCollectionExtensions
     /// <returns>The IServiceCollection so that additional calls can be chained.</returns>
     public static IServiceCollection AddYFinance(this IServiceCollection services)
     {
-        // Register HttpClient with factory
-        services.AddHttpClient<IYahooFinanceClient, YahooFinanceClient>();
+        // Register HttpClient factory
+        services.AddHttpClient();
+
+        // Register cookie service as Singleton (manages shared authentication state)
+        services.AddSingleton<ICookieService, CookieService>();
+
+        // Register rate limit service as Singleton (stateless)
+        services.AddSingleton<IRateLimitService, RateLimitService>();
+
+        // Register YahooFinanceClient as Transient (stateless, uses shared cookie service)
+        services.AddTransient<IYahooFinanceClient, YahooFinanceClient>();
 
         // Register scrapers as Singleton (stateless)
         services.AddSingleton<IHistoryScraper, HistoryScraper>();
@@ -29,16 +42,15 @@ public static class ServiceCollectionExtensions
         // services.AddSingleton<IHoldersScraper, HoldersScraper>();
         // services.AddSingleton<IFundamentalsScraper, FundamentalsScraper>();
 
-        // Register services as Singleton
+        // Register other services as Singleton
         // TODO: Uncomment when services are implemented
-        // services.AddSingleton<ICookieService, CookieService>();
         // services.AddSingleton<ICacheService, CacheService>();
         // services.AddSingleton<IRateLimitService, RateLimitService>();
 
         // Register utilities as Transient (lightweight)
-        // TODO: Uncomment when utilities are implemented
+        services.AddTransient<IDataParser, DataParser>();
+        // TODO: Uncomment when other utilities are implemented
         // services.AddTransient<ITimezoneHelper, TimezoneHelper>();
-        // services.AddTransient<IDataParser, DataParser>();
         // services.AddTransient<IPriceRepair, PriceRepair>();
 
         // Register main service with constructor injection
