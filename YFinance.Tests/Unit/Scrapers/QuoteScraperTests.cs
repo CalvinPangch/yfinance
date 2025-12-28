@@ -129,11 +129,12 @@ public class QuoteScraperTests
         // Assert
         capturedParams.Should().NotBeNull();
         capturedParams!.Should().ContainKey("modules");
-        capturedParams["modules"].Should().Contain("financialData");
-        capturedParams["modules"].Should().Contain("quoteType");
-        capturedParams["modules"].Should().Contain("defaultKeyStatistics");
-        capturedParams["modules"].Should().Contain("assetProfile");
-        capturedParams["modules"].Should().Contain("summaryDetail");
+        var modules = capturedParams!["modules"];
+        modules.Should().Contain("financialData");
+        modules.Should().Contain("quoteType");
+        modules.Should().Contain("defaultKeyStatistics");
+        modules.Should().Contain("assetProfile");
+        modules.Should().Contain("summaryDetail");
     }
 
     [Fact]
