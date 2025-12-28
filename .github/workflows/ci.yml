@@ -80,7 +80,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore /warnaserror
 
     - name: Check formatting
-      run: dotnet format --verify-no-changes --verbosity diagnostic
+      run: dotnet format --verify-no-changes --no-restore --verbosity diagnostic
       continue-on-error: true
 
   coverage:
