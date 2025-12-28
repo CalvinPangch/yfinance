@@ -475,24 +475,31 @@ Data granularity:
 
 ### Implemented ✅
 - [x] Historical price data (OHLC, volume, dividends, splits)
+- [x] Quote data (real-time prices)
+- [x] Financial statements (income, balance sheet, cash flow)
+- [x] Analyst data (recommendations, upgrades/downgrades, earnings estimates)
+- [x] Holder information (institutional, insider, fund holders)
+- [x] Options chain data and expirations
+- [x] ESG scores
+- [x] Calendar events (earnings, dividends, capital gains)
+- [x] Shares outstanding and float history
+- [x] News endpoints
+- [x] Funds data (profile, holdings)
 - [x] Dependency injection setup
 - [x] Async/await pattern
 - [x] Integration tests
 - [x] Basic error handling
+- [x] Cookie and authentication management
+- [x] Response caching
+- [x] Rate limiting
 
 ### In Progress 🚧
-- [ ] Quote data (real-time prices)
-- [ ] Cookie and authentication management
-- [ ] Response caching
-- [ ] Rate limiting
+- [ ] Multiple ticker downloads (batch/parallel)
+- [ ] Price repair algorithms
+- [ ] Timezone DST edge-case handling
 
 ### Planned 📋
-- [ ] Financial statements (income, balance sheet, cash flow)
-- [ ] Analyst recommendations and price targets
-- [ ] Holder information (institutional, insider)
-- [ ] Multiple ticker downloads (parallel)
-- [ ] Price repair algorithms
-- [ ] Timezone DST handling
+- [ ] Search/lookup/screener endpoints
 - [ ] NuGet package publication
 
 ## Contributing
