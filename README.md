@@ -12,9 +12,15 @@ A C# port of the popular [yfinance Python library](https://github.com/ranaroussi
 
 - ✅ **Historical Price Data** - OHLC prices, volume, dividends, stock splits
 - ✅ **Real-time Quotes** - Current prices and market data
-- 🚧 **Financial Statements** - Income statements, balance sheets, cash flow (planned)
-- 🚧 **Analyst Data** - Recommendations, price targets, earnings estimates (planned)
-- 🚧 **Holder Information** - Institutional holdings, insider transactions (planned)
+- ✅ **Financial Statements** - Income statements, balance sheets, cash flow
+- ✅ **Analyst Data** - Recommendations, upgrades/downgrades, earnings estimates
+- ✅ **Holder Information** - Institutional holdings, insider transactions, fund holders
+- ✅ **Options Data** - Option chains and expirations
+- ✅ **ESG Scores** - Environmental, social, and governance data
+- ✅ **Calendar Events** - Earnings dates, dividends, capital gains
+- ✅ **Shares History** - Shares outstanding and float history
+- ✅ **News** - Latest ticker news items
+- ✅ **Funds Data** - Fund profile and holdings
 - ✅ **Dependency Injection** - Full DI support for ASP.NET Core and console apps
 - ✅ **Async/Await** - Fully asynchronous API
 - ✅ **Timezone Support** - Proper handling of market timezones
@@ -29,6 +35,11 @@ A C# port of the popular [yfinance Python library](https://github.com/ranaroussi
 
 ### From Source
 
+1. **Clone the repository:**
+```bash
+git clone https://github.com/CalvinPangch/yfinance.git
+cd yfinance
+```
 
 2. **Build the solution:**
 ```bash
@@ -288,6 +299,19 @@ catch (YahooFinanceException ex)
 }
 ```
 
+### Additional APIs
+
+```csharp
+var quote = await tickerService.GetQuoteAsync("AAPL");
+var holders = await tickerService.GetHoldersAsync("AAPL");
+var options = await tickerService.GetOptionChainAsync(new OptionChainRequest { Symbol = "AAPL" });
+var expirations = await tickerService.GetOptionsExpirationsAsync("AAPL");
+var esg = await tickerService.GetEsgAsync("AAPL");
+var calendar = await tickerService.GetCalendarAsync("AAPL");
+var shares = await tickerService.GetSharesHistoryAsync(new SharesHistoryRequest { Symbol = "AAPL" });
+var news = await tickerService.GetNewsAsync(new NewsRequest { Symbol = "AAPL", Count = 10 });
+```
+
 ## Project Structure
 
 ```
@@ -392,11 +416,27 @@ Main entry point for all ticker operations.
 ```csharp
 public interface ITickerService
 {
-    Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request);
-    // Future methods:
-    // Task<QuoteData> GetQuoteAsync(string symbol);
-    // Task<FinancialStatement> GetFinancialsAsync(string symbol);
-    // Task<AnalystData> GetAnalysisAsync(string symbol);
+    Task<QuoteData> GetQuoteAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default);
+    Task<FinancialStatement> GetFinancialStatementsAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<AnalystData> GetAnalystDataAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<HolderData> GetHoldersAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<FundsData> GetFundsDataAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<NewsItem>> GetNewsAsync(NewsRequest request, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<PeriodicEstimate>> GetEarningsEstimateAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<PeriodicEstimate>> GetRevenueEstimateAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<EarningsHistoryEntry>> GetEarningsHistoryAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<PeriodicEstimate>> GetEpsTrendAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<PeriodicEstimate>> GetEpsRevisionsAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<GrowthEstimateEntry>> GetGrowthEstimatesAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<EarningsDateEntry>> GetEarningsDatesAsync(EarningsDatesRequest request, CancellationToken cancellationToken = default);
+    Task<OptionChain> GetOptionChainAsync(OptionChainRequest request, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<DateTime>> GetOptionsExpirationsAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<EsgData> GetEsgAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<CalendarData> GetCalendarAsync(string symbol, CancellationToken cancellationToken = default);
+    Task<SharesHistoryData> GetSharesHistoryAsync(SharesHistoryRequest request, CancellationToken cancellationToken = default);
 }
 ```
 
