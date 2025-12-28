@@ -178,6 +178,8 @@ public class HistoryScraper : IHistoryScraper
         // Get dividends and splits
         var dividends = new Dictionary<DateTime, decimal>();
         var splits = new Dictionary<DateTime, decimal>();
+        var dividendsByDate = new Dictionary<DateTime, decimal>();
+        var splitsByDate = new Dictionary<DateTime, decimal>();
 
         if (result.TryGetProperty("events", out var events))
         {
@@ -190,7 +192,8 @@ public class HistoryScraper : IHistoryScraper
                     var exchangeDate = _timezoneHelper.ConvertToExchangeTime(date, timezone).Date;
                     var normalizedDate = DateTime.SpecifyKind(exchangeDate, DateTimeKind.Utc);
                     var amount = divData.GetProperty("amount").GetDecimal();
-                    dividends[normalizedDate] = amount;
+                    dividends[date] = amount;
+                    dividendsByDate[normalizedDate] = amount;
                 }
             }
 
@@ -204,7 +207,9 @@ public class HistoryScraper : IHistoryScraper
                     var normalizedDate = DateTime.SpecifyKind(exchangeDate, DateTimeKind.Utc);
                     var numerator = splitData.GetProperty("numerator").GetDecimal();
                     var denominator = splitData.GetProperty("denominator").GetDecimal();
-                    splits[normalizedDate] = numerator / denominator;
+                    var ratio = numerator / denominator;
+                    splits[date] = ratio;
+                    splitsByDate[normalizedDate] = ratio;
                 }
             }
         }
@@ -214,11 +219,11 @@ public class HistoryScraper : IHistoryScraper
         // Apply price repair if requested
         if (request.Repair)
         {
-            open = _priceRepair.RepairPrices(open, timestampArray, splits);
-            high = _priceRepair.RepairPrices(high, timestampArray, splits);
-            low = _priceRepair.RepairPrices(low, timestampArray, splits);
-            close = _priceRepair.RepairPrices(close, timestampArray, splits);
-            adjClose = _priceRepair.RepairPrices(adjClose, timestampArray, splits);
+            open = _priceRepair.RepairPrices(open, timestampArray, splitsByDate);
+            high = _priceRepair.RepairPrices(high, timestampArray, splitsByDate);
+            low = _priceRepair.RepairPrices(low, timestampArray, splitsByDate);
+            close = _priceRepair.RepairPrices(close, timestampArray, splitsByDate);
+            adjClose = _priceRepair.RepairPrices(adjClose, timestampArray, splitsByDate);
         }
 
         // Auto-adjust prices using adjusted close ratio when available
@@ -230,7 +235,7 @@ public class HistoryScraper : IHistoryScraper
             }
             else
             {
-                ApplyCorporateActions(open, high, low, close, timestampArray, dividends, splits);
+                ApplyCorporateActions(open, high, low, close, timestampArray, dividendsByDate, splitsByDate);
                 adjClose = close;
             }
         }
