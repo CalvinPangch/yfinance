@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace YFinance.Tests.TestFixtures;
@@ -455,6 +456,97 @@ public static class TestDataBuilder
                                 regularMarketPrice = 150.25m,
                                 regularMarketChangePercent = 0.5m,
                                 regularMarketVolume = 1000000
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
+
+    public static string BuildFundsResponse(string symbol)
+    {
+        var response = new
+        {
+            quoteSummary = new
+            {
+                result = new[]
+                {
+                    new
+                    {
+                        quoteType = new
+                        {
+                            quoteType = "ETF"
+                        },
+                        summaryProfile = new
+                        {
+                            longBusinessSummary = "Fund description"
+                        },
+                        topHoldings = new
+                        {
+                            cashPosition = new { raw = 0.05m },
+                            stockPosition = new { raw = 0.9m },
+                            bondPosition = new { raw = 0.02m },
+                            preferredPosition = new { raw = 0.0m },
+                            convertiblePosition = new { raw = 0.0m },
+                            otherPosition = new { raw = 0.03m },
+                            holdings = new[]
+                            {
+                                new { symbol = "AAPL", holdingName = "Apple", holdingPercent = new { raw = 0.05m } }
+                            },
+                            equityHoldings = new
+                            {
+                                priceToEarnings = new { raw = 20m },
+                                priceToEarningsCat = new { raw = 22m },
+                                priceToBook = new { raw = 3m },
+                                priceToBookCat = new { raw = 3.2m },
+                                priceToSales = new { raw = 4m },
+                                priceToSalesCat = new { raw = 4.1m },
+                                priceToCashflow = new { raw = 10m },
+                                priceToCashflowCat = new { raw = 11m },
+                                medianMarketCap = new { raw = 50000000000m },
+                                medianMarketCapCat = new { raw = 52000000000m },
+                                threeYearEarningsGrowth = new { raw = 0.1m },
+                                threeYearEarningsGrowthCat = new { raw = 0.12m }
+                            },
+                            bondHoldings = new
+                            {
+                                duration = new { raw = 5m },
+                                durationCat = new { raw = 6m },
+                                maturity = new { raw = 7m },
+                                maturityCat = new { raw = 8m },
+                                creditQuality = new { raw = 9m },
+                                creditQualityCat = new { raw = 10m }
+                            },
+                            bondRatings = new object[]
+                            {
+                                new Dictionary<string, decimal> { ["AAA"] = 0.2m },
+                                new Dictionary<string, decimal> { ["AA"] = 0.3m }
+                            },
+                            sectorWeightings = new object[]
+                            {
+                                new Dictionary<string, decimal> { ["Technology"] = 0.4m },
+                                new Dictionary<string, decimal> { ["Financial"] = 0.1m }
+                            }
+                        },
+                        fundProfile = new
+                        {
+                            categoryName = "Large Blend",
+                            family = "Vanguard",
+                            legalType = "ETF",
+                            feesExpensesInvestment = new
+                            {
+                                annualReportExpenseRatio = new { raw = 0.04m },
+                                annualHoldingsTurnover = new { raw = 0.1m },
+                                totalNetAssets = new { raw = 12345m }
+                            },
+                            feesExpensesInvestmentCat = new
+                            {
+                                annualReportExpenseRatio = new { raw = 0.05m },
+                                annualHoldingsTurnover = new { raw = 0.2m },
+                                totalNetAssets = new { raw = 23456m }
                             }
                         }
                     }

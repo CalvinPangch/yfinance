@@ -44,6 +44,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAnalysisScraper, AnalysisScraper>();
         services.AddSingleton<IHoldersScraper, HoldersScraper>();
         services.AddSingleton<IFundamentalsScraper, FundamentalsScraper>();
+        services.AddSingleton<IFundsScraper, FundsScraper>();
         services.AddSingleton<ISearchScraper, SearchScraper>();
         services.AddSingleton<ILookupScraper, LookupScraper>();
         services.AddSingleton<IScreenerScraper, ScreenerScraper>();

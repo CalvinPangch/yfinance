@@ -49,4 +49,12 @@ public interface ITickerService
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Holder data including major holders and institutional investors</returns>
     Task<HolderData> GetHoldersAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets ETF or mutual fund data.
+    /// </summary>
+    /// <param name="symbol">Fund symbol</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Funds data including holdings and profile</returns>
+    Task<FundsData> GetFundsDataAsync(string symbol, CancellationToken cancellationToken = default);
 }
