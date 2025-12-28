@@ -902,6 +902,161 @@ public static class TestDataBuilder
 
         return JsonSerializer.Serialize(response);
     }
+
+    public static string BuildHoldersResponse(string symbol)
+    {
+        var response = new
+        {
+            quoteSummary = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        majorHoldersBreakdown = new
+                        {
+                            insidersPercentHeld = new { raw = 0.12m },
+                            institutionsPercentHeld = new { raw = 0.55m },
+                            institutionsFloatPercentHeld = new { raw = 0.6m },
+                            institutionsCount = 1200
+                        },
+                        institutionOwnership = new
+                        {
+                            ownershipList = new object[]
+                            {
+                                new
+                                {
+                                    organization = "Institution A",
+                                    position = 1000L,
+                                    reportDate = 1700000000,
+                                    pctHeld = new { raw = 0.02m },
+                                    value = new { raw = 100000m }
+                                }
+                            }
+                        },
+                        insiderTransactions = new
+                        {
+                            transactions = new object[]
+                            {
+                                new
+                                {
+                                    filerName = "Insider",
+                                    filerRelation = "Officer",
+                                    startDate = 1700000000,
+                                    transactionText = "Buy",
+                                    shares = 50,
+                                    value = new { raw = 10000m }
+                                }
+                            }
+                        },
+                        insiderHolders = new
+                        {
+                            holders = new object[]
+                            {
+                                new
+                                {
+                                    name = "Insider Holder",
+                                    relation = "Director",
+                                    url = "https://example.com",
+                                    transactionDescription = "Option Exercise",
+                                    latestTransDate = 1700000000,
+                                    positionDirect = new { raw = 1000m },
+                                    positionDirectDate = 1699900000,
+                                    positionIndirect = new { raw = 200m },
+                                    positionIndirectDate = 1699800000
+                                }
+                            }
+                        },
+                        fundOwnership = new
+                        {
+                            ownershipList = new object[]
+                            {
+                                new
+                                {
+                                    organization = "Fund A",
+                                    position = 2000L,
+                                    reportDate = 1700000000,
+                                    pctHeld = new { raw = 0.03m },
+                                    value = new { raw = 200000m }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
+
+    public static string BuildCalendarResponse(string symbol)
+    {
+        var response = new
+        {
+            quoteSummary = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        calendarEvents = new
+                        {
+                            earnings = new
+                            {
+                                earningsDate = new object[]
+                                {
+                                    new { raw = 1700000000 }
+                                },
+                                earningsAverage = new { raw = 1.2m },
+                                earningsLow = new { raw = 1.0m },
+                                earningsHigh = new { raw = 1.4m },
+                                revenueAverage = new { raw = 1000m },
+                                revenueLow = new { raw = 900m },
+                                revenueHigh = new { raw = 1100m }
+                            },
+                            dividendDate = new { raw = 1700500000 },
+                            exDividendDate = new { raw = 1700400000 },
+                            capitalGains = new { raw = 0.5m }
+                        },
+                        summaryDetail = new
+                        {
+                            dividendRate = new { raw = 0.25m },
+                            exDividendDate = new { raw = 1700400000 }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
+
+    public static string BuildSharesTimeseriesResponse(string symbol)
+    {
+        var response = new
+        {
+            timeseries = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        meta = new { symbol },
+                        sharesOutstanding = new object[]
+                        {
+                            new { asOfDate = "2024-09-30", reportedValue = new { raw = 1000000m } }
+                        },
+                        floatShares = new object[]
+                        {
+                            new { asOfDate = "2024-09-30", reportedValue = new { raw = 800000m } }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
 }
 
 /// <summary>

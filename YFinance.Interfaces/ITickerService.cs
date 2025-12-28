@@ -125,4 +125,14 @@ public interface ITickerService
     /// Gets ESG score data.
     /// </summary>
     Task<EsgData> GetEsgAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets calendar events (earnings, dividends, capital gains).
+    /// </summary>
+    Task<CalendarData> GetCalendarAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets shares outstanding and float history.
+    /// </summary>
+    Task<SharesHistoryData> GetSharesHistoryAsync(SharesHistoryRequest request, CancellationToken cancellationToken = default);
 }

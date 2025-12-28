@@ -52,6 +52,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IEarningsScraper, EarningsScraper>();
         services.AddSingleton<IOptionsScraper, OptionsScraper>();
         services.AddSingleton<IEsgScraper, EsgScraper>();
+        services.AddSingleton<ICalendarScraper, CalendarScraper>();
+        services.AddSingleton<ISharesScraper, SharesScraper>();
 
         // Register utilities as Transient (lightweight)
         services.AddTransient<IDataParser, DataParser>();

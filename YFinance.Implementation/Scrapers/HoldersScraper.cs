@@ -27,7 +27,7 @@ public class HoldersScraper : IHoldersScraper
 
         var queryParams = new Dictionary<string, string>
         {
-            { "modules", "majorHoldersBreakdown,institutionOwnership,insiderTransactions" }
+            { "modules", "majorHoldersBreakdown,institutionOwnership,insiderTransactions,insiderHolders,fundOwnership" }
         };
 
         var endpoint = $"/v10/finance/quoteSummary/{symbol}";
@@ -106,6 +106,78 @@ public class HoldersScraper : IHoldersScraper
             }
         }
 
+        if (result.TryGetProperty("insiderHolders", out var insiderHolders) &&
+            insiderHolders.TryGetProperty("holders", out var holders) &&
+            holders.ValueKind == JsonValueKind.Array)
+        {
+            holderData.InsiderHolders = new List<InsiderHolder>();
+
+            foreach (var entry in holders.EnumerateArray())
+            {
+                holderData.InsiderHolders.Add(new InsiderHolder
+                {
+                    Name = entry.TryGetProperty("name", out var name) && name.ValueKind == JsonValueKind.String
+                        ? name.GetString() ?? string.Empty
+                        : string.Empty,
+                    Relation = entry.TryGetProperty("relation", out var relation) && relation.ValueKind == JsonValueKind.String
+                        ? relation.GetString()
+                        : null,
+                    Url = entry.TryGetProperty("url", out var url) && url.ValueKind == JsonValueKind.String
+                        ? url.GetString()
+                        : null,
+                    TransactionDescription = entry.TryGetProperty("transactionDescription", out var description) && description.ValueKind == JsonValueKind.String
+                        ? description.GetString()
+                        : null,
+                    LatestTransDate = ParseDate(entry, "latestTransDate"),
+                    PositionDirect = _dataParser.ExtractDecimal(entry.TryGetProperty("positionDirect", out var positionDirect) ? positionDirect : default),
+                    PositionDirectDate = ParseDate(entry, "positionDirectDate"),
+                    PositionIndirect = _dataParser.ExtractDecimal(entry.TryGetProperty("positionIndirect", out var positionIndirect) ? positionIndirect : default),
+                    PositionIndirectDate = ParseDate(entry, "positionIndirectDate")
+                });
+            }
+        }
+
+        if (result.TryGetProperty("fundOwnership", out var fundOwnership) &&
+            fundOwnership.TryGetProperty("ownershipList", out var fundList) &&
+            fundList.ValueKind == JsonValueKind.Array)
+        {
+            holderData.FundHolders = new List<FundHolder>();
+
+            foreach (var entry in fundList.EnumerateArray())
+            {
+                holderData.FundHolders.Add(new FundHolder
+                {
+                    Holder = entry.TryGetProperty("organization", out var organization) && organization.ValueKind == JsonValueKind.String
+                        ? organization.GetString() ?? string.Empty
+                        : string.Empty,
+                    Shares = entry.TryGetProperty("position", out var shares) && shares.ValueKind == JsonValueKind.Number ? shares.GetInt64() : 0L,
+                    DateReported = entry.TryGetProperty("reportDate", out var reportDate) && reportDate.ValueKind == JsonValueKind.Number
+                        ? DateTimeOffset.FromUnixTimeSeconds(reportDate.GetInt64()).UtcDateTime
+                        : DateTime.MinValue,
+                    PercentOut = entry.TryGetProperty("pctHeld", out var pct) ? _dataParser.ExtractDecimal(pct) ?? 0m : 0m,
+                    Value = entry.TryGetProperty("value", out var value) ? _dataParser.ExtractDecimal(value) ?? 0m : 0m
+                });
+            }
+        }
+
         return holderData;
+    }
+
+    private DateTime? ParseDate(JsonElement element, string propertyName)
+    {
+        if (!element.TryGetProperty(propertyName, out var value) || value.ValueKind == JsonValueKind.Null)
+            return null;
+
+        if (value.ValueKind == JsonValueKind.Number && value.TryGetInt64(out var unix))
+            return DateTimeOffset.FromUnixTimeSeconds(unix).UtcDateTime;
+
+        if (value.ValueKind == JsonValueKind.Object &&
+            value.TryGetProperty("raw", out var raw) &&
+            raw.ValueKind == JsonValueKind.Number)
+        {
+            return DateTimeOffset.FromUnixTimeSeconds(raw.GetInt64()).UtcDateTime;
+        }
+
+        return null;
     }
 }

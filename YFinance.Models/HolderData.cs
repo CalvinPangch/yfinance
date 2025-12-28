@@ -18,6 +18,12 @@ public class HolderData
 
     // Insider transactions
     public List<InsiderTransaction>? InsiderTransactions { get; set; }
+
+    // Insider holders
+    public List<InsiderHolder>? InsiderHolders { get; set; }
+
+    // Fund ownership
+    public List<FundHolder>? FundHolders { get; set; }
 }
 
 public class InstitutionalHolder
@@ -37,4 +43,26 @@ public class InsiderTransaction
     public string TransactionType { get; set; } = string.Empty;
     public int Shares { get; set; }
     public decimal? Value { get; set; }
+}
+
+public class InsiderHolder
+{
+    public string Name { get; set; } = string.Empty;
+    public string? Relation { get; set; }
+    public string? Url { get; set; }
+    public string? TransactionDescription { get; set; }
+    public DateTime? LatestTransDate { get; set; }
+    public decimal? PositionDirect { get; set; }
+    public DateTime? PositionDirectDate { get; set; }
+    public decimal? PositionIndirect { get; set; }
+    public DateTime? PositionIndirectDate { get; set; }
+}
+
+public class FundHolder
+{
+    public string Holder { get; set; } = string.Empty;
+    public long Shares { get; set; }
+    public DateTime DateReported { get; set; }
+    public decimal PercentOut { get; set; }
+    public decimal Value { get; set; }
 }

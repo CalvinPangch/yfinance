@@ -24,6 +24,8 @@ public class TickerServiceTests
         var earningsScraper = new Mock<IEarningsScraper>();
         var optionsScraper = new Mock<IOptionsScraper>();
         var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
         var expected = new QuoteData { Symbol = "AAPL" };
 
         quoteScraper
@@ -40,7 +42,9 @@ public class TickerServiceTests
             newsScraper.Object,
             earningsScraper.Object,
             optionsScraper.Object,
-            esgScraper.Object);
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
 
         // Act
         var result = await service.GetQuoteAsync("AAPL");
@@ -58,6 +62,8 @@ public class TickerServiceTests
         earningsScraper.VerifyNoOtherCalls();
         optionsScraper.VerifyNoOtherCalls();
         esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -73,6 +79,8 @@ public class TickerServiceTests
         var earningsScraper = new Mock<IEarningsScraper>();
         var optionsScraper = new Mock<IOptionsScraper>();
         var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
         var expected = new FundsData { Symbol = "VTI" };
 
         fundsScraper
@@ -89,7 +97,9 @@ public class TickerServiceTests
             newsScraper.Object,
             earningsScraper.Object,
             optionsScraper.Object,
-            esgScraper.Object);
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
 
         var result = await service.GetFundsDataAsync("VTI");
 
@@ -105,6 +115,8 @@ public class TickerServiceTests
         earningsScraper.VerifyNoOtherCalls();
         optionsScraper.VerifyNoOtherCalls();
         esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -120,6 +132,8 @@ public class TickerServiceTests
         var earningsScraper = new Mock<IEarningsScraper>();
         var optionsScraper = new Mock<IOptionsScraper>();
         var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
         var expected = new List<NewsItem> { new NewsItem { Title = "News" } };
         var request = new NewsRequest { Symbol = "AAPL" };
 
@@ -137,7 +151,9 @@ public class TickerServiceTests
             newsScraper.Object,
             earningsScraper.Object,
             optionsScraper.Object,
-            esgScraper.Object);
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
 
         var result = await service.GetNewsAsync(request);
 
@@ -153,6 +169,8 @@ public class TickerServiceTests
         earningsScraper.VerifyNoOtherCalls();
         optionsScraper.VerifyNoOtherCalls();
         esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -168,6 +186,8 @@ public class TickerServiceTests
         var earningsScraper = new Mock<IEarningsScraper>();
         var optionsScraper = new Mock<IOptionsScraper>();
         var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
         var expected = new List<RecommendationTrendEntry> { new RecommendationTrendEntry { Period = "0m" } };
 
         analysisScraper
@@ -184,7 +204,9 @@ public class TickerServiceTests
             newsScraper.Object,
             earningsScraper.Object,
             optionsScraper.Object,
-            esgScraper.Object);
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
 
         var result = await service.GetRecommendationsAsync("AAPL");
 
@@ -200,6 +222,8 @@ public class TickerServiceTests
         earningsScraper.VerifyNoOtherCalls();
         optionsScraper.VerifyNoOtherCalls();
         esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -215,6 +239,8 @@ public class TickerServiceTests
         var earningsScraper = new Mock<IEarningsScraper>();
         var optionsScraper = new Mock<IOptionsScraper>();
         var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
         var expected = new List<UpgradeDowngradeEntry> { new UpgradeDowngradeEntry { Firm = "Firm" } };
 
         analysisScraper
@@ -231,7 +257,9 @@ public class TickerServiceTests
             newsScraper.Object,
             earningsScraper.Object,
             optionsScraper.Object,
-            esgScraper.Object);
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
 
         var result = await service.GetUpgradesDowngradesAsync("AAPL");
 
@@ -247,6 +275,8 @@ public class TickerServiceTests
         earningsScraper.VerifyNoOtherCalls();
         optionsScraper.VerifyNoOtherCalls();
         esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -262,6 +292,8 @@ public class TickerServiceTests
         var earningsScraper = new Mock<IEarningsScraper>();
         var optionsScraper = new Mock<IOptionsScraper>();
         var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
         var expected = new EsgData { Symbol = "AAPL", TotalEsg = 25.1m };
 
         esgScraper
@@ -278,7 +310,9 @@ public class TickerServiceTests
             newsScraper.Object,
             earningsScraper.Object,
             optionsScraper.Object,
-            esgScraper.Object);
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
 
         var result = await service.GetEsgAsync("AAPL");
 
@@ -294,5 +328,114 @@ public class TickerServiceTests
         earningsScraper.VerifyNoOtherCalls();
         optionsScraper.VerifyNoOtherCalls();
         esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task GetCalendarAsync_DelegatesToCalendarScraper()
+    {
+        var historyScraper = new Mock<IHistoryScraper>();
+        var quoteScraper = new Mock<IQuoteScraper>();
+        var fundamentalsScraper = new Mock<IFundamentalsScraper>();
+        var analysisScraper = new Mock<IAnalysisScraper>();
+        var holdersScraper = new Mock<IHoldersScraper>();
+        var fundsScraper = new Mock<IFundsScraper>();
+        var newsScraper = new Mock<INewsScraper>();
+        var earningsScraper = new Mock<IEarningsScraper>();
+        var optionsScraper = new Mock<IOptionsScraper>();
+        var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
+        var expected = new CalendarData { Symbol = "AAPL" };
+
+        calendarScraper
+            .Setup(scraper => scraper.GetCalendarAsync("AAPL", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expected);
+
+        var service = new TickerService(
+            historyScraper.Object,
+            quoteScraper.Object,
+            fundamentalsScraper.Object,
+            analysisScraper.Object,
+            holdersScraper.Object,
+            fundsScraper.Object,
+            newsScraper.Object,
+            earningsScraper.Object,
+            optionsScraper.Object,
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
+
+        var result = await service.GetCalendarAsync("AAPL");
+
+        Assert.Same(expected, result);
+        calendarScraper.Verify(scraper => scraper.GetCalendarAsync("AAPL", It.IsAny<CancellationToken>()), Times.Once);
+        historyScraper.VerifyNoOtherCalls();
+        quoteScraper.VerifyNoOtherCalls();
+        fundamentalsScraper.VerifyNoOtherCalls();
+        analysisScraper.VerifyNoOtherCalls();
+        holdersScraper.VerifyNoOtherCalls();
+        fundsScraper.VerifyNoOtherCalls();
+        newsScraper.VerifyNoOtherCalls();
+        earningsScraper.VerifyNoOtherCalls();
+        optionsScraper.VerifyNoOtherCalls();
+        esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task GetSharesHistoryAsync_DelegatesToSharesScraper()
+    {
+        var historyScraper = new Mock<IHistoryScraper>();
+        var quoteScraper = new Mock<IQuoteScraper>();
+        var fundamentalsScraper = new Mock<IFundamentalsScraper>();
+        var analysisScraper = new Mock<IAnalysisScraper>();
+        var holdersScraper = new Mock<IHoldersScraper>();
+        var fundsScraper = new Mock<IFundsScraper>();
+        var newsScraper = new Mock<INewsScraper>();
+        var earningsScraper = new Mock<IEarningsScraper>();
+        var optionsScraper = new Mock<IOptionsScraper>();
+        var esgScraper = new Mock<IEsgScraper>();
+        var calendarScraper = new Mock<ICalendarScraper>();
+        var sharesScraper = new Mock<ISharesScraper>();
+        var request = new SharesHistoryRequest { Symbol = "AAPL" };
+        var expected = new SharesHistoryData { Symbol = "AAPL" };
+
+        sharesScraper
+            .Setup(scraper => scraper.GetSharesHistoryAsync(request, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expected);
+
+        var service = new TickerService(
+            historyScraper.Object,
+            quoteScraper.Object,
+            fundamentalsScraper.Object,
+            analysisScraper.Object,
+            holdersScraper.Object,
+            fundsScraper.Object,
+            newsScraper.Object,
+            earningsScraper.Object,
+            optionsScraper.Object,
+            esgScraper.Object,
+            calendarScraper.Object,
+            sharesScraper.Object);
+
+        var result = await service.GetSharesHistoryAsync(request);
+
+        Assert.Same(expected, result);
+        sharesScraper.Verify(scraper => scraper.GetSharesHistoryAsync(request, It.IsAny<CancellationToken>()), Times.Once);
+        historyScraper.VerifyNoOtherCalls();
+        quoteScraper.VerifyNoOtherCalls();
+        fundamentalsScraper.VerifyNoOtherCalls();
+        analysisScraper.VerifyNoOtherCalls();
+        holdersScraper.VerifyNoOtherCalls();
+        fundsScraper.VerifyNoOtherCalls();
+        newsScraper.VerifyNoOtherCalls();
+        earningsScraper.VerifyNoOtherCalls();
+        optionsScraper.VerifyNoOtherCalls();
+        esgScraper.VerifyNoOtherCalls();
+        calendarScraper.VerifyNoOtherCalls();
+        sharesScraper.VerifyNoOtherCalls();
     }
 }

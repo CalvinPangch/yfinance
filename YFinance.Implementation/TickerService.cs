@@ -21,6 +21,8 @@ public class TickerService : ITickerService
     private readonly IEarningsScraper _earningsScraper;
     private readonly IOptionsScraper _optionsScraper;
     private readonly IEsgScraper _esgScraper;
+    private readonly ICalendarScraper _calendarScraper;
+    private readonly ISharesScraper _sharesScraper;
 
     public TickerService(
         IHistoryScraper historyScraper,
@@ -32,7 +34,9 @@ public class TickerService : ITickerService
         INewsScraper newsScraper,
         IEarningsScraper earningsScraper,
         IOptionsScraper optionsScraper,
-        IEsgScraper esgScraper)
+        IEsgScraper esgScraper,
+        ICalendarScraper calendarScraper,
+        ISharesScraper sharesScraper)
     {
         _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
         _quoteScraper = quoteScraper ?? throw new ArgumentNullException(nameof(quoteScraper));
@@ -44,6 +48,8 @@ public class TickerService : ITickerService
         _earningsScraper = earningsScraper ?? throw new ArgumentNullException(nameof(earningsScraper));
         _optionsScraper = optionsScraper ?? throw new ArgumentNullException(nameof(optionsScraper));
         _esgScraper = esgScraper ?? throw new ArgumentNullException(nameof(esgScraper));
+        _calendarScraper = calendarScraper ?? throw new ArgumentNullException(nameof(calendarScraper));
+        _sharesScraper = sharesScraper ?? throw new ArgumentNullException(nameof(sharesScraper));
     }
 
     public Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
@@ -193,5 +199,19 @@ public class TickerService : ITickerService
             throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
 
         return _esgScraper.GetEsgAsync(symbol, cancellationToken);
+    }
+
+    public Task<CalendarData> GetCalendarAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _calendarScraper.GetCalendarAsync(symbol, cancellationToken);
+    }
+
+    public Task<SharesHistoryData> GetSharesHistoryAsync(SharesHistoryRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return _sharesScraper.GetSharesHistoryAsync(request, cancellationToken);
     }
 }
