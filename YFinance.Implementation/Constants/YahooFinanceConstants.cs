@@ -26,6 +26,11 @@ internal static class YahooFinanceConstants
         public const string Consent = "https://fc.yahoo.com";
 
         /// <summary>
+        /// Consent service base URL.
+        /// </summary>
+        public const string ConsentV2 = "https://consent.yahoo.com";
+
+        /// <summary>
         /// Yahoo root domain.
         /// </summary>
         public const string Yahoo = "https://yahoo.com";

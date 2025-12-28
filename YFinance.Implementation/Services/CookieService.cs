@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.RegularExpressions;
 using YFinance.Interfaces.Services;
 using YFinance.Implementation.Constants;
 
@@ -91,6 +92,13 @@ public class CookieService : ICookieService
             _crumb = await TryGetCrumbAsync(tempClient, cancellationToken).ConfigureAwait(false);
         }
 
+        // CSRF consent flow fallback
+        if (string.IsNullOrEmpty(_crumb))
+        {
+            await TryExecuteCsrfConsentAsync(tempClient, cancellationToken).ConfigureAwait(false);
+            _crumb = await TryGetCrumbAsync(tempClient, cancellationToken).ConfigureAwait(false);
+        }
+
         _isAuthenticated = true;
     }
 
@@ -116,6 +124,56 @@ public class CookieService : ICookieService
         {
             return null;
         }
+    }
+
+    private static async Task TryExecuteCsrfConsentAsync(HttpClient client, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var landing = await client.GetAsync(YahooFinanceConstants.BaseUrls.Query2, cancellationToken)
+                .ConfigureAwait(false);
+            var html = await landing.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            var csrfToken = ExtractInputValue(html, "csrfToken");
+            var sessionId = ExtractInputValue(html, "sessionId");
+
+            if (string.IsNullOrEmpty(csrfToken) || string.IsNullOrEmpty(sessionId))
+                return;
+
+            var form = new Dictionary<string, string>
+            {
+                { "csrfToken", csrfToken },
+                { "sessionId", sessionId },
+                { "originalDoneUrl", YahooFinanceConstants.BaseUrls.Query2 },
+                { "namespace", "yahoo" },
+                { "agree", "agree" }
+            };
+
+            using var content = new FormUrlEncodedContent(form);
+            var submitUrl = $"{YahooFinanceConstants.BaseUrls.ConsentV2}/v2/collectConsent";
+            await client.PostAsync(submitUrl, content, cancellationToken).ConfigureAwait(false);
+
+            var confirmUrl = $"{YahooFinanceConstants.BaseUrls.ConsentV2}/v2/consent?sessionId={Uri.EscapeDataString(sessionId)}";
+            await client.GetAsync(confirmUrl, cancellationToken).ConfigureAwait(false);
+        }
+        catch (HttpRequestException)
+        {
+            // Ignore and continue without CSRF consent.
+        }
+        catch (TaskCanceledException) when (!cancellationToken.IsCancellationRequested)
+        {
+            // Ignore timeout.
+        }
+    }
+
+    private static string? ExtractInputValue(string html, string inputName)
+    {
+        if (string.IsNullOrEmpty(html))
+            return null;
+
+        var pattern = $@"name=""{Regex.Escape(inputName)}""\s+value=""([^""]+)""";
+        var match = Regex.Match(html, pattern, RegexOptions.IgnoreCase);
+        return match.Success ? match.Groups[1].Value : null;
     }
 
     /// <summary>
