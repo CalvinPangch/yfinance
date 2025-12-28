@@ -75,9 +75,10 @@ public class PriceRepair : IPriceRepair
             {
                 if (IsClose(ratio, splitRatio) || IsClose(ratio, 1m / splitRatio))
                 {
+                    var adjustment = IsClose(ratio, splitRatio) ? splitRatio : 1m / splitRatio;
                     for (int j = 0; j < i; j++)
                     {
-                        repaired[j] /= splitRatio;
+                        repaired[j] /= adjustment;
                     }
                     break;
                 }
@@ -95,6 +96,7 @@ public class PriceRepair : IPriceRepair
 
         if (splitDates != null && splitDates.Count > 0)
         {
+            repaired = AdjustForKnownSplits(repaired, dates, splitDates);
             repaired = RepairBadSplits(repaired, splitDates);
         }
 
@@ -121,6 +123,43 @@ public class PriceRepair : IPriceRepair
 
             if (repaired[i] > median * 5m || repaired[i] < median / 5m)
                 repaired[i] = median;
+        }
+
+        return repaired;
+    }
+
+    private static decimal[] AdjustForKnownSplits(decimal[] prices, DateTime[] dates, Dictionary<DateTime, decimal> splitDates)
+    {
+        if (prices.Length == 0 || dates.Length == 0 || splitDates.Count == 0)
+            return prices;
+
+        var repaired = (decimal[])prices.Clone();
+
+        foreach (var split in splitDates.OrderBy(kvp => kvp.Key))
+        {
+            var splitDate = split.Key.Date;
+            var splitRatio = split.Value;
+            if (splitRatio <= 0m)
+                continue;
+
+            var index = Array.FindLastIndex(dates, date => date.Date <= splitDate);
+            if (index <= 0 || index >= repaired.Length)
+                continue;
+
+            var prev = repaired[index - 1];
+            var current = repaired[index];
+            if (prev <= 0m || current <= 0m)
+                continue;
+
+            var ratio = prev / current;
+            if (!IsClose(ratio, splitRatio) && !IsClose(ratio, 1m / splitRatio))
+                continue;
+
+            var adjustment = IsClose(ratio, splitRatio) ? splitRatio : 1m / splitRatio;
+            for (int i = 0; i < index; i++)
+            {
+                repaired[i] /= adjustment;
+            }
         }
 
         return repaired;

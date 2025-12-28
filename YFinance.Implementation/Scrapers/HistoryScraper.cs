@@ -172,6 +172,9 @@ public class HistoryScraper : IHistoryScraper
             hasAdjClose = false;
         }
 
+        // Align series lengths
+        AlignSeries(ref timestamps, ref open, ref high, ref low, ref close, ref adjClose, ref volume);
+
         // Get dividends and splits
         var dividends = new Dictionary<DateTime, decimal>();
         var splits = new Dictionary<DateTime, decimal>();
@@ -266,6 +269,46 @@ public class HistoryScraper : IHistoryScraper
             low[i] *= factor;
             close[i] = adjClose[i];
         }
+    }
+
+    private static void AlignSeries(
+        ref List<DateTime> timestamps,
+        ref decimal[] open,
+        ref decimal[] high,
+        ref decimal[] low,
+        ref decimal[] close,
+        ref decimal[] adjClose,
+        ref long[] volume)
+    {
+        var length = new[]
+        {
+            timestamps.Count,
+            open.Length,
+            high.Length,
+            low.Length,
+            close.Length,
+            adjClose.Length,
+            volume.Length
+        }.Min();
+
+        if (length == timestamps.Count &&
+            length == open.Length &&
+            length == high.Length &&
+            length == low.Length &&
+            length == close.Length &&
+            length == adjClose.Length &&
+            length == volume.Length)
+        {
+            return;
+        }
+
+        timestamps = timestamps.Take(length).ToList();
+        open = open.Take(length).ToArray();
+        high = high.Take(length).ToArray();
+        low = low.Take(length).ToArray();
+        close = close.Take(length).ToArray();
+        adjClose = adjClose.Take(length).ToArray();
+        volume = volume.Take(length).ToArray();
     }
 
     private static HistoricalData ResampleHistoricalData(
