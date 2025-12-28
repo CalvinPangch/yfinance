@@ -52,6 +52,9 @@ public class QuoteData
 
     // Timeseries metrics
     public decimal? TrailingPegRatio { get; set; }
+    public decimal? TrailingEpsTimeseries { get; set; }
+    public decimal? ForwardEpsTimeseries { get; set; }
+    public decimal? TotalRevenueTimeseries { get; set; }
 
     // Additional info
     public DateTime? EarningsTimestamp { get; set; }

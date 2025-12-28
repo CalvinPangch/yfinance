@@ -58,7 +58,7 @@ public class QuoteScraper : IQuoteScraper
             $"/ws/fundamentals-timeseries/v1/finance/timeseries/{symbol}",
             new Dictionary<string, string>
             {
-                { "type", "trailingPegRatio" },
+                { "type", "trailingPegRatio,trailingEps,forwardEps,totalRevenue" },
                 { "period1", period1 },
                 { "period2", period2 },
                 { "merge", "false" }
@@ -325,16 +325,30 @@ public class QuoteScraper : IQuoteScraper
         }
 
         var result = results[0];
-        if (!result.TryGetProperty("trailingPegRatio", out var pegSeries) ||
-            pegSeries.ValueKind != JsonValueKind.Array ||
-            pegSeries.GetArrayLength() == 0)
+        quote.TrailingPegRatio = ExtractTimeseriesValue(result, "trailingPegRatio") ?? quote.TrailingPegRatio;
+        quote.TrailingEpsTimeseries = ExtractTimeseriesValue(result, "trailingEps");
+        quote.ForwardEpsTimeseries = ExtractTimeseriesValue(result, "forwardEps");
+        quote.TotalRevenueTimeseries = ExtractTimeseriesValue(result, "totalRevenue");
+    }
+
+    private decimal? ExtractTimeseriesValue(JsonElement result, string propertyName)
+    {
+        if (!result.TryGetProperty(propertyName, out var series) ||
+            series.ValueKind != JsonValueKind.Array ||
+            series.GetArrayLength() == 0)
         {
-            return;
+            return null;
         }
 
-        var last = pegSeries[pegSeries.GetArrayLength() - 1];
+        var last = series[series.GetArrayLength() - 1];
         if (last.TryGetProperty("reportedValue", out var reportedValue))
-            quote.TrailingPegRatio = _dataParser.ExtractDecimal(reportedValue);
+            return _dataParser.ExtractDecimal(reportedValue);
+        if (last.TryGetProperty("value", out var value))
+            return _dataParser.ExtractDecimal(value);
+        if (last.TryGetProperty("raw", out var raw))
+            return _dataParser.ExtractDecimal(raw);
+
+        return null;
     }
 
     private decimal? ExtractDecimalFromProperty(JsonElement element, string propertyName)

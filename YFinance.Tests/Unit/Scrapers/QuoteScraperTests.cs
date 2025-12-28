@@ -274,6 +274,64 @@ public class QuoteScraperTests
     }
 
     [Fact]
+    public async Task GetQuoteAsync_ParsesTimeseriesMetrics()
+    {
+        // Arrange
+        var symbol = "MSFT";
+        var summaryResponse = """{"quoteSummary":{"result":[{}]}}""";
+        var timeseriesResponse = """
+        {
+            "timeseries": {
+                "result": [
+                    {
+                        "trailingPegRatio": [
+                            { "reportedValue": { "raw": 1.11 } }
+                        ],
+                        "trailingEps": [
+                            { "reportedValue": { "raw": 2.22 } }
+                        ],
+                        "forwardEps": [
+                            { "reportedValue": { "raw": 3.33 } }
+                        ],
+                        "totalRevenue": [
+                            { "reportedValue": { "raw": 4000 } }
+                        ]
+                    }
+                ]
+            }
+        }
+        """;
+
+        _mockClient.Setup(c => c.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync((string endpoint, Dictionary<string, string>? _, CancellationToken _) =>
+                endpoint.StartsWith("/ws/fundamentals-timeseries", StringComparison.OrdinalIgnoreCase)
+                    ? timeseriesResponse
+                    : endpoint.StartsWith("/v7/finance/quote", StringComparison.OrdinalIgnoreCase)
+                        ? """{"quoteResponse":{"result":[]}}"""
+                        : summaryResponse);
+
+        _mockDataParser.Setup(p => p.ExtractDecimal(It.IsAny<System.Text.Json.JsonElement>()))
+            .Returns((System.Text.Json.JsonElement element) =>
+                element.ValueKind == System.Text.Json.JsonValueKind.Object && element.TryGetProperty("raw", out var raw)
+                    ? raw.GetDecimal()
+                    : element.ValueKind == System.Text.Json.JsonValueKind.Number
+                        ? element.GetDecimal()
+                        : (decimal?)null);
+
+        // Act
+        var result = await _scraper.GetQuoteAsync(symbol);
+
+        // Assert
+        result.TrailingPegRatio.Should().Be(1.11m);
+        result.TrailingEpsTimeseries.Should().Be(2.22m);
+        result.ForwardEpsTimeseries.Should().Be(3.33m);
+        result.TotalRevenueTimeseries.Should().Be(4000m);
+    }
+
+    [Fact]
     public async Task GetQuoteAsync_ParsesSummaryDetailModule()
     {
         // Arrange
