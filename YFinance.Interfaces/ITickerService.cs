@@ -65,4 +65,39 @@ public interface ITickerService
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>News items</returns>
     Task<IReadOnlyList<NewsItem>> GetNewsAsync(NewsRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets earnings estimates from earnings trend data.
+    /// </summary>
+    Task<IReadOnlyList<PeriodicEstimate>> GetEarningsEstimateAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets revenue estimates from earnings trend data.
+    /// </summary>
+    Task<IReadOnlyList<PeriodicEstimate>> GetRevenueEstimateAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets earnings history data.
+    /// </summary>
+    Task<IReadOnlyList<EarningsHistoryEntry>> GetEarningsHistoryAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets EPS trend data.
+    /// </summary>
+    Task<IReadOnlyList<PeriodicEstimate>> GetEpsTrendAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets EPS revisions data.
+    /// </summary>
+    Task<IReadOnlyList<PeriodicEstimate>> GetEpsRevisionsAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets growth estimates for stock, industry, sector, and index trends.
+    /// </summary>
+    Task<IReadOnlyList<GrowthEstimateEntry>> GetGrowthEstimatesAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets earnings dates.
+    /// </summary>
+    Task<IReadOnlyList<EarningsDateEntry>> GetEarningsDatesAsync(EarningsDatesRequest request, CancellationToken cancellationToken = default);
 }

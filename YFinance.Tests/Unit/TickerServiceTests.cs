@@ -21,6 +21,7 @@ public class TickerServiceTests
         var holdersScraper = new Mock<IHoldersScraper>();
         var fundsScraper = new Mock<IFundsScraper>();
         var newsScraper = new Mock<INewsScraper>();
+        var earningsScraper = new Mock<IEarningsScraper>();
         var expected = new QuoteData { Symbol = "AAPL" };
 
         quoteScraper
@@ -34,7 +35,8 @@ public class TickerServiceTests
             analysisScraper.Object,
             holdersScraper.Object,
             fundsScraper.Object,
-            newsScraper.Object);
+            newsScraper.Object,
+            earningsScraper.Object);
 
         // Act
         var result = await service.GetQuoteAsync("AAPL");
@@ -49,6 +51,7 @@ public class TickerServiceTests
         holdersScraper.VerifyNoOtherCalls();
         fundsScraper.VerifyNoOtherCalls();
         newsScraper.VerifyNoOtherCalls();
+        earningsScraper.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -61,6 +64,7 @@ public class TickerServiceTests
         var holdersScraper = new Mock<IHoldersScraper>();
         var fundsScraper = new Mock<IFundsScraper>();
         var newsScraper = new Mock<INewsScraper>();
+        var earningsScraper = new Mock<IEarningsScraper>();
         var expected = new FundsData { Symbol = "VTI" };
 
         fundsScraper
@@ -74,7 +78,8 @@ public class TickerServiceTests
             analysisScraper.Object,
             holdersScraper.Object,
             fundsScraper.Object,
-            newsScraper.Object);
+            newsScraper.Object,
+            earningsScraper.Object);
 
         var result = await service.GetFundsDataAsync("VTI");
 
@@ -87,6 +92,7 @@ public class TickerServiceTests
         holdersScraper.VerifyNoOtherCalls();
         fundsScraper.VerifyNoOtherCalls();
         newsScraper.VerifyNoOtherCalls();
+        earningsScraper.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -99,6 +105,7 @@ public class TickerServiceTests
         var holdersScraper = new Mock<IHoldersScraper>();
         var fundsScraper = new Mock<IFundsScraper>();
         var newsScraper = new Mock<INewsScraper>();
+        var earningsScraper = new Mock<IEarningsScraper>();
         var expected = new List<NewsItem> { new NewsItem { Title = "News" } };
         var request = new NewsRequest { Symbol = "AAPL" };
 
@@ -113,7 +120,8 @@ public class TickerServiceTests
             analysisScraper.Object,
             holdersScraper.Object,
             fundsScraper.Object,
-            newsScraper.Object);
+            newsScraper.Object,
+            earningsScraper.Object);
 
         var result = await service.GetNewsAsync(request);
 
@@ -126,5 +134,6 @@ public class TickerServiceTests
         holdersScraper.VerifyNoOtherCalls();
         fundsScraper.VerifyNoOtherCalls();
         newsScraper.VerifyNoOtherCalls();
+        earningsScraper.VerifyNoOtherCalls();
     }
 }

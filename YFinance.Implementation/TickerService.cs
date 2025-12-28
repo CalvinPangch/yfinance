@@ -18,6 +18,7 @@ public class TickerService : ITickerService
     private readonly IHoldersScraper _holdersScraper;
     private readonly IFundsScraper _fundsScraper;
     private readonly INewsScraper _newsScraper;
+    private readonly IEarningsScraper _earningsScraper;
 
     public TickerService(
         IHistoryScraper historyScraper,
@@ -26,7 +27,8 @@ public class TickerService : ITickerService
         IAnalysisScraper analysisScraper,
         IHoldersScraper holdersScraper,
         IFundsScraper fundsScraper,
-        INewsScraper newsScraper)
+        INewsScraper newsScraper,
+        IEarningsScraper earningsScraper)
     {
         _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
         _quoteScraper = quoteScraper ?? throw new ArgumentNullException(nameof(quoteScraper));
@@ -35,6 +37,7 @@ public class TickerService : ITickerService
         _holdersScraper = holdersScraper ?? throw new ArgumentNullException(nameof(holdersScraper));
         _fundsScraper = fundsScraper ?? throw new ArgumentNullException(nameof(fundsScraper));
         _newsScraper = newsScraper ?? throw new ArgumentNullException(nameof(newsScraper));
+        _earningsScraper = earningsScraper ?? throw new ArgumentNullException(nameof(earningsScraper));
     }
 
     public Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
@@ -92,5 +95,59 @@ public class TickerService : ITickerService
     {
         ArgumentNullException.ThrowIfNull(request);
         return _newsScraper.GetNewsAsync(request, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<PeriodicEstimate>> GetEarningsEstimateAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _earningsScraper.GetEarningsEstimateAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<PeriodicEstimate>> GetRevenueEstimateAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _earningsScraper.GetRevenueEstimateAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<EarningsHistoryEntry>> GetEarningsHistoryAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _earningsScraper.GetEarningsHistoryAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<PeriodicEstimate>> GetEpsTrendAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _earningsScraper.GetEpsTrendAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<PeriodicEstimate>> GetEpsRevisionsAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _earningsScraper.GetEpsRevisionsAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<GrowthEstimateEntry>> GetGrowthEstimatesAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _earningsScraper.GetGrowthEstimatesAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<EarningsDateEntry>> GetEarningsDatesAsync(EarningsDatesRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return _earningsScraper.GetEarningsDatesAsync(request, cancellationToken);
     }
 }

@@ -588,6 +588,133 @@ public static class TestDataBuilder
 
         return JsonSerializer.Serialize(response);
     }
+
+    public static string BuildEarningsSummaryResponse()
+    {
+        var response = new
+        {
+            quoteSummary = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        earningsTrend = new
+                        {
+                            trend = new object[]
+                            {
+                                new
+                                {
+                                    period = "0q",
+                                    growth = new { raw = 0.1m },
+                                    earningsEstimate = new
+                                    {
+                                        avg = new { raw = 1.2m },
+                                        low = new { raw = 1.0m },
+                                        high = new { raw = 1.4m }
+                                    },
+                                    revenueEstimate = new
+                                    {
+                                        avg = new { raw = 1000m },
+                                        low = new { raw = 900m },
+                                        high = new { raw = 1100m }
+                                    },
+                                    epsTrend = new
+                                    {
+                                        current = new { raw = 1.1m },
+                                        sevenDaysAgo = new { raw = 1.0m }
+                                    },
+                                    epsRevisions = new
+                                    {
+                                        upLast7days = new { raw = 2m },
+                                        downLast30days = new { raw = 1m }
+                                    }
+                                }
+                            }
+                        },
+                        earningsHistory = new
+                        {
+                            history = new object[]
+                            {
+                                new
+                                {
+                                    quarter = new { raw = 1704067200 },
+                                    epsActual = new { raw = 1.05m },
+                                    epsEstimate = new { raw = 1.0m },
+                                    epsDifference = new { raw = 0.05m },
+                                    surprisePercent = new { raw = 0.05m }
+                                }
+                            }
+                        },
+                        industryTrend = new
+                        {
+                            trend = new object[]
+                            {
+                                new { period = "0q", growth = new { raw = 0.2m } }
+                            }
+                        },
+                        sectorTrend = new
+                        {
+                            trend = new object[]
+                            {
+                                new { period = "0q", growth = new { raw = 0.3m } }
+                            }
+                        },
+                        indexTrend = new
+                        {
+                            trend = new object[]
+                            {
+                                new { period = "0q", growth = new { raw = 0.4m } }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
+
+    public static string BuildEarningsDatesResponse()
+    {
+        var response = new
+        {
+            finance = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        columns = new object[]
+                        {
+                            new { field = "startdatetime" },
+                            new { field = "eventstartdatetime" },
+                            new { field = "eventtype" },
+                            new { field = "timeZoneShortName" },
+                            new { field = "epsestimate" },
+                            new { field = "epsactual" },
+                            new { field = "epssurprisepct" }
+                        },
+                        rows = new object[]
+                        {
+                            new object[]
+                            {
+                                1700000000,
+                                1699990000,
+                                2,
+                                "EST",
+                                1.23m,
+                                1.1m,
+                                0.1m
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
 }
 
 /// <summary>
