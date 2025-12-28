@@ -34,6 +34,11 @@ internal static class YahooFinanceConstants
         /// Yahoo root domain.
         /// </summary>
         public const string Yahoo = "https://yahoo.com";
+
+        /// <summary>
+        /// Yahoo Finance base domain.
+        /// </summary>
+        public const string Finance = "https://finance.yahoo.com";
     }
 
     /// <summary>

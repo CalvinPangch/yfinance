@@ -556,6 +556,38 @@ public static class TestDataBuilder
 
         return JsonSerializer.Serialize(response);
     }
+
+    public static string BuildNewsResponse(string symbol)
+    {
+        var response = new
+        {
+            data = new
+            {
+                tickerStream = new
+                {
+                    stream = new object[]
+                    {
+                        new
+                        {
+                            title = "News Title",
+                            publisher = "Publisher",
+                            link = "https://example.com/article",
+                            providerPublishTime = 1700000000,
+                            type = "STORY",
+                            uuid = "news-1",
+                            relatedTickers = new[] { symbol }
+                        },
+                        new
+                        {
+                            ad = new object[] { "sponsored" }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
 }
 
 /// <summary>

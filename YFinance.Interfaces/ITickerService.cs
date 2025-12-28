@@ -57,4 +57,12 @@ public interface ITickerService
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Funds data including holdings and profile</returns>
     Task<FundsData> GetFundsDataAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets news items for a ticker.
+    /// </summary>
+    /// <param name="request">News request parameters</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>News items</returns>
+    Task<IReadOnlyList<NewsItem>> GetNewsAsync(NewsRequest request, CancellationToken cancellationToken = default);
 }

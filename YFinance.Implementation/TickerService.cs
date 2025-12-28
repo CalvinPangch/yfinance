@@ -17,6 +17,7 @@ public class TickerService : ITickerService
     private readonly IAnalysisScraper _analysisScraper;
     private readonly IHoldersScraper _holdersScraper;
     private readonly IFundsScraper _fundsScraper;
+    private readonly INewsScraper _newsScraper;
 
     public TickerService(
         IHistoryScraper historyScraper,
@@ -24,7 +25,8 @@ public class TickerService : ITickerService
         IFundamentalsScraper fundamentalsScraper,
         IAnalysisScraper analysisScraper,
         IHoldersScraper holdersScraper,
-        IFundsScraper fundsScraper)
+        IFundsScraper fundsScraper,
+        INewsScraper newsScraper)
     {
         _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
         _quoteScraper = quoteScraper ?? throw new ArgumentNullException(nameof(quoteScraper));
@@ -32,6 +34,7 @@ public class TickerService : ITickerService
         _analysisScraper = analysisScraper ?? throw new ArgumentNullException(nameof(analysisScraper));
         _holdersScraper = holdersScraper ?? throw new ArgumentNullException(nameof(holdersScraper));
         _fundsScraper = fundsScraper ?? throw new ArgumentNullException(nameof(fundsScraper));
+        _newsScraper = newsScraper ?? throw new ArgumentNullException(nameof(newsScraper));
     }
 
     public Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
@@ -83,5 +86,11 @@ public class TickerService : ITickerService
             throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
 
         return _fundsScraper.GetFundsDataAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<NewsItem>> GetNewsAsync(NewsRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return _newsScraper.GetNewsAsync(request, cancellationToken);
     }
 }

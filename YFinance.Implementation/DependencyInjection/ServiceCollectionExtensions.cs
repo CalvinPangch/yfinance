@@ -48,6 +48,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISearchScraper, SearchScraper>();
         services.AddSingleton<ILookupScraper, LookupScraper>();
         services.AddSingleton<IScreenerScraper, ScreenerScraper>();
+        services.AddSingleton<INewsScraper, NewsScraper>();
 
         // Register utilities as Transient (lightweight)
         services.AddTransient<IDataParser, DataParser>();
