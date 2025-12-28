@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
@@ -50,17 +51,27 @@ public class FundamentalsScraper : IFundamentalsScraper
         var result = results[0];
         var statement = new FinancialStatement { Symbol = symbol };
 
-        statement.IncomeStatementAnnual = ParseStatement(result, "incomeStatementHistory", "incomeStatementHistory");
-        statement.IncomeStatementQuarterly = ParseStatement(result, "incomeStatementHistoryQuarterly", "incomeStatementHistory");
-        statement.BalanceSheetAnnual = ParseStatement(result, "balanceSheetHistory", "balanceSheetStatements");
-        statement.BalanceSheetQuarterly = ParseStatement(result, "balanceSheetHistoryQuarterly", "balanceSheetStatements");
-        statement.CashFlowAnnual = ParseStatement(result, "cashflowStatementHistory", "cashflowStatements");
-        statement.CashFlowQuarterly = ParseStatement(result, "cashflowStatementHistoryQuarterly", "cashflowStatements");
+        statement.IncomeStatementAnnualHistory = ParseStatementEntries(result, "incomeStatementHistory", "incomeStatementHistory");
+        statement.IncomeStatementQuarterlyHistory = ParseStatementEntries(result, "incomeStatementHistoryQuarterly", "incomeStatementHistory");
+        statement.BalanceSheetAnnualHistory = ParseStatementEntries(result, "balanceSheetHistory", "balanceSheetStatements");
+        statement.BalanceSheetQuarterlyHistory = ParseStatementEntries(result, "balanceSheetHistoryQuarterly", "balanceSheetStatements");
+        statement.CashFlowAnnualHistory = ParseStatementEntries(result, "cashflowStatementHistory", "cashflowStatements");
+        statement.CashFlowQuarterlyHistory = ParseStatementEntries(result, "cashflowStatementHistoryQuarterly", "cashflowStatements");
+
+        statement.IncomeStatementAnnual = statement.IncomeStatementAnnualHistory?.FirstOrDefault()?.Metrics;
+        statement.IncomeStatementQuarterly = statement.IncomeStatementQuarterlyHistory?.FirstOrDefault()?.Metrics;
+        statement.BalanceSheetAnnual = statement.BalanceSheetAnnualHistory?.FirstOrDefault()?.Metrics;
+        statement.BalanceSheetQuarterly = statement.BalanceSheetQuarterlyHistory?.FirstOrDefault()?.Metrics;
+        statement.CashFlowAnnual = statement.CashFlowAnnualHistory?.FirstOrDefault()?.Metrics;
+        statement.CashFlowQuarterly = statement.CashFlowQuarterlyHistory?.FirstOrDefault()?.Metrics;
+
+        statement.IncomeStatementTTM = ComputeTtm(statement.IncomeStatementQuarterlyHistory);
+        statement.CashFlowTTM = ComputeTtm(statement.CashFlowQuarterlyHistory);
 
         return statement;
     }
 
-    private Dictionary<string, decimal?>? ParseStatement(JsonElement result, string moduleName, string arrayName)
+    private List<StatementEntry>? ParseStatementEntries(JsonElement result, string moduleName, string arrayName)
     {
         if (!result.TryGetProperty(moduleName, out var module))
             return null;
@@ -68,18 +79,64 @@ public class FundamentalsScraper : IFundamentalsScraper
         if (!module.TryGetProperty(arrayName, out var statements) || statements.ValueKind != JsonValueKind.Array || statements.GetArrayLength() == 0)
             return null;
 
-        var latest = statements[0];
-        var flat = _dataParser.FlattenResponse(latest);
-        var output = new Dictionary<string, decimal?>();
+        var output = new List<StatementEntry>();
 
-        foreach (var entry in flat)
+        foreach (var statement in statements.EnumerateArray())
         {
-            if (entry.Value is decimal decimalValue)
-                output[entry.Key] = decimalValue;
-            else if (entry.Value is long longValue)
-                output[entry.Key] = longValue;
+            var flat = _dataParser.FlattenResponse(statement);
+            var metrics = new Dictionary<string, decimal?>();
+            DateTime? endDate = null;
+
+            foreach (var entry in flat)
+            {
+                if (entry.Key.Equals("endDate", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (entry.Value is long endDateRaw)
+                        endDate = _dataParser.UnixTimestampToDateTime(endDateRaw);
+                    continue;
+                }
+
+                if (entry.Value is decimal decimalValue)
+                    metrics[entry.Key] = decimalValue;
+                else if (entry.Value is long longValue)
+                    metrics[entry.Key] = longValue;
+            }
+
+            if (metrics.Count > 0)
+                output.Add(new StatementEntry { EndDate = endDate, Metrics = metrics });
         }
 
         return output.Count > 0 ? output : null;
+    }
+
+    private static Dictionary<string, decimal?>? ComputeTtm(List<StatementEntry>? quarterlyHistory)
+    {
+        if (quarterlyHistory == null || quarterlyHistory.Count == 0)
+            return null;
+
+        var recent = quarterlyHistory
+            .OrderByDescending(entry => entry.EndDate ?? DateTime.MinValue)
+            .Take(4)
+            .ToList();
+
+        if (recent.Count < 4)
+            return null;
+
+        var totals = new Dictionary<string, decimal?>();
+        foreach (var entry in recent)
+        {
+            foreach (var metric in entry.Metrics)
+            {
+                if (!metric.Value.HasValue)
+                    continue;
+
+                if (!totals.TryGetValue(metric.Key, out var current) || !current.HasValue)
+                    totals[metric.Key] = metric.Value;
+                else
+                    totals[metric.Key] = current.Value + metric.Value.Value;
+            }
+        }
+
+        return totals.Count > 0 ? totals : null;
     }
 }
