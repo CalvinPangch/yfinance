@@ -17,6 +17,8 @@ public class HistoryScraper : IHistoryScraper
 {
     private readonly IYahooFinanceClient _client;
     private readonly IDataParser _dataParser;
+    private readonly IPriceRepair _priceRepair;
+    private readonly ITimezoneHelper _timezoneHelper;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HistoryScraper"/> class.
@@ -24,10 +26,16 @@ public class HistoryScraper : IHistoryScraper
     /// <param name="client">The Yahoo Finance HTTP client.</param>
     /// <param name="dataParser">The data parser for JSON processing.</param>
     /// <exception cref="ArgumentNullException">Thrown when any parameter is null.</exception>
-    public HistoryScraper(IYahooFinanceClient client, IDataParser dataParser)
+    public HistoryScraper(
+        IYahooFinanceClient client,
+        IDataParser dataParser,
+        IPriceRepair priceRepair,
+        ITimezoneHelper timezoneHelper)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
+        _priceRepair = priceRepair ?? throw new ArgumentNullException(nameof(priceRepair));
+        _timezoneHelper = timezoneHelper ?? throw new ArgumentNullException(nameof(timezoneHelper));
     }
 
     /// <inheritdoc />
@@ -43,7 +51,7 @@ public class HistoryScraper : IHistoryScraper
         var endpoint = $"/v8/finance/chart/{symbol}";
 
         var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken).ConfigureAwait(false);
-        return ParseHistoricalData(symbol, jsonResponse);
+        return ParseHistoricalData(symbol, jsonResponse, request);
     }
 
     private Dictionary<string, string> BuildQueryParameters(HistoryRequest request)
@@ -113,7 +121,7 @@ public class HistoryScraper : IHistoryScraper
         };
     }
 
-    private HistoricalData ParseHistoricalData(string symbol, string jsonResponse)
+    private HistoricalData ParseHistoricalData(string symbol, string jsonResponse, HistoryRequest request)
     {
         using var document = JsonDocument.Parse(jsonResponse);
         var root = document.RootElement;
@@ -190,10 +198,28 @@ public class HistoryScraper : IHistoryScraper
             }
         }
 
+        var timestampArray = _timezoneHelper.FixDstIssues(timestamps.ToArray(), timezone);
+
+        // Apply price repair if requested
+        if (request.Repair)
+        {
+            open = _priceRepair.RepairPrices(open, timestampArray, splits);
+            high = _priceRepair.RepairPrices(high, timestampArray, splits);
+            low = _priceRepair.RepairPrices(low, timestampArray, splits);
+            close = _priceRepair.RepairPrices(close, timestampArray, splits);
+            adjClose = _priceRepair.RepairPrices(adjClose, timestampArray, splits);
+        }
+
+        // Auto-adjust prices using adjusted close ratio
+        if (request.AutoAdjust)
+        {
+            ApplyAutoAdjust(open, high, low, close, adjClose);
+        }
+
         return new HistoricalData
         {
             Symbol = symbol,
-            Timestamps = timestamps.ToArray(),
+            Timestamps = timestampArray,
             Open = open,
             High = high,
             Low = low,
@@ -204,6 +230,25 @@ public class HistoryScraper : IHistoryScraper
             StockSplits = splits,
             TimeZone = timezone
         };
+    }
+
+    private static void ApplyAutoAdjust(decimal[] open, decimal[] high, decimal[] low, decimal[] close, decimal[] adjClose)
+    {
+        var length = Math.Min(close.Length, adjClose.Length);
+        for (int i = 0; i < length; i++)
+        {
+            if (close[i] == 0m)
+                continue;
+
+            var factor = adjClose[i] / close[i];
+            if (factor <= 0m)
+                continue;
+
+            open[i] *= factor;
+            high[i] *= factor;
+            low[i] *= factor;
+            close[i] = adjClose[i];
+        }
     }
 
 }

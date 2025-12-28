@@ -4,6 +4,7 @@ using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
 using YFinance.Interfaces.Services;
 using YFinance.Interfaces.Utils;
+using YFinance.Implementation;
 using YFinance.Implementation.Scrapers;
 using YFinance.Implementation.Services;
 using YFinance.Implementation.Utils;
@@ -28,6 +29,9 @@ public static class ServiceCollectionExtensions
         // Register cookie service as Singleton (manages shared authentication state)
         services.AddSingleton<ICookieService, CookieService>();
 
+        // Register cache service as Singleton
+        services.AddSingleton<ICacheService, CacheService>();
+
         // Register rate limit service as Singleton (stateless)
         services.AddSingleton<IRateLimitService, RateLimitService>();
 
@@ -37,24 +41,18 @@ public static class ServiceCollectionExtensions
         // Register scrapers as Singleton (stateless)
         services.AddSingleton<IHistoryScraper, HistoryScraper>();
         services.AddSingleton<IQuoteScraper, QuoteScraper>();
-        // TODO: Uncomment when other scrapers are implemented
-        // services.AddSingleton<IAnalysisScraper, AnalysisScraper>();
-        // services.AddSingleton<IHoldersScraper, HoldersScraper>();
-        // services.AddSingleton<IFundamentalsScraper, FundamentalsScraper>();
-
-        // Register other services as Singleton
-        // TODO: Uncomment when services are implemented
-        // services.AddSingleton<ICacheService, CacheService>();
-        // services.AddSingleton<IRateLimitService, RateLimitService>();
+        services.AddSingleton<IAnalysisScraper, AnalysisScraper>();
+        services.AddSingleton<IHoldersScraper, HoldersScraper>();
+        services.AddSingleton<IFundamentalsScraper, FundamentalsScraper>();
 
         // Register utilities as Transient (lightweight)
         services.AddTransient<IDataParser, DataParser>();
-        // TODO: Uncomment when other utilities are implemented
-        // services.AddTransient<ITimezoneHelper, TimezoneHelper>();
-        // services.AddTransient<IPriceRepair, PriceRepair>();
+        services.AddTransient<ITimezoneHelper, TimezoneHelper>();
+        services.AddTransient<IPriceRepair, PriceRepair>();
 
         // Register main service with constructor injection
         services.AddSingleton<ITickerService, TickerService>();
+        services.AddSingleton<IMultiTickerService, MultiTickerService>();
 
         // Add memory cache if not already registered
         services.AddMemoryCache();

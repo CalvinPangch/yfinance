@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -97,7 +98,10 @@ public class QuoteScraperTests
                 It.IsAny<Dictionary<string, string>>(),
                 It.IsAny<CancellationToken>()))
             .Callback<string, Dictionary<string, string>?, CancellationToken>((endpoint, _, _) =>
-                capturedEndpoint = endpoint)
+                {
+                    if (endpoint.StartsWith("/v10/finance/quoteSummary", StringComparison.OrdinalIgnoreCase))
+                        capturedEndpoint = endpoint;
+                })
             .ReturnsAsync(response);
 
         // Act
@@ -120,7 +124,10 @@ public class QuoteScraperTests
                 It.IsAny<Dictionary<string, string>>(),
                 It.IsAny<CancellationToken>()))
             .Callback<string, Dictionary<string, string>?, CancellationToken>((_, params_, _) =>
-                capturedParams = params_)
+                {
+                    if (params_ != null && params_.ContainsKey("modules"))
+                        capturedParams = params_;
+                })
             .ReturnsAsync(response);
 
         // Act

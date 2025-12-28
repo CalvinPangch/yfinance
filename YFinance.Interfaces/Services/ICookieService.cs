@@ -29,4 +29,10 @@ public interface ICookieService : IDisposable
     /// </summary>
     /// <returns>The crumb token, or null if not available.</returns>
     string? GetCrumb();
+
+    /// <summary>
+    /// Forces a refresh of authentication cookies and crumb token.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    Task RefreshAsync(CancellationToken cancellationToken = default);
 }

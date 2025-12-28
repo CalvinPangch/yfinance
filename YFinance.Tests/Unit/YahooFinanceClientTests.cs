@@ -14,11 +14,13 @@ public class YahooFinanceClientTests
 {
     private readonly Mock<ICookieService> _mockCookieService;
     private readonly Mock<IRateLimitService> _mockRateLimitService;
+    private readonly Mock<ICacheService> _mockCacheService;
 
     public YahooFinanceClientTests()
     {
         _mockCookieService = new Mock<ICookieService>();
         _mockRateLimitService = new Mock<IRateLimitService>();
+        _mockCacheService = new Mock<ICacheService>();
 
         _mockCookieService.Setup(s => s.GetCrumb())
             .Returns("test-crumb");
@@ -31,7 +33,7 @@ public class YahooFinanceClientTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
-            new YahooFinanceClient(null!, _mockRateLimitService.Object));
+            new YahooFinanceClient(null!, _mockRateLimitService.Object, _mockCacheService.Object));
     }
 
     [Fact]
@@ -39,7 +41,7 @@ public class YahooFinanceClientTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
-            new YahooFinanceClient(_mockCookieService.Object, null!));
+            new YahooFinanceClient(_mockCookieService.Object, null!, _mockCacheService.Object));
     }
 
     #endregion
@@ -55,7 +57,8 @@ public class YahooFinanceClientTests
         // Arrange
         var client = new YahooFinanceClient(
             _mockCookieService.Object,
-            _mockRateLimitService.Object);
+            _mockRateLimitService.Object,
+            _mockCacheService.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetAsync(endpoint!));
@@ -70,7 +73,8 @@ public class YahooFinanceClientTests
         // Arrange
         var client = new YahooFinanceClient(
             _mockCookieService.Object,
-            _mockRateLimitService.Object);
+            _mockRateLimitService.Object,
+            _mockCacheService.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentException>(() => client.PostAsync(endpoint!, "{}"));
@@ -82,7 +86,8 @@ public class YahooFinanceClientTests
         // Arrange
         var client = new YahooFinanceClient(
             _mockCookieService.Object,
-            _mockRateLimitService.Object);
+            _mockRateLimitService.Object,
+            _mockCacheService.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() => client.PostAsync("/test", null!));
@@ -102,7 +107,8 @@ public class YahooFinanceClientTests
 
         var client = new YahooFinanceClient(
             _mockCookieService.Object,
-            _mockRateLimitService.Object);
+            _mockRateLimitService.Object,
+            _mockCacheService.Object);
 
         // Act
         await client.EnsureAuthenticationAsync();

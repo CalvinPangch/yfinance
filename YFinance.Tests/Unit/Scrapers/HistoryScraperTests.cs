@@ -14,13 +14,30 @@ public class HistoryScraperTests
 {
     private readonly Mock<IYahooFinanceClient> _mockClient;
     private readonly Mock<IDataParser> _mockDataParser;
+    private readonly Mock<IPriceRepair> _mockPriceRepair;
+    private readonly Mock<ITimezoneHelper> _mockTimezoneHelper;
     private readonly HistoryScraper _scraper;
 
     public HistoryScraperTests()
     {
         _mockClient = new Mock<IYahooFinanceClient>();
         _mockDataParser = new Mock<IDataParser>();
-        _scraper = new HistoryScraper(_mockClient.Object, _mockDataParser.Object);
+        _mockPriceRepair = new Mock<IPriceRepair>();
+        _mockTimezoneHelper = new Mock<ITimezoneHelper>();
+
+        _mockTimezoneHelper
+            .Setup(t => t.FixDstIssues(It.IsAny<DateTime[]>(), It.IsAny<string>()))
+            .Returns<DateTime[], string>((timestamps, _) => timestamps);
+
+        _mockPriceRepair
+            .Setup(p => p.RepairPrices(It.IsAny<decimal[]>(), It.IsAny<DateTime[]>(), It.IsAny<Dictionary<DateTime, decimal>?>()))
+            .Returns<decimal[], DateTime[], Dictionary<DateTime, decimal>?>((prices, _, _) => prices);
+
+        _scraper = new HistoryScraper(
+            _mockClient.Object,
+            _mockDataParser.Object,
+            _mockPriceRepair.Object,
+            _mockTimezoneHelper.Object);
     }
 
     #region Happy Path Tests
@@ -442,7 +459,7 @@ public class HistoryScraperTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(
-            () => new HistoryScraper(null!, _mockDataParser.Object));
+            () => new HistoryScraper(null!, _mockDataParser.Object, _mockPriceRepair.Object, _mockTimezoneHelper.Object));
     }
 
     [Fact]
@@ -450,7 +467,7 @@ public class HistoryScraperTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(
-            () => new HistoryScraper(_mockClient.Object, null!));
+            () => new HistoryScraper(_mockClient.Object, null!, _mockPriceRepair.Object, _mockTimezoneHelper.Object));
     }
 
     #endregion

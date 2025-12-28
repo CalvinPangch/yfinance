@@ -34,13 +34,22 @@ public class QuoteScraper : IQuoteScraper
 
         var queryParams = new Dictionary<string, string>
         {
-            { "modules", "financialData,quoteType,defaultKeyStatistics,assetProfile,summaryDetail" }
+            { "modules", "financialData,quoteType,defaultKeyStatistics,assetProfile,summaryDetail,calendarEvents" }
         };
 
         var endpoint = $"/v10/finance/quoteSummary/{symbol}";
         var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken).ConfigureAwait(false);
 
-        return ParseQuoteData(symbol, jsonResponse);
+        var quote = ParseQuoteData(symbol, jsonResponse);
+
+        // Enrich with query1 quote endpoint for additional fields
+        var query1Response = await _client.GetAsync(
+            "/v7/finance/quote",
+            new Dictionary<string, string> { { "symbols", symbol } },
+            cancellationToken).ConfigureAwait(false);
+
+        EnrichFromQuery1(quote, query1Response);
+        return quote;
     }
 
     private QuoteData ParseQuoteData(string symbol, string jsonResponse)
@@ -147,5 +156,73 @@ public class QuoteScraper : IQuoteScraper
         }
 
         return quoteData;
+    }
+
+    private void EnrichFromQuery1(QuoteData quote, string jsonResponse)
+    {
+        using var document = JsonDocument.Parse(jsonResponse);
+        var root = document.RootElement;
+
+        if (!root.TryGetProperty("quoteResponse", out var quoteResponse) ||
+            !quoteResponse.TryGetProperty("result", out var results) ||
+            results.GetArrayLength() == 0)
+        {
+            return;
+        }
+
+        var result = results[0];
+
+        if (result.TryGetProperty("regularMarketPrice", out var price) && price.ValueKind == JsonValueKind.Number)
+            quote.RegularMarketPrice = price.GetDecimal();
+        if (result.TryGetProperty("regularMarketOpen", out var open) && open.ValueKind == JsonValueKind.Number)
+            quote.RegularMarketOpen = open.GetDecimal();
+        if (result.TryGetProperty("regularMarketDayHigh", out var high) && high.ValueKind == JsonValueKind.Number)
+            quote.RegularMarketDayHigh = high.GetDecimal();
+        if (result.TryGetProperty("regularMarketDayLow", out var low) && low.ValueKind == JsonValueKind.Number)
+            quote.RegularMarketDayLow = low.GetDecimal();
+        if (result.TryGetProperty("regularMarketPreviousClose", out var prev) && prev.ValueKind == JsonValueKind.Number)
+            quote.RegularMarketPreviousClose = prev.GetDecimal();
+        if (result.TryGetProperty("regularMarketVolume", out var volume) && volume.ValueKind == JsonValueKind.Number)
+            quote.RegularMarketVolume = volume.GetInt64();
+
+        if (result.TryGetProperty("marketCap", out var mcap) && mcap.ValueKind == JsonValueKind.Number)
+            quote.MarketCap = mcap.GetDecimal();
+
+        if (result.TryGetProperty("trailingPE", out var pe) && pe.ValueKind == JsonValueKind.Number)
+            quote.PeRatio = pe.GetDecimal();
+        if (result.TryGetProperty("forwardPE", out var fpe) && fpe.ValueKind == JsonValueKind.Number)
+            quote.ForwardPE = fpe.GetDecimal();
+        if (result.TryGetProperty("pegRatio", out var peg) && peg.ValueKind == JsonValueKind.Number)
+            quote.PegRatio = peg.GetDecimal();
+
+        if (result.TryGetProperty("priceToBook", out var pb) && pb.ValueKind == JsonValueKind.Number)
+            quote.PriceToBook = pb.GetDecimal();
+        if (result.TryGetProperty("trailingEps", out var eps) && eps.ValueKind == JsonValueKind.Number)
+            quote.EarningsPerShare = eps.GetDecimal();
+        if (result.TryGetProperty("beta", out var beta) && beta.ValueKind == JsonValueKind.Number)
+            quote.Beta = beta.GetDecimal();
+
+        if (result.TryGetProperty("fiftyTwoWeekHigh", out var high52) && high52.ValueKind == JsonValueKind.Number)
+            quote.FiftyTwoWeekHigh = high52.GetDecimal();
+        if (result.TryGetProperty("fiftyTwoWeekLow", out var low52) && low52.ValueKind == JsonValueKind.Number)
+            quote.FiftyTwoWeekLow = low52.GetDecimal();
+
+        if (result.TryGetProperty("averageDailyVolume10Day", out var vol10) && vol10.ValueKind == JsonValueKind.Number)
+            quote.AverageDailyVolume10Day = vol10.GetInt64();
+        if (result.TryGetProperty("averageDailyVolume3Month", out var vol3m) && vol3m.ValueKind == JsonValueKind.Number)
+            quote.AverageDailyVolume3Month = vol3m.GetInt64();
+
+        if (result.TryGetProperty("currency", out var currency) && currency.ValueKind == JsonValueKind.String)
+            quote.Currency = currency.GetString() ?? quote.Currency;
+        if (result.TryGetProperty("exchange", out var exchange) && exchange.ValueKind == JsonValueKind.String)
+            quote.Exchange = exchange.GetString() ?? quote.Exchange;
+        if (result.TryGetProperty("shortName", out var shortName) && shortName.ValueKind == JsonValueKind.String)
+            quote.ShortName = shortName.GetString() ?? quote.ShortName;
+        if (result.TryGetProperty("longName", out var longName) && longName.ValueKind == JsonValueKind.String)
+            quote.LongName = longName.GetString() ?? quote.LongName;
+        if (result.TryGetProperty("quoteType", out var quoteType) && quoteType.ValueKind == JsonValueKind.String)
+            quote.QuoteType = quoteType.GetString() ?? quote.QuoteType;
+        if (result.TryGetProperty("marketTimezone", out var tz) && tz.ValueKind == JsonValueKind.String)
+            quote.TimeZone = tz.GetString() ?? quote.TimeZone;
     }
 }

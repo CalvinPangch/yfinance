@@ -15,6 +15,7 @@ public class YahooFinanceClient : IYahooFinanceClient
 {
     private readonly ICookieService _cookieService;
     private readonly IRateLimitService _rateLimitService;
+    private readonly ICacheService? _cacheService;
     private const int MaxRetries = 3;
 
     /// <summary>
@@ -25,10 +26,12 @@ public class YahooFinanceClient : IYahooFinanceClient
     /// <exception cref="ArgumentNullException">Thrown when any parameter is null.</exception>
     public YahooFinanceClient(
         ICookieService cookieService,
-        IRateLimitService rateLimitService)
+        IRateLimitService rateLimitService,
+        ICacheService? cacheService = null)
     {
         _cookieService = cookieService ?? throw new ArgumentNullException(nameof(cookieService));
         _rateLimitService = rateLimitService ?? throw new ArgumentNullException(nameof(rateLimitService));
+        _cacheService = cacheService;
     }
 
     /// <inheritdoc />
@@ -39,8 +42,16 @@ public class YahooFinanceClient : IYahooFinanceClient
 
         // Extract symbol from endpoint for better error messages (e.g., /v8/finance/chart/AAPL -> AAPL)
         var symbol = ExtractSymbolFromEndpoint(endpoint);
+        var cacheKey = BuildCacheKey(endpoint, queryParams);
 
-        return await ExecuteWithRetryAsync(
+        if (_cacheService != null)
+        {
+            var cached = _cacheService.Get<string>(cacheKey);
+            if (!string.IsNullOrEmpty(cached))
+                return cached;
+        }
+
+        var responseBody = await ExecuteWithRetryAsync(
             async () =>
             {
                 var cookieContainer = await _cookieService.GetCookieContainerAsync(cancellationToken)
@@ -65,6 +76,9 @@ public class YahooFinanceClient : IYahooFinanceClient
             symbol,
             cancellationToken)
             .ConfigureAwait(false);
+
+        _cacheService?.Set(cacheKey, responseBody, 10);
+        return responseBody;
     }
 
     private static string BuildUrl(string endpoint, Dictionary<string, string>? queryParams)
@@ -75,6 +89,17 @@ public class YahooFinanceClient : IYahooFinanceClient
         var queryString = string.Join("&",
             queryParams.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
         return $"{endpoint}?{queryString}";
+    }
+
+    private static string BuildCacheKey(string endpoint, Dictionary<string, string>? queryParams)
+    {
+        if (queryParams == null || queryParams.Count == 0)
+            return endpoint;
+
+        var normalized = string.Join("&",
+            queryParams.OrderBy(kvp => kvp.Key)
+                .Select(kvp => $"{kvp.Key}={kvp.Value}"));
+        return $"{endpoint}?{normalized}";
     }
 
     private Dictionary<string, string>? InjectCrumb(Dictionary<string, string>? queryParams)
@@ -129,6 +154,16 @@ public class YahooFinanceClient : IYahooFinanceClient
                     await _rateLimitService.HandleRateLimitAsync(retryCount++, cancellationToken)
                         .ConfigureAwait(false);
                     continue; // Retry the request
+                }
+
+                if (statusCode == 401 || statusCode == 403 || content.Contains("crumb", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (retryCount >= MaxRetries)
+                        response.EnsureSuccessStatusCode();
+
+                    await _cookieService.RefreshAsync(cancellationToken).ConfigureAwait(false);
+                    retryCount++;
+                    continue;
                 }
 
                 // Handle 5xx server errors with retry

@@ -1,0 +1,35 @@
+using Moq;
+using Xunit;
+using YFinance.Implementation;
+using YFinance.Interfaces.Scrapers;
+using YFinance.Models;
+using YFinance.Models.Enums;
+using YFinance.Models.Requests;
+
+namespace YFinance.Tests.Unit;
+
+public class MultiTickerServiceTests
+{
+    [Fact]
+    public async Task GetHistoryAsync_DelegatesToHistoryScraper()
+    {
+        // Arrange
+        var historyScraper = new Mock<IHistoryScraper>();
+        var request = new HistoryRequest { Period = Period.OneDay, Interval = Interval.OneDay };
+
+        historyScraper.Setup(s => s.GetHistoryAsync(It.IsAny<string>(), request, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((string symbol, HistoryRequest _, CancellationToken _) => new HistoricalData { Symbol = symbol });
+
+        var service = new MultiTickerService(historyScraper.Object);
+
+        // Act
+        var result = await service.GetHistoryAsync(new[] { "AAPL", "MSFT" }, request, maxConcurrency: 1);
+
+        // Assert
+        Assert.Equal(2, result.Count);
+        Assert.Equal("AAPL", result["AAPL"].Symbol);
+        Assert.Equal("MSFT", result["MSFT"].Symbol);
+        historyScraper.Verify(s => s.GetHistoryAsync("AAPL", request, It.IsAny<CancellationToken>()), Times.Once);
+        historyScraper.Verify(s => s.GetHistoryAsync("MSFT", request, It.IsAny<CancellationToken>()), Times.Once);
+    }
+}
