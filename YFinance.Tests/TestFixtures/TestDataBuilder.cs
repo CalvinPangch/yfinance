@@ -366,6 +366,104 @@ public static class TestDataBuilder
 
         return JsonSerializer.Serialize(response);
     }
+
+    public static string BuildSearchResponse(string symbol)
+    {
+        var response = new
+        {
+            quotes = new[]
+            {
+                new
+                {
+                    symbol,
+                    shortname = "Test Corp",
+                    longname = "Test Corporation",
+                    exchange = "NMS",
+                    quoteType = "EQUITY",
+                    score = 0.75m
+                }
+            },
+            news = new[]
+            {
+                new
+                {
+                    title = "Test News",
+                    publisher = "NewsWire",
+                    link = "https://example.com/news",
+                    providerPublishTime = 1700000000,
+                    type = "STORY",
+                    uuid = "news-1"
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
+
+    public static string BuildLookupResponse(string symbol)
+    {
+        var response = new
+        {
+            finance = new
+            {
+                result = new[]
+                {
+                    new
+                    {
+                        documents = new[]
+                        {
+                            new
+                            {
+                                symbol,
+                                shortName = "Test Corp",
+                                longName = "Test Corporation",
+                                exchange = "NMS",
+                                quoteType = "EQUITY",
+                                regularMarketPrice = 150.25m,
+                                regularMarketChangePercent = 0.5m
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
+
+    public static string BuildScreenerResponse(string symbol)
+    {
+        var response = new
+        {
+            finance = new
+            {
+                result = new[]
+                {
+                    new
+                    {
+                        count = 1,
+                        total = 1,
+                        quotes = new[]
+                        {
+                            new
+                            {
+                                symbol,
+                                shortName = "Test Corp",
+                                longName = "Test Corporation",
+                                exchange = "NMS",
+                                quoteType = "EQUITY",
+                                regularMarketPrice = 150.25m,
+                                regularMarketChangePercent = 0.5m,
+                                regularMarketVolume = 1000000
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
 }
 
 /// <summary>

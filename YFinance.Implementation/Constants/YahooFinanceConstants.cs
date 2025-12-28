@@ -72,6 +72,26 @@ internal static class YahooFinanceConstants
         /// Holders information endpoint.
         /// </summary>
         public const string Holders = "/v10/finance/quoteSummary/{0}?modules=majorHoldersBreakdown,institutionOwnership";
+
+        /// <summary>
+        /// Search endpoint.
+        /// </summary>
+        public const string Search = "/v1/finance/search";
+
+        /// <summary>
+        /// Lookup endpoint.
+        /// </summary>
+        public const string Lookup = "/v1/finance/lookup";
+
+        /// <summary>
+        /// Screener endpoint.
+        /// </summary>
+        public const string Screener = "/v1/finance/screener";
+
+        /// <summary>
+        /// Predefined screener endpoint.
+        /// </summary>
+        public const string ScreenerPredefined = "/v1/finance/screener/predefined/saved";
     }
 
     /// <summary>
