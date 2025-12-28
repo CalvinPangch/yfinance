@@ -41,6 +41,7 @@ public class QuoteData
 
     // Earnings and calendar data
     public DateTime? NextEarningsDate { get; set; }
+    public List<DateTime>? EarningsDates { get; set; }
     public decimal? EarningsAverage { get; set; }
     public decimal? EarningsLow { get; set; }
     public decimal? EarningsHigh { get; set; }
@@ -63,7 +64,10 @@ public class QuoteData
 public class SecFiling
 {
     public DateTime? FilingDate { get; set; }
+    public DateTime? AcceptedDate { get; set; }
     public string Title { get; set; } = string.Empty;
     public string FormType { get; set; } = string.Empty;
     public string? EdgarUrl { get; set; }
+    public string? ExhibitUrl { get; set; }
+    public string? AccessionNumber { get; set; }
 }

@@ -208,6 +208,72 @@ public class QuoteScraperTests
     }
 
     [Fact]
+    public async Task GetQuoteAsync_ParsesCalendarEventsAndSecFilings()
+    {
+        // Arrange
+        var symbol = "AAPL";
+        var response = """
+        {
+            "quoteSummary": {
+                "result": [{
+                    "calendarEvents": {
+                        "earnings": {
+                            "earningsDate": [
+                                { "raw": 1713225600 }
+                            ],
+                            "earningsAverage": { "raw": 1.23 },
+                            "revenueAverage": { "raw": 1000 }
+                        }
+                    },
+                    "secFilings": {
+                        "filings": [
+                            {
+                                "title": "10-Q",
+                                "type": "10-Q",
+                                "edgarUrl": "https://example.com/10q",
+                                "exhibitUrl": "https://example.com/exhibit",
+                                "accessionNumber": "0000000000-00-000000",
+                                "filingDate": "2024-01-30"
+                            }
+                        ]
+                    }
+                }]
+            }
+        }
+        """;
+
+        _mockClient.Setup(c => c.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync((string endpoint, Dictionary<string, string>? _, CancellationToken _) =>
+                endpoint.StartsWith("/v10/finance/quoteSummary", StringComparison.OrdinalIgnoreCase)
+                    ? response
+                    : """{"quoteResponse":{"result":[]}}""");
+
+        _mockDataParser.Setup(p => p.ExtractDecimal(It.IsAny<System.Text.Json.JsonElement>()))
+            .Returns((System.Text.Json.JsonElement element) =>
+                element.ValueKind == System.Text.Json.JsonValueKind.Object && element.TryGetProperty("raw", out var raw)
+                    ? raw.GetDecimal()
+                    : (decimal?)null);
+
+        // Act
+        var result = await _scraper.GetQuoteAsync(symbol);
+
+        // Assert
+        result.NextEarningsDate.Should().NotBeNull();
+        result.EarningsAverage.Should().Be(1.23m);
+        result.RevenueAverage.Should().Be(1000m);
+        result.SecFilings.Should().NotBeNull();
+        var filings = result.SecFilings!;
+        filings.Should().HaveCount(1);
+        filings[0].FormType.Should().Be("10-Q");
+        filings[0].EdgarUrl.Should().Be("https://example.com/10q");
+        filings[0].ExhibitUrl.Should().Be("https://example.com/exhibit");
+        filings[0].AccessionNumber.Should().Be("0000000000-00-000000");
+    }
+
+    [Fact]
     public async Task GetQuoteAsync_ParsesSummaryDetailModule()
     {
         // Arrange

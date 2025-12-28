@@ -185,11 +185,18 @@ public class QuoteScraper : IQuoteScraper
                 earningsDateArray.ValueKind == JsonValueKind.Array &&
                 earningsDateArray.GetArrayLength() > 0)
             {
-                var first = earningsDateArray[0];
-                if (first.TryGetProperty("raw", out var earningsRaw) && earningsRaw.ValueKind == JsonValueKind.Number)
+                quoteData.EarningsDates = new List<DateTime>();
+                foreach (var entry in earningsDateArray.EnumerateArray())
                 {
-                    quoteData.NextEarningsDate = DateTimeOffset.FromUnixTimeSeconds(earningsRaw.GetInt64()).UtcDateTime;
+                    if (entry.TryGetProperty("raw", out var earningsRaw) && earningsRaw.ValueKind == JsonValueKind.Number)
+                    {
+                        var date = DateTimeOffset.FromUnixTimeSeconds(earningsRaw.GetInt64()).UtcDateTime;
+                        quoteData.EarningsDates.Add(date);
+                    }
                 }
+
+                if (quoteData.EarningsDates.Count > 0)
+                    quoteData.NextEarningsDate = quoteData.EarningsDates[0];
             }
 
             quoteData.EarningsAverage = ExtractDecimalFromProperty(earnings, "earningsAverage");
@@ -219,7 +226,14 @@ public class QuoteScraper : IQuoteScraper
                     EdgarUrl = filing.TryGetProperty("edgarUrl", out var url) && url.ValueKind == JsonValueKind.String
                         ? url.GetString()
                         : null,
-                    FilingDate = ParseFilingDate(filing)
+                    ExhibitUrl = filing.TryGetProperty("exhibitUrl", out var exhibit) && exhibit.ValueKind == JsonValueKind.String
+                        ? exhibit.GetString()
+                        : null,
+                    AccessionNumber = filing.TryGetProperty("accessionNumber", out var accession) && accession.ValueKind == JsonValueKind.String
+                        ? accession.GetString()
+                        : null,
+                    FilingDate = ParseFilingDate(filing),
+                    AcceptedDate = ParseAcceptedDate(filing)
                 };
 
                 quoteData.SecFilings.Add(entry);
@@ -333,8 +347,21 @@ public class QuoteScraper : IQuoteScraper
         if (filing.TryGetProperty("epochDate", out var epochDate) && epochDate.ValueKind == JsonValueKind.Number)
             return DateTimeOffset.FromUnixTimeSeconds(epochDate.GetInt64()).UtcDateTime;
 
+        if (filing.TryGetProperty("filingDate", out var filingDate) && filingDate.ValueKind == JsonValueKind.String &&
+            DateTime.TryParse(filingDate.GetString(), out var parsedFiling))
+            return DateTime.SpecifyKind(parsedFiling, DateTimeKind.Utc);
+
         if (filing.TryGetProperty("date", out var date) && date.ValueKind == JsonValueKind.String &&
             DateTime.TryParse(date.GetString(), out var parsed))
+            return DateTime.SpecifyKind(parsed, DateTimeKind.Utc);
+
+        return null;
+    }
+
+    private static DateTime? ParseAcceptedDate(JsonElement filing)
+    {
+        if (filing.TryGetProperty("acceptedDate", out var acceptedDate) && acceptedDate.ValueKind == JsonValueKind.String &&
+            DateTime.TryParse(acceptedDate.GetString(), out var parsed))
             return DateTime.SpecifyKind(parsed, DateTimeKind.Utc);
 
         return null;
