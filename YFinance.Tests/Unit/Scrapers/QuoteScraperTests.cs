@@ -142,6 +142,8 @@ public class QuoteScraperTests
         modules.Should().Contain("defaultKeyStatistics");
         modules.Should().Contain("assetProfile");
         modules.Should().Contain("summaryDetail");
+        modules.Should().Contain("calendarEvents");
+        modules.Should().Contain("secFilings");
     }
 
     [Fact]

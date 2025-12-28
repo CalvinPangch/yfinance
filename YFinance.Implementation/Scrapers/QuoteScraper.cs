@@ -34,7 +34,7 @@ public class QuoteScraper : IQuoteScraper
 
         var queryParams = new Dictionary<string, string>
         {
-            { "modules", "financialData,quoteType,defaultKeyStatistics,assetProfile,summaryDetail,calendarEvents" }
+            { "modules", "financialData,quoteType,defaultKeyStatistics,assetProfile,summaryDetail,calendarEvents,secFilings" }
         };
 
         var endpoint = $"/v10/finance/quoteSummary/{symbol}";
@@ -49,6 +49,23 @@ public class QuoteScraper : IQuoteScraper
             cancellationToken).ConfigureAwait(false);
 
         EnrichFromQuery1(quote, query1Response);
+
+        // Enrich with timeseries endpoint (trailing PEG)
+        var now = DateTimeOffset.UtcNow;
+        var period1 = now.AddYears(-2).ToUnixTimeSeconds().ToString();
+        var period2 = now.ToUnixTimeSeconds().ToString();
+        var timeseriesResponse = await _client.GetAsync(
+            $"/ws/fundamentals-timeseries/v1/finance/timeseries/{symbol}",
+            new Dictionary<string, string>
+            {
+                { "type", "trailingPegRatio" },
+                { "period1", period1 },
+                { "period2", period2 },
+                { "merge", "false" }
+            },
+            cancellationToken).ConfigureAwait(false);
+
+        EnrichFromTimeseries(quote, timeseriesResponse);
         return quote;
     }
 
@@ -121,6 +138,12 @@ public class QuoteScraper : IQuoteScraper
             quoteData.Currency = summaryDetail.TryGetProperty("currency", out var currency) && currency.ValueKind == JsonValueKind.String
                 ? currency.GetString() ?? string.Empty
                 : string.Empty;
+
+            if (summaryDetail.TryGetProperty("exDividendDate", out var exDiv) && exDiv.ValueKind != JsonValueKind.Null &&
+                exDiv.TryGetProperty("raw", out var exDivRaw) && exDivRaw.ValueKind == JsonValueKind.Number)
+            {
+                quoteData.ExDividendDate = DateTimeOffset.FromUnixTimeSeconds(exDivRaw.GetInt64()).UtcDateTime;
+            }
         }
 
         // Extract from financialData module
@@ -152,6 +175,54 @@ public class QuoteScraper : IQuoteScraper
                 earningsDate.TryGetProperty("raw", out var earningsRaw) && earningsRaw.ValueKind == JsonValueKind.Number)
             {
                 quoteData.EarningsTimestamp = DateTimeOffset.FromUnixTimeSeconds(earningsRaw.GetInt64()).UtcDateTime;
+            }
+        }
+
+        if (result.TryGetProperty("calendarEvents", out var calendarEvents) &&
+            calendarEvents.TryGetProperty("earnings", out var earnings))
+        {
+            if (earnings.TryGetProperty("earningsDate", out var earningsDateArray) &&
+                earningsDateArray.ValueKind == JsonValueKind.Array &&
+                earningsDateArray.GetArrayLength() > 0)
+            {
+                var first = earningsDateArray[0];
+                if (first.TryGetProperty("raw", out var earningsRaw) && earningsRaw.ValueKind == JsonValueKind.Number)
+                {
+                    quoteData.NextEarningsDate = DateTimeOffset.FromUnixTimeSeconds(earningsRaw.GetInt64()).UtcDateTime;
+                }
+            }
+
+            quoteData.EarningsAverage = ExtractDecimalFromProperty(earnings, "earningsAverage");
+            quoteData.EarningsLow = ExtractDecimalFromProperty(earnings, "earningsLow");
+            quoteData.EarningsHigh = ExtractDecimalFromProperty(earnings, "earningsHigh");
+            quoteData.RevenueAverage = ExtractDecimalFromProperty(earnings, "revenueAverage");
+            quoteData.RevenueLow = ExtractDecimalFromProperty(earnings, "revenueLow");
+            quoteData.RevenueHigh = ExtractDecimalFromProperty(earnings, "revenueHigh");
+        }
+
+        if (result.TryGetProperty("secFilings", out var secFilings) &&
+            secFilings.TryGetProperty("filings", out var filings) &&
+            filings.ValueKind == JsonValueKind.Array)
+        {
+            quoteData.SecFilings = new List<SecFiling>();
+
+            foreach (var filing in filings.EnumerateArray())
+            {
+                var entry = new SecFiling
+                {
+                    Title = filing.TryGetProperty("title", out var title) && title.ValueKind == JsonValueKind.String
+                        ? title.GetString() ?? string.Empty
+                        : string.Empty,
+                    FormType = filing.TryGetProperty("type", out var type) && type.ValueKind == JsonValueKind.String
+                        ? type.GetString() ?? string.Empty
+                        : string.Empty,
+                    EdgarUrl = filing.TryGetProperty("edgarUrl", out var url) && url.ValueKind == JsonValueKind.String
+                        ? url.GetString()
+                        : null,
+                    FilingDate = ParseFilingDate(filing)
+                };
+
+                quoteData.SecFilings.Add(entry);
             }
         }
 
@@ -224,5 +295,48 @@ public class QuoteScraper : IQuoteScraper
             quote.QuoteType = quoteType.GetString() ?? quote.QuoteType;
         if (result.TryGetProperty("marketTimezone", out var tz) && tz.ValueKind == JsonValueKind.String)
             quote.TimeZone = tz.GetString() ?? quote.TimeZone;
+    }
+
+    private void EnrichFromTimeseries(QuoteData quote, string jsonResponse)
+    {
+        using var document = JsonDocument.Parse(jsonResponse);
+        var root = document.RootElement;
+
+        if (!root.TryGetProperty("timeseries", out var timeseries) ||
+            !timeseries.TryGetProperty("result", out var results) ||
+            results.ValueKind != JsonValueKind.Array ||
+            results.GetArrayLength() == 0)
+        {
+            return;
+        }
+
+        var result = results[0];
+        if (!result.TryGetProperty("trailingPegRatio", out var pegSeries) ||
+            pegSeries.ValueKind != JsonValueKind.Array ||
+            pegSeries.GetArrayLength() == 0)
+        {
+            return;
+        }
+
+        var last = pegSeries[pegSeries.GetArrayLength() - 1];
+        if (last.TryGetProperty("reportedValue", out var reportedValue))
+            quote.TrailingPegRatio = _dataParser.ExtractDecimal(reportedValue);
+    }
+
+    private decimal? ExtractDecimalFromProperty(JsonElement element, string propertyName)
+    {
+        return element.TryGetProperty(propertyName, out var value) ? _dataParser.ExtractDecimal(value) : null;
+    }
+
+    private static DateTime? ParseFilingDate(JsonElement filing)
+    {
+        if (filing.TryGetProperty("epochDate", out var epochDate) && epochDate.ValueKind == JsonValueKind.Number)
+            return DateTimeOffset.FromUnixTimeSeconds(epochDate.GetInt64()).UtcDateTime;
+
+        if (filing.TryGetProperty("date", out var date) && date.ValueKind == JsonValueKind.String &&
+            DateTime.TryParse(date.GetString(), out var parsed))
+            return DateTime.SpecifyKind(parsed, DateTimeKind.Utc);
+
+        return null;
     }
 }

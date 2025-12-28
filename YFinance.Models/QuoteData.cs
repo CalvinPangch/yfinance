@@ -39,7 +39,31 @@ public class QuoteData
     public long? AverageDailyVolume10Day { get; set; }
     public long? AverageDailyVolume3Month { get; set; }
 
+    // Earnings and calendar data
+    public DateTime? NextEarningsDate { get; set; }
+    public decimal? EarningsAverage { get; set; }
+    public decimal? EarningsLow { get; set; }
+    public decimal? EarningsHigh { get; set; }
+    public decimal? RevenueAverage { get; set; }
+    public decimal? RevenueLow { get; set; }
+    public decimal? RevenueHigh { get; set; }
+    public DateTime? ExDividendDate { get; set; }
+
+    // Timeseries metrics
+    public decimal? TrailingPegRatio { get; set; }
+
     // Additional info
     public DateTime? EarningsTimestamp { get; set; }
     public string? TimeZone { get; set; }
+
+    // SEC filings
+    public List<SecFiling>? SecFilings { get; set; }
+}
+
+public class SecFiling
+{
+    public DateTime? FilingDate { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string FormType { get; set; } = string.Empty;
+    public string? EdgarUrl { get; set; }
 }
