@@ -120,4 +120,9 @@ public interface ITickerService
     /// Gets analyst upgrades/downgrades history.
     /// </summary>
     Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets ESG score data.
+    /// </summary>
+    Task<EsgData> GetEsgAsync(string symbol, CancellationToken cancellationToken = default);
 }

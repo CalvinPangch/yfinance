@@ -863,6 +863,45 @@ public static class TestDataBuilder
 
         return JsonSerializer.Serialize(response);
     }
+
+    public static string BuildEsgScoresResponse(string symbol)
+    {
+        var response = new
+        {
+            quoteSummary = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        esgScores = new
+                        {
+                            totalEsg = new { raw = 25.1m },
+                            environmentScore = new { raw = 8.5m },
+                            socialScore = new { raw = 11.2m },
+                            governanceScore = new { raw = 5.4m },
+                            ratingYear = 2024,
+                            ratingMonth = 9,
+                            highestControversy = 1,
+                            peerCount = 55,
+                            peerGroup = "Technology Hardware",
+                            esgPerformance = "OUT_PERF",
+                            peerEsgScorePerformance = "AVG_PERF",
+                            peerEnvironmentPerformance = "OUT_PERF",
+                            peerSocialPerformance = "AVG_PERF",
+                            peerGovernancePerformance = "UNDER_PERF",
+                            percentile = new { raw = 60.0m },
+                            environmentPercentile = new { raw = 7.0m },
+                            socialPercentile = new { raw = 30.0m },
+                            governancePercentile = new { raw = 70.0m }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
 }
 
 /// <summary>
