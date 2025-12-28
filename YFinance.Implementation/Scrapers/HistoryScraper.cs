@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
@@ -152,6 +153,7 @@ public class HistoryScraper : IHistoryScraper
 
         // Get adjusted close - use regular close as fallback if unavailable
         decimal[] adjClose;
+        var hasAdjClose = true;
         try
         {
             var adjCloseData = result.GetProperty("indicators").GetProperty("adjclose")[0];
@@ -161,11 +163,13 @@ public class HistoryScraper : IHistoryScraper
         {
             // If no adjusted close data available, use regular close as fallback
             adjClose = close;
+            hasAdjClose = false;
         }
         catch (KeyNotFoundException)
         {
             // Missing adjclose property, use regular close
             adjClose = close;
+            hasAdjClose = false;
         }
 
         // Get dividends and splits
@@ -210,10 +214,18 @@ public class HistoryScraper : IHistoryScraper
             adjClose = _priceRepair.RepairPrices(adjClose, timestampArray, splits);
         }
 
-        // Auto-adjust prices using adjusted close ratio
+        // Auto-adjust prices using adjusted close ratio when available
         if (request.AutoAdjust)
         {
-            ApplyAutoAdjust(open, high, low, close, adjClose);
+            if (hasAdjClose && adjClose.Length == close.Length && adjClose.Any(value => value > 0m))
+            {
+                ApplyAutoAdjust(open, high, low, close, adjClose);
+            }
+            else
+            {
+                ApplyCorporateActions(open, high, low, close, timestampArray, dividends, splits);
+                adjClose = close;
+            }
         }
 
         return new HistoricalData
@@ -248,6 +260,44 @@ public class HistoryScraper : IHistoryScraper
             high[i] *= factor;
             low[i] *= factor;
             close[i] = adjClose[i];
+        }
+    }
+
+    private static void ApplyCorporateActions(
+        decimal[] open,
+        decimal[] high,
+        decimal[] low,
+        decimal[] close,
+        DateTime[] timestamps,
+        Dictionary<DateTime, decimal> dividends,
+        Dictionary<DateTime, decimal> splits)
+    {
+        if (timestamps.Length == 0)
+            return;
+
+        var dividendMap = dividends.ToDictionary(kvp => kvp.Key.Date, kvp => kvp.Value);
+        var splitMap = splits.ToDictionary(kvp => kvp.Key.Date, kvp => kvp.Value);
+
+        decimal factor = 1m;
+        for (int i = timestamps.Length - 1; i >= 0; i--)
+        {
+            var date = timestamps[i].Date;
+            open[i] *= factor;
+            high[i] *= factor;
+            low[i] *= factor;
+            close[i] *= factor;
+
+            if (splitMap.TryGetValue(date, out var splitRatio) && splitRatio > 0m)
+            {
+                factor /= splitRatio;
+            }
+
+            if (dividendMap.TryGetValue(date, out var dividend) && close[i] > 0m)
+            {
+                var divFactor = (close[i] - dividend) / close[i];
+                if (divFactor > 0m && divFactor < 1m)
+                    factor *= divFactor;
+            }
         }
     }
 

@@ -91,10 +91,36 @@ public class PriceRepair : IPriceRepair
     {
         var repaired = RepairZeroValues(prices);
         repaired = Repair100xErrors(repaired);
+        repaired = RepairOutliers(repaired);
 
         if (splitDates != null && splitDates.Count > 0)
         {
             repaired = RepairBadSplits(repaired, splitDates);
+        }
+
+        return repaired;
+    }
+
+    private static decimal[] RepairOutliers(decimal[] prices)
+    {
+        if (prices.Length < 5)
+            return prices;
+
+        var repaired = (decimal[])prices.Clone();
+        for (int i = 2; i < repaired.Length; i++)
+        {
+            var windowStart = Math.Max(0, i - 4);
+            var window = repaired.Skip(windowStart).Take(i - windowStart).Where(p => p > 0m).ToArray();
+            if (window.Length == 0)
+                continue;
+
+            Array.Sort(window);
+            var median = window[window.Length / 2];
+            if (median <= 0m || repaired[i] <= 0m)
+                continue;
+
+            if (repaired[i] > median * 5m || repaired[i] < median / 5m)
+                repaired[i] = median;
         }
 
         return repaired;

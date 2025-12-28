@@ -4,6 +4,7 @@ using Xunit;
 using YFinance.Implementation.Scrapers;
 using YFinance.Interfaces;
 using YFinance.Interfaces.Utils;
+using YFinance.Implementation.Utils;
 using YFinance.Models.Enums;
 using YFinance.Models.Requests;
 using YFinance.Tests.TestFixtures;
@@ -180,6 +181,47 @@ public class HistoryScraperTests
         result.Should().NotBeNull();
         // When no adjusted close, it should use regular close
         result.AdjustedClose.Should().Equal(result.Close);
+    }
+
+    [Fact]
+    public async Task GetHistoryAsync_AutoAdjustWithoutAdjClose_UsesCorporateActions()
+    {
+        // Arrange
+        var symbol = "SPLIT";
+        var splitDate = new DateTime(2024, 1, 2, 0, 0, 0, DateTimeKind.Utc);
+        var bars = new[]
+        {
+            new PriceBar(new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), 100m, 100m, 100m, 100m, 1000),
+            new PriceBar(splitDate, 50m, 50m, 50m, 50m, 1000)
+        };
+        var splits = new Dictionary<DateTime, (decimal numerator, decimal denominator)>
+        {
+            { splitDate, (2m, 1m) }
+        };
+
+        var response = TestDataBuilder.BuildChartResponseWithEventsWithoutAdjClose(symbol, bars, null, splits);
+
+        _mockClient.Setup(c => c.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(response);
+
+        var realScraper = new HistoryScraper(
+            _mockClient.Object,
+            new DataParser(),
+            new PriceRepair(),
+            new TimezoneHelper());
+
+        var request = new HistoryRequest { Period = Period.OneMonth, Interval = Interval.OneDay, AutoAdjust = true };
+
+        // Act
+        var result = await realScraper.GetHistoryAsync(symbol, request);
+
+        // Assert
+        result.Close.Length.Should().Be(2);
+        result.Close[0].Should().BeApproximately(50m, 0.01m);
+        result.Close[1].Should().BeApproximately(50m, 0.01m);
     }
 
     #endregion
