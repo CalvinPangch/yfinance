@@ -110,4 +110,14 @@ public interface ITickerService
     /// Gets available option expiration dates.
     /// </summary>
     Task<IReadOnlyList<DateTime>> GetOptionsExpirationsAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets recommendation trend history.
+    /// </summary>
+    Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets analyst upgrades/downgrades history.
+    /// </summary>
+    Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(string symbol, CancellationToken cancellationToken = default);
 }

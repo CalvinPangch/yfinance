@@ -798,6 +798,71 @@ public static class TestDataBuilder
 
         return JsonSerializer.Serialize(response);
     }
+
+    public static string BuildRecommendationTrendResponse()
+    {
+        var response = new
+        {
+            quoteSummary = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        recommendationTrend = new
+                        {
+                            trend = new object[]
+                            {
+                                new
+                                {
+                                    period = "0m",
+                                    strongBuy = 5,
+                                    buy = 10,
+                                    hold = 3,
+                                    sell = 1,
+                                    strongSell = 0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
+
+    public static string BuildUpgradeDowngradeResponse()
+    {
+        var response = new
+        {
+            quoteSummary = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        upgradeDowngradeHistory = new
+                        {
+                            history = new object[]
+                            {
+                                new
+                                {
+                                    epochGradeDate = 1700000000,
+                                    firm = "Firm",
+                                    toGrade = "Buy",
+                                    fromGrade = "Hold",
+                                    action = "up"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
 }
 
 /// <summary>

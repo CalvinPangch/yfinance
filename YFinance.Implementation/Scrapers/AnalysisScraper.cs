@@ -35,6 +35,40 @@ public class AnalysisScraper : IAnalysisScraper
         return ParseAnalystData(symbol, jsonResponse);
     }
 
+    public async Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(
+        string symbol,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+
+        var queryParams = new Dictionary<string, string>
+        {
+            { "modules", "recommendationTrend" }
+        };
+
+        var endpoint = $"/v10/finance/quoteSummary/{symbol}";
+        var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken).ConfigureAwait(false);
+        return ParseRecommendationTrend(jsonResponse);
+    }
+
+    public async Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(
+        string symbol,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+
+        var queryParams = new Dictionary<string, string>
+        {
+            { "modules", "upgradeDowngradeHistory" }
+        };
+
+        var endpoint = $"/v10/finance/quoteSummary/{symbol}";
+        var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken).ConfigureAwait(false);
+        return ParseUpgradeDowngradeHistory(jsonResponse);
+    }
+
     private AnalystData ParseAnalystData(string symbol, string jsonResponse)
     {
         using var document = JsonDocument.Parse(jsonResponse);
@@ -75,6 +109,87 @@ public class AnalysisScraper : IAnalysisScraper
         }
 
         return analystData;
+    }
+
+    private IReadOnlyList<RecommendationTrendEntry> ParseRecommendationTrend(string jsonResponse)
+    {
+        using var document = JsonDocument.Parse(jsonResponse);
+        var root = document.RootElement;
+
+        if (!root.TryGetProperty("quoteSummary", out var quoteSummary) ||
+            !quoteSummary.TryGetProperty("result", out var results) ||
+            results.GetArrayLength() == 0)
+        {
+            return Array.Empty<RecommendationTrendEntry>();
+        }
+
+        var result = results[0];
+        if (!result.TryGetProperty("recommendationTrend", out var trend) ||
+            !trend.TryGetProperty("trend", out var trendArray) ||
+            trendArray.ValueKind != JsonValueKind.Array)
+        {
+            return Array.Empty<RecommendationTrendEntry>();
+        }
+
+        var output = new List<RecommendationTrendEntry>();
+        foreach (var entry in trendArray.EnumerateArray())
+        {
+            var period = entry.TryGetProperty("period", out var periodElement) && periodElement.ValueKind == JsonValueKind.String
+                ? periodElement.GetString() ?? string.Empty
+                : string.Empty;
+
+            output.Add(new RecommendationTrendEntry
+            {
+                Period = period,
+                StrongBuy = entry.GetIntPropertyOrDefault("strongBuy"),
+                Buy = entry.GetIntPropertyOrDefault("buy"),
+                Hold = entry.GetIntPropertyOrDefault("hold"),
+                Sell = entry.GetIntPropertyOrDefault("sell"),
+                StrongSell = entry.GetIntPropertyOrDefault("strongSell")
+            });
+        }
+
+        return output;
+    }
+
+    private IReadOnlyList<UpgradeDowngradeEntry> ParseUpgradeDowngradeHistory(string jsonResponse)
+    {
+        using var document = JsonDocument.Parse(jsonResponse);
+        var root = document.RootElement;
+
+        if (!root.TryGetProperty("quoteSummary", out var quoteSummary) ||
+            !quoteSummary.TryGetProperty("result", out var results) ||
+            results.GetArrayLength() == 0)
+        {
+            return Array.Empty<UpgradeDowngradeEntry>();
+        }
+
+        var result = results[0];
+        if (!result.TryGetProperty("upgradeDowngradeHistory", out var history) ||
+            !history.TryGetProperty("history", out var historyArray) ||
+            historyArray.ValueKind != JsonValueKind.Array)
+        {
+            return Array.Empty<UpgradeDowngradeEntry>();
+        }
+
+        var output = new List<UpgradeDowngradeEntry>();
+        foreach (var entry in historyArray.EnumerateArray())
+        {
+            DateTime? gradeDate = null;
+            if (entry.TryGetProperty("epochGradeDate", out var epoch) && epoch.ValueKind == JsonValueKind.Number)
+                gradeDate = DateTimeOffset.FromUnixTimeSeconds(epoch.GetInt64()).UtcDateTime;
+
+            output.Add(new UpgradeDowngradeEntry
+            {
+                GradeDate = gradeDate,
+                Firm = entry.TryGetProperty("firm", out var firm) && firm.ValueKind == JsonValueKind.String ? firm.GetString() : null,
+                ToGrade = entry.TryGetProperty("toGrade", out var toGrade) && toGrade.ValueKind == JsonValueKind.String ? toGrade.GetString() : null,
+                FromGrade = entry.TryGetProperty("fromGrade", out var fromGrade) && fromGrade.ValueKind == JsonValueKind.String ? fromGrade.GetString() : null,
+                Action = entry.TryGetProperty("action", out var action) && action.ValueKind == JsonValueKind.String ? action.GetString() : null
+            });
+        }
+
+        return output;
     }
 }
 

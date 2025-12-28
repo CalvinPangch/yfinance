@@ -167,4 +167,20 @@ public class TickerService : ITickerService
 
         return _optionsScraper.GetExpirationsAsync(symbol, cancellationToken);
     }
+
+    public Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _analysisScraper.GetRecommendationsAsync(symbol, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _analysisScraper.GetUpgradesDowngradesAsync(symbol, cancellationToken);
+    }
 }

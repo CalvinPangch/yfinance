@@ -14,4 +14,8 @@ public interface IAnalysisScraper
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Analyst recommendations, price targets, and upgrades/downgrades</returns>
     Task<AnalystData> GetAnalystDataAsync(string symbol, CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(string symbol, CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(string symbol, CancellationToken cancellationToken = default);
 }
