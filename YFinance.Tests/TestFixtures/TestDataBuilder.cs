@@ -715,6 +715,89 @@ public static class TestDataBuilder
 
         return JsonSerializer.Serialize(response);
     }
+
+    public static string BuildOptionChainResponse(string symbol)
+    {
+        var response = new
+        {
+            optionChain = new
+            {
+                result = new object[]
+                {
+                    new
+                    {
+                        underlyingSymbol = symbol,
+                        expirationDates = new object[] { 1700000000, 1700600000 },
+                        quote = new
+                        {
+                            symbol,
+                            regularMarketPrice = 190.5m,
+                            regularMarketChange = 1.2m,
+                            regularMarketChangePercent = 0.63m,
+                            currency = "USD",
+                            exchange = "NMS",
+                            quoteType = "EQUITY",
+                            shortName = "Apple Inc.",
+                            longName = "Apple Inc.",
+                            exchangeTimezoneName = "America/New_York"
+                        },
+                        options = new object[]
+                        {
+                            new
+                            {
+                                expirationDate = 1700000000,
+                                calls = new object[]
+                                {
+                                    new
+                                    {
+                                        contractSymbol = "AAPL240119C00190000",
+                                        strike = 190m,
+                                        lastPrice = 5.25m,
+                                        bid = 5.1m,
+                                        ask = 5.3m,
+                                        change = 0.2m,
+                                        percentChange = 3.96m,
+                                        volume = 1200,
+                                        openInterest = 5000,
+                                        impliedVolatility = 0.25m,
+                                        inTheMoney = true,
+                                        contractSize = "REGULAR",
+                                        currency = "USD",
+                                        expiration = 1700000000,
+                                        lastTradeDate = 1699900000
+                                    }
+                                },
+                                puts = new object[]
+                                {
+                                    new
+                                    {
+                                        contractSymbol = "AAPL240119P00190000",
+                                        strike = 190m,
+                                        lastPrice = 4.1m,
+                                        bid = 4.0m,
+                                        ask = 4.2m,
+                                        change = -0.1m,
+                                        percentChange = -2.38m,
+                                        volume = 900,
+                                        openInterest = 4500,
+                                        impliedVolatility = 0.27m,
+                                        inTheMoney = false,
+                                        contractSize = "REGULAR",
+                                        currency = "USD",
+                                        expiration = 1700000000,
+                                        lastTradeDate = 1699900000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                error = (object?)null
+            }
+        };
+
+        return JsonSerializer.Serialize(response);
+    }
 }
 
 /// <summary>

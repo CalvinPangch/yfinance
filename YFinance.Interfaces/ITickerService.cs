@@ -100,4 +100,14 @@ public interface ITickerService
     /// Gets earnings dates.
     /// </summary>
     Task<IReadOnlyList<EarningsDateEntry>> GetEarningsDatesAsync(EarningsDatesRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets option chain data for a ticker.
+    /// </summary>
+    Task<OptionChain> GetOptionChainAsync(OptionChainRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets available option expiration dates.
+    /// </summary>
+    Task<IReadOnlyList<DateTime>> GetOptionsExpirationsAsync(string symbol, CancellationToken cancellationToken = default);
 }

@@ -19,6 +19,7 @@ public class TickerService : ITickerService
     private readonly IFundsScraper _fundsScraper;
     private readonly INewsScraper _newsScraper;
     private readonly IEarningsScraper _earningsScraper;
+    private readonly IOptionsScraper _optionsScraper;
 
     public TickerService(
         IHistoryScraper historyScraper,
@@ -28,7 +29,8 @@ public class TickerService : ITickerService
         IHoldersScraper holdersScraper,
         IFundsScraper fundsScraper,
         INewsScraper newsScraper,
-        IEarningsScraper earningsScraper)
+        IEarningsScraper earningsScraper,
+        IOptionsScraper optionsScraper)
     {
         _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
         _quoteScraper = quoteScraper ?? throw new ArgumentNullException(nameof(quoteScraper));
@@ -38,6 +40,7 @@ public class TickerService : ITickerService
         _fundsScraper = fundsScraper ?? throw new ArgumentNullException(nameof(fundsScraper));
         _newsScraper = newsScraper ?? throw new ArgumentNullException(nameof(newsScraper));
         _earningsScraper = earningsScraper ?? throw new ArgumentNullException(nameof(earningsScraper));
+        _optionsScraper = optionsScraper ?? throw new ArgumentNullException(nameof(optionsScraper));
     }
 
     public Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
@@ -149,5 +152,19 @@ public class TickerService : ITickerService
     {
         ArgumentNullException.ThrowIfNull(request);
         return _earningsScraper.GetEarningsDatesAsync(request, cancellationToken);
+    }
+
+    public Task<OptionChain> GetOptionChainAsync(OptionChainRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return _optionsScraper.GetOptionChainAsync(request, cancellationToken);
+    }
+
+    public Task<IReadOnlyList<DateTime>> GetOptionsExpirationsAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _optionsScraper.GetExpirationsAsync(symbol, cancellationToken);
     }
 }
