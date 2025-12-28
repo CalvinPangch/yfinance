@@ -36,8 +36,8 @@ public static class ServiceCollectionExtensions
 
         // Register scrapers as Singleton (stateless)
         services.AddSingleton<IHistoryScraper, HistoryScraper>();
+        services.AddSingleton<IQuoteScraper, QuoteScraper>();
         // TODO: Uncomment when other scrapers are implemented
-        // services.AddSingleton<IQuoteScraper, QuoteScraper>();
         // services.AddSingleton<IAnalysisScraper, AnalysisScraper>();
         // services.AddSingleton<IHoldersScraper, HoldersScraper>();
         // services.AddSingleton<IFundamentalsScraper, FundamentalsScraper>();

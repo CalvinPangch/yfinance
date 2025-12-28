@@ -12,10 +12,12 @@ namespace YFinance.Implementation;
 public class TickerService : ITickerService
 {
     private readonly IHistoryScraper _historyScraper;
+    private readonly IQuoteScraper _quoteScraper;
 
-    public TickerService(IHistoryScraper historyScraper)
+    public TickerService(IHistoryScraper historyScraper, IQuoteScraper quoteScraper)
     {
-        _historyScraper = historyScraper;
+        _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
+        _quoteScraper = quoteScraper ?? throw new ArgumentNullException(nameof(quoteScraper));
     }
 
     public Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
@@ -31,7 +33,10 @@ public class TickerService : ITickerService
 
     public Task<QuoteData> GetQuoteAsync(string symbol, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException("Quote scraper not yet implemented");
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _quoteScraper.GetQuoteAsync(symbol, cancellationToken);
     }
 
     public Task<FinancialStatement> GetFinancialStatementsAsync(string symbol, CancellationToken cancellationToken = default)
