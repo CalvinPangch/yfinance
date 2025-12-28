@@ -187,8 +187,10 @@ public class HistoryScraper : IHistoryScraper
                 {
                     var divData = div.Value;
                     var date = DateTimeOffset.FromUnixTimeSeconds(divData.GetProperty("date").GetInt64()).UtcDateTime;
+                    var exchangeDate = _timezoneHelper.ConvertToExchangeTime(date, timezone).Date;
+                    var normalizedDate = DateTime.SpecifyKind(exchangeDate, DateTimeKind.Utc);
                     var amount = divData.GetProperty("amount").GetDecimal();
-                    dividends[date] = amount;
+                    dividends[normalizedDate] = amount;
                 }
             }
 
@@ -198,9 +200,11 @@ public class HistoryScraper : IHistoryScraper
                 {
                     var splitData = split.Value;
                     var date = DateTimeOffset.FromUnixTimeSeconds(splitData.GetProperty("date").GetInt64()).UtcDateTime;
+                    var exchangeDate = _timezoneHelper.ConvertToExchangeTime(date, timezone).Date;
+                    var normalizedDate = DateTime.SpecifyKind(exchangeDate, DateTimeKind.Utc);
                     var numerator = splitData.GetProperty("numerator").GetDecimal();
                     var denominator = splitData.GetProperty("denominator").GetDecimal();
-                    splits[date] = numerator / denominator;
+                    splits[normalizedDate] = numerator / denominator;
                 }
             }
         }
@@ -280,6 +284,17 @@ public class HistoryScraper : IHistoryScraper
         ref decimal[] adjClose,
         ref long[] volume)
     {
+        if (timestamps.Count == 0 ||
+            open.Length == 0 ||
+            high.Length == 0 ||
+            low.Length == 0 ||
+            close.Length == 0 ||
+            adjClose.Length == 0 ||
+            volume.Length == 0)
+        {
+            return;
+        }
+
         var length = new[]
         {
             timestamps.Count,
@@ -411,14 +426,15 @@ public class HistoryScraper : IHistoryScraper
         Dictionary<DateTime, decimal> dividends,
         Dictionary<DateTime, decimal> splits)
     {
-        if (timestamps.Length == 0)
+        var length = new[] { timestamps.Length, open.Length, high.Length, low.Length, close.Length }.Min();
+        if (length == 0)
             return;
 
         var dividendMap = dividends.ToDictionary(kvp => kvp.Key.Date, kvp => kvp.Value);
         var splitMap = splits.ToDictionary(kvp => kvp.Key.Date, kvp => kvp.Value);
 
         decimal factor = 1m;
-        for (int i = timestamps.Length - 1; i >= 0; i--)
+        for (int i = length - 1; i >= 0; i--)
         {
             var date = timestamps[i].Date;
             open[i] *= factor;
