@@ -60,9 +60,12 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ITimezoneHelper, TimezoneHelper>();
         services.AddTransient<IPriceRepair, PriceRepair>();
 
-        // Register main service with constructor injection
+        // Register main services with constructor injection
+        // TickerService must be registered before MultiTickerService
         services.AddSingleton<ITickerService, TickerService>();
-        services.AddSingleton<IMultiTickerService, MultiTickerService>();
+
+        // MultiTickerService depends on ITickerService, so register it after
+        services.AddTransient<IMultiTickerService, MultiTickerService>();
 
         // Add memory cache if not already registered
         services.AddMemoryCache();
