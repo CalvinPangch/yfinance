@@ -21,4 +21,18 @@ public interface IMultiTickerService
         HistoryRequest request,
         int? maxConcurrency = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves news for multiple tickers in parallel.
+    /// </summary>
+    /// <param name="symbols">Ticker symbols.</param>
+    /// <param name="count">Number of news items per ticker.</param>
+    /// <param name="maxConcurrency">Optional max parallelism.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Dictionary of symbol to news items.</returns>
+    Task<Dictionary<string, IReadOnlyList<NewsItem>>> GetNewsAsync(
+        IEnumerable<string> symbols,
+        int count = 10,
+        int? maxConcurrency = null,
+        CancellationToken cancellationToken = default);
 }

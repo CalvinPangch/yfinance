@@ -41,6 +41,8 @@ public static class ServiceCollectionExtensions
         // Register scrapers as Singleton (stateless)
         services.AddSingleton<IHistoryScraper, HistoryScraper>();
         services.AddSingleton<IQuoteScraper, QuoteScraper>();
+        services.AddSingleton<IInfoScraper, InfoScraper>();
+        services.AddSingleton<IFastInfoScraper, FastInfoScraper>();
         services.AddSingleton<IAnalysisScraper, AnalysisScraper>();
         services.AddSingleton<IHoldersScraper, HoldersScraper>();
         services.AddSingleton<IFundamentalsScraper, FundamentalsScraper>();
@@ -53,6 +55,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IOptionsScraper, OptionsScraper>();
         services.AddSingleton<IEsgScraper, EsgScraper>();
         services.AddSingleton<ICalendarScraper, CalendarScraper>();
+        services.AddSingleton<ICalendarVisualizationScraper, CalendarVisualizationScraper>();
         services.AddSingleton<ISharesScraper, SharesScraper>();
 
         // Register utilities as Transient (lightweight)
@@ -63,6 +66,11 @@ public static class ServiceCollectionExtensions
         // Register main service with constructor injection
         services.AddSingleton<ITickerService, TickerService>();
         services.AddSingleton<IMultiTickerService, MultiTickerService>();
+        services.AddSingleton<IMarketService, MarketService>();
+        services.AddSingleton<ICalendarService, CalendarService>();
+        services.AddSingleton<IDomainService, DomainService>();
+        services.AddSingleton<IIsinService, IsinService>();
+        services.AddSingleton<ILiveMarketService, LiveMarketService>();
 
         // Add memory cache if not already registered
         services.AddMemoryCache();
