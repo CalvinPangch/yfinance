@@ -13,11 +13,13 @@ public class MultiTickerService : IMultiTickerService
 {
     private readonly IHistoryScraper _historyScraper;
     private readonly INewsScraper _newsScraper;
+    private readonly ITickerService _tickerService;
 
-    public MultiTickerService(IHistoryScraper historyScraper, INewsScraper newsScraper)
+    public MultiTickerService(IHistoryScraper historyScraper, INewsScraper newsScraper, ITickerService tickerService)
     {
         _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
         _newsScraper = newsScraper ?? throw new ArgumentNullException(nameof(newsScraper));
+        _tickerService = tickerService ?? throw new ArgumentNullException(nameof(tickerService));
     }
 
     public async Task<Dictionary<string, HistoricalData>> GetHistoryAsync(
@@ -112,5 +114,61 @@ public class MultiTickerService : IMultiTickerService
 
         await Task.WhenAll(tasks).ConfigureAwait(false);
         return results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+    }
+
+    public async Task<Dictionary<string, QuoteData>> GetQuotesAsync(
+        IEnumerable<string> symbols,
+        int? maxConcurrency = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(symbols);
+
+        return await FetchBatchAsync(
+            symbols,
+            symbol => _tickerService.GetQuoteAsync(symbol, cancellationToken),
+            maxConcurrency,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task<Dictionary<string, FastInfoData>> GetFastInfoAsync(
+        IEnumerable<string> symbols,
+        int? maxConcurrency = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(symbols);
+
+        return await FetchBatchAsync(
+            symbols,
+            symbol => _tickerService.GetFastInfoAsync(symbol, cancellationToken),
+            maxConcurrency,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task<Dictionary<string, FinancialStatement>> GetFinancialStatementsAsync(
+        IEnumerable<string> symbols,
+        int? maxConcurrency = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(symbols);
+
+        return await FetchBatchAsync(
+            symbols,
+            symbol => _tickerService.GetFinancialStatementsAsync(symbol, cancellationToken),
+            maxConcurrency,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task<Dictionary<string, AnalystData>> GetAnalystDataAsync(
+        IEnumerable<string> symbols,
+        int? maxConcurrency = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(symbols);
+
+        return await FetchBatchAsync(
+            symbols,
+            symbol => _tickerService.GetAnalystDataAsync(symbol, cancellationToken),
+            maxConcurrency,
+            cancellationToken).ConfigureAwait(false);
     }
 }

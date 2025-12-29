@@ -123,7 +123,7 @@ public sealed class Tickers
     /// <param name="maxConcurrency">Optional max concurrency</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Dictionary of symbol to fast info</returns>
-    public Task<Dictionary<string, FastInfo>> GetFastInfoAsync(
+    public Task<Dictionary<string, FastInfoData>> GetFastInfoAsync(
         int? maxConcurrency = null,
         CancellationToken cancellationToken = default)
     {
