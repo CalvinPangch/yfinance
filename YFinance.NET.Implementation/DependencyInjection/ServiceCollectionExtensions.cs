@@ -62,6 +62,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IDataParser, DataParser>();
         services.AddTransient<ITimezoneHelper, TimezoneHelper>();
         services.AddTransient<IPriceRepair, PriceRepair>();
+        services.AddSingleton<ISymbolValidator, SymbolValidator>();
 
         // Register main services with constructor injection
         // TickerService must be registered before MultiTickerService

@@ -20,30 +20,36 @@ public class HistoryScraper : IHistoryScraper
     private readonly IDataParser _dataParser;
     private readonly IPriceRepair _priceRepair;
     private readonly ITimezoneHelper _timezoneHelper;
+    private readonly ISymbolValidator _symbolValidator;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HistoryScraper"/> class.
     /// </summary>
     /// <param name="client">The Yahoo Finance HTTP client.</param>
     /// <param name="dataParser">The data parser for JSON processing.</param>
+    /// <param name="priceRepair">The price repair utility.</param>
+    /// <param name="timezoneHelper">The timezone helper utility.</param>
+    /// <param name="symbolValidator">The symbol validator for security.</param>
     /// <exception cref="ArgumentNullException">Thrown when any parameter is null.</exception>
     public HistoryScraper(
         IYahooFinanceClient client,
         IDataParser dataParser,
         IPriceRepair priceRepair,
-        ITimezoneHelper timezoneHelper)
+        ITimezoneHelper timezoneHelper,
+        ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
         _priceRepair = priceRepair ?? throw new ArgumentNullException(nameof(priceRepair));
         _timezoneHelper = timezoneHelper ?? throw new ArgumentNullException(nameof(timezoneHelper));
+        _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
     /// <inheritdoc />
     public async Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(symbol))
-            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+        // Validate symbol for security (prevents URL injection)
+        _symbolValidator.ValidateAndThrow(symbol, nameof(symbol));
 
         ArgumentNullException.ThrowIfNull(request);
         request.Validate();
@@ -57,8 +63,8 @@ public class HistoryScraper : IHistoryScraper
 
     public async Task<HistoryMetadata> GetHistoryMetadataAsync(string symbol, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(symbol))
-            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+        // Validate symbol for security (prevents URL injection)
+        _symbolValidator.ValidateAndThrow(symbol, nameof(symbol));
 
         var queryParams = new Dictionary<string, string>
         {
