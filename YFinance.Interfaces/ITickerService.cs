@@ -135,4 +135,38 @@ public interface ITickerService
     /// Gets shares outstanding and float history.
     /// </summary>
     Task<SharesHistoryData> GetSharesHistoryAsync(SharesHistoryRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets fast info for quick access to common ticker metrics.
+    /// This is a lightweight alternative to GetQuoteAsync for better performance.
+    /// </summary>
+    /// <param name="symbol">Ticker symbol</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Fast info with essential ticker data</returns>
+    Task<FastInfo> GetFastInfoAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets combined corporate actions (dividends and splits) in chronological order.
+    /// </summary>
+    /// <param name="symbol">Ticker symbol</param>
+    /// <param name="request">History request for date range</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Combined action data</returns>
+    Task<ActionData> GetActionsAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets major holders summary for a ticker.
+    /// </summary>
+    /// <param name="symbol">Ticker symbol</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Major holders summary data</returns>
+    Task<MajorHoldersData> GetMajorHoldersAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets insider roster holders for a ticker.
+    /// </summary>
+    /// <param name="symbol">Ticker symbol</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of insider roster holders</returns>
+    Task<IReadOnlyList<InsiderHolder>> GetInsiderRosterHoldersAsync(string symbol, CancellationToken cancellationToken = default);
 }

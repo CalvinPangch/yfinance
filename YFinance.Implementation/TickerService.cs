@@ -214,4 +214,125 @@ public class TickerService : ITickerService
         ArgumentNullException.ThrowIfNull(request);
         return _sharesScraper.GetSharesHistoryAsync(request, cancellationToken);
     }
+
+    public async Task<FastInfo> GetFastInfoAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        // Get quote data and extract essential fields
+        var quote = await _quoteScraper.GetQuoteAsync(symbol, cancellationToken).ConfigureAwait(false);
+
+        return new FastInfo
+        {
+            Symbol = quote.Symbol,
+            LastPrice = quote.RegularMarketPrice,
+            PreviousClose = quote.RegularMarketPreviousClose,
+            Open = quote.RegularMarketOpen,
+            DayHigh = quote.RegularMarketDayHigh,
+            DayLow = quote.RegularMarketDayLow,
+            YearHigh = quote.FiftyTwoWeekHigh,
+            YearLow = quote.FiftyTwoWeekLow,
+            Volume = quote.RegularMarketVolume,
+            AverageVolume = quote.AverageDailyVolume3Month,
+            AverageVolume10Day = quote.AverageDailyVolume10Day,
+            MarketCap = quote.MarketCap,
+            Currency = quote.Currency,
+            Exchange = quote.Exchange,
+            QuoteType = quote.QuoteType,
+            TimeZone = quote.TimeZone ?? string.Empty,
+            PeRatio = quote.PeRatio,
+            ForwardPE = quote.ForwardPE,
+            DividendYield = quote.DividendYield,
+            Beta = quote.Beta,
+            LastUpdated = DateTime.UtcNow
+        };
+    }
+
+    public async Task<ActionData> GetActionsAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        ArgumentNullException.ThrowIfNull(request);
+
+        // Get historical data which includes dividends and splits
+        var history = await _historyScraper.GetHistoryAsync(symbol, request, cancellationToken).ConfigureAwait(false);
+
+        var actions = new List<ActionEntry>();
+
+        // Add dividends
+        if (history.Dividends != null && history.Timestamps != null)
+        {
+            for (int i = 0; i < history.Timestamps.Length; i++)
+            {
+                if (history.Dividends[i] > 0)
+                {
+                    actions.Add(new ActionEntry
+                    {
+                        Date = history.Timestamps[i],
+                        Type = ActionType.Dividend,
+                        Value = history.Dividends[i]
+                    });
+                }
+            }
+        }
+
+        // Add stock splits
+        if (history.StockSplits != null && history.Timestamps != null)
+        {
+            for (int i = 0; i < history.Timestamps.Length; i++)
+            {
+                if (history.StockSplits[i] > 0)
+                {
+                    actions.Add(new ActionEntry
+                    {
+                        Date = history.Timestamps[i],
+                        Type = ActionType.Split,
+                        Value = history.StockSplits[i]
+                    });
+                }
+            }
+        }
+
+        // Sort by date
+        var sortedActions = actions.OrderBy(a => a.Date).ToList();
+
+        return new ActionData
+        {
+            Symbol = symbol,
+            Actions = sortedActions.AsReadOnly()
+        };
+    }
+
+    public async Task<MajorHoldersData> GetMajorHoldersAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        // Get holder data which includes major holders information
+        var holders = await _holdersScraper.GetHoldersAsync(symbol, cancellationToken).ConfigureAwait(false);
+
+        return new MajorHoldersData
+        {
+            Symbol = symbol,
+            InsidersPercentHeld = holders.InsidersPercentHeld,
+            InstitutionsPercentHeld = holders.InstitutionsPercentHeld,
+            InstitutionsFloatPercentHeld = holders.InstitutionsFloatPercentHeld,
+            InstitutionsCount = holders.InstitutionsCount,
+            PercentInsiders = holders.InsidersPercentHeld,
+            PercentInstitutions = holders.InstitutionsPercentHeld
+        };
+    }
+
+    public async Task<IReadOnlyList<InsiderHolder>> GetInsiderRosterHoldersAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        // Get holder data which includes insider roster
+        var holders = await _holdersScraper.GetHoldersAsync(symbol, cancellationToken).ConfigureAwait(false);
+
+        return holders.InsiderHolders?.AsReadOnly() ?? Array.Empty<InsiderHolder>();
+    }
 }
