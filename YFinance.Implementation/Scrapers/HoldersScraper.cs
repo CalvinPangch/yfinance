@@ -27,7 +27,7 @@ public class HoldersScraper : IHoldersScraper
 
         var queryParams = new Dictionary<string, string>
         {
-            { "modules", "majorHoldersBreakdown,institutionOwnership,insiderTransactions,insiderHolders,fundOwnership" }
+            { "modules", "majorHoldersBreakdown,institutionOwnership,insiderTransactions,insiderHolders,fundOwnership,majorDirectHolders,netSharePurchaseActivity" }
         };
 
         var endpoint = $"/v10/finance/quoteSummary/{symbol}";
@@ -158,6 +158,49 @@ public class HoldersScraper : IHoldersScraper
                     Value = entry.TryGetProperty("value", out var value) ? _dataParser.ExtractDecimal(value) ?? 0m : 0m
                 });
             }
+        }
+
+        if (result.TryGetProperty("majorDirectHolders", out var directHolders) &&
+            directHolders.TryGetProperty("holders", out var directList) &&
+            directList.ValueKind == JsonValueKind.Array)
+        {
+            holderData.MajorDirectHolders = new List<MajorDirectHolder>();
+
+            foreach (var entry in directList.EnumerateArray())
+            {
+                holderData.MajorDirectHolders.Add(new MajorDirectHolder
+                {
+                    Holder = entry.TryGetProperty("organization", out var organization) && organization.ValueKind == JsonValueKind.String
+                        ? organization.GetString() ?? string.Empty
+                        : string.Empty,
+                    Shares = entry.TryGetProperty("positionDirect", out var shares) && shares.ValueKind == JsonValueKind.Number ? shares.GetInt64() : 0L,
+                    DateReported = entry.TryGetProperty("reportDate", out var reportDate) && reportDate.ValueKind == JsonValueKind.Number
+                        ? DateTimeOffset.FromUnixTimeSeconds(reportDate.GetInt64()).UtcDateTime
+                        : DateTime.MinValue,
+                    Value = entry.TryGetProperty("valueDirect", out var value) ? _dataParser.ExtractDecimal(value) ?? 0m : 0m
+                });
+            }
+        }
+
+        if (result.TryGetProperty("netSharePurchaseActivity", out var netSharePurchase) &&
+            netSharePurchase.ValueKind == JsonValueKind.Object)
+        {
+            holderData.InsiderPurchases = new InsiderPurchaseActivity
+            {
+                Period = netSharePurchase.TryGetProperty("period", out var period) && period.ValueKind == JsonValueKind.String
+                    ? period.GetString() ?? string.Empty
+                    : string.Empty,
+                BuyInfoShares = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("buyInfoShares")),
+                SellInfoShares = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("sellInfoShares")),
+                NetInfoShares = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("netInfoShares")),
+                TotalInsiderShares = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("totalInsiderShares")),
+                NetPercentInsiderShares = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("netPercentInsiderShares")),
+                BuyPercentInsiderShares = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("buyPercentInsiderShares")),
+                SellPercentInsiderShares = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("sellPercentInsiderShares")),
+                BuyInfoCount = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("buyInfoCount")),
+                SellInfoCount = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("sellInfoCount")),
+                NetInfoCount = _dataParser.ExtractDecimal(netSharePurchase.GetPropertyOrDefault("netInfoCount"))
+            };
         }
 
         return holderData;

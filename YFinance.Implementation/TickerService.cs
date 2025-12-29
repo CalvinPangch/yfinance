@@ -2,6 +2,7 @@ using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
 using YFinance.Models;
 using YFinance.Models.Requests;
+using YFinance.Models.Enums;
 
 namespace YFinance.Implementation;
 
@@ -13,6 +14,8 @@ public class TickerService : ITickerService
 {
     private readonly IHistoryScraper _historyScraper;
     private readonly IQuoteScraper _quoteScraper;
+    private readonly IInfoScraper _infoScraper;
+    private readonly IFastInfoScraper _fastInfoScraper;
     private readonly IFundamentalsScraper _fundamentalsScraper;
     private readonly IAnalysisScraper _analysisScraper;
     private readonly IHoldersScraper _holdersScraper;
@@ -23,10 +26,13 @@ public class TickerService : ITickerService
     private readonly IEsgScraper _esgScraper;
     private readonly ICalendarScraper _calendarScraper;
     private readonly ISharesScraper _sharesScraper;
+    private readonly IIsinService _isinService;
 
     public TickerService(
         IHistoryScraper historyScraper,
         IQuoteScraper quoteScraper,
+        IInfoScraper infoScraper,
+        IFastInfoScraper fastInfoScraper,
         IFundamentalsScraper fundamentalsScraper,
         IAnalysisScraper analysisScraper,
         IHoldersScraper holdersScraper,
@@ -36,10 +42,13 @@ public class TickerService : ITickerService
         IOptionsScraper optionsScraper,
         IEsgScraper esgScraper,
         ICalendarScraper calendarScraper,
-        ISharesScraper sharesScraper)
+        ISharesScraper sharesScraper,
+        IIsinService isinService)
     {
         _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
         _quoteScraper = quoteScraper ?? throw new ArgumentNullException(nameof(quoteScraper));
+        _infoScraper = infoScraper ?? throw new ArgumentNullException(nameof(infoScraper));
+        _fastInfoScraper = fastInfoScraper ?? throw new ArgumentNullException(nameof(fastInfoScraper));
         _fundamentalsScraper = fundamentalsScraper ?? throw new ArgumentNullException(nameof(fundamentalsScraper));
         _analysisScraper = analysisScraper ?? throw new ArgumentNullException(nameof(analysisScraper));
         _holdersScraper = holdersScraper ?? throw new ArgumentNullException(nameof(holdersScraper));
@@ -50,6 +59,7 @@ public class TickerService : ITickerService
         _esgScraper = esgScraper ?? throw new ArgumentNullException(nameof(esgScraper));
         _calendarScraper = calendarScraper ?? throw new ArgumentNullException(nameof(calendarScraper));
         _sharesScraper = sharesScraper ?? throw new ArgumentNullException(nameof(sharesScraper));
+        _isinService = isinService ?? throw new ArgumentNullException(nameof(isinService));
     }
 
     public Task<HistoricalData> GetHistoryAsync(string symbol, HistoryRequest request, CancellationToken cancellationToken = default)
@@ -63,12 +73,82 @@ public class TickerService : ITickerService
         return _historyScraper.GetHistoryAsync(symbol, request, cancellationToken);
     }
 
+    public Task<HistoryMetadata> GetHistoryMetadataAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _historyScraper.GetHistoryMetadataAsync(symbol, cancellationToken);
+    }
+
+    public async Task<ActionsData> GetActionsAsync(string symbol, ActionsRequest request, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        ArgumentNullException.ThrowIfNull(request);
+        request.Validate();
+
+        var historyRequest = new HistoryRequest
+        {
+            Period = request.Period,
+            Start = request.Start,
+            End = request.End,
+            Interval = Interval.OneDay,
+            AutoAdjust = false,
+            Repair = false
+        };
+
+        var history = await _historyScraper.GetHistoryAsync(symbol, historyRequest, cancellationToken).ConfigureAwait(false);
+        return new ActionsData
+        {
+            Symbol = symbol,
+            Dividends = history.Dividends,
+            StockSplits = history.StockSplits,
+            CapitalGains = history.CapitalGains
+        };
+    }
+
+    public async Task<Dictionary<DateTime, decimal>> GetDividendsAsync(string symbol, ActionsRequest request, CancellationToken cancellationToken = default)
+    {
+        var actions = await GetActionsAsync(symbol, request, cancellationToken).ConfigureAwait(false);
+        return actions.Dividends;
+    }
+
+    public async Task<Dictionary<DateTime, decimal>> GetSplitsAsync(string symbol, ActionsRequest request, CancellationToken cancellationToken = default)
+    {
+        var actions = await GetActionsAsync(symbol, request, cancellationToken).ConfigureAwait(false);
+        return actions.StockSplits;
+    }
+
+    public async Task<Dictionary<DateTime, decimal>> GetCapitalGainsAsync(string symbol, ActionsRequest request, CancellationToken cancellationToken = default)
+    {
+        var actions = await GetActionsAsync(symbol, request, cancellationToken).ConfigureAwait(false);
+        return actions.CapitalGains;
+    }
+
     public Task<QuoteData> GetQuoteAsync(string symbol, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(symbol))
             throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
 
         return _quoteScraper.GetQuoteAsync(symbol, cancellationToken);
+    }
+
+    public Task<InfoData> GetInfoAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _infoScraper.GetInfoAsync(symbol, cancellationToken);
+    }
+
+    public Task<FastInfoData> GetFastInfoAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _fastInfoScraper.GetFastInfoAsync(symbol, cancellationToken);
     }
 
     public Task<FinancialStatement> GetFinancialStatementsAsync(string symbol, CancellationToken cancellationToken = default)
@@ -213,5 +293,13 @@ public class TickerService : ITickerService
     {
         ArgumentNullException.ThrowIfNull(request);
         return _sharesScraper.GetSharesHistoryAsync(request, cancellationToken);
+    }
+
+    public Task<string?> GetIsinAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+        return _isinService.GetIsinAsync(symbol, cancellationToken);
     }
 }
