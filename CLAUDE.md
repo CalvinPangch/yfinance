@@ -1,10 +1,10 @@
-# CLAUDE.md - AI Assistant Guide for YFinance C# Project
+# CLAUDE.md - AI Assistant Guide for YFinance.NET C# Project
 
 **Version**: 1.0
 **Last Updated**: 2025-12-29
 **Target Framework**: .NET 10.0
 
-This document provides comprehensive guidance for AI assistants (like Claude) working on the YFinance C# codebase. It covers architecture, conventions, workflows, and best practices to ensure consistent, high-quality contributions.
+This document provides comprehensive guidance for AI assistants (like Claude) working on the YFinance.NET C# codebase. It covers architecture, conventions, workflows, and best practices to ensure consistent, high-quality contributions.
 
 ---
 
@@ -27,9 +27,9 @@ This document provides comprehensive guidance for AI assistants (like Claude) wo
 
 ## Project Overview
 
-### What is YFinance?
+### What is YFinance.NET?
 
-YFinance is a C# port of the popular Python [yfinance library](https://github.com/ranaroussi/yfinance) for accessing Yahoo! Finance market data. It provides a clean, dependency-injection-based API for retrieving:
+YFinance.NET is a C# port of the popular Python [yfinance library](https://github.com/ranaroussi/yfinance) for accessing Yahoo! Finance market data. It provides a clean, dependency-injection-based API for retrieving:
 
 - Historical price data (OHLC, volume, dividends, splits)
 - Real-time quotes
@@ -72,46 +72,46 @@ The project follows **Clean Architecture** principles with clear separation:
 
 ```
 ┌─────────────────────────────────────────────────┐
-│           YFinance.Models (DTOs/Enums)          │
+│           YFinance.NET.Models (DTOs/Enums)          │
 │  No dependencies - pure data structures         │
 └─────────────────────────────────────────────────┘
                       ▲
                       │
 ┌─────────────────────────────────────────────────┐
-│      YFinance.Interfaces (Abstractions)         │
+│      YFinance.NET.Interfaces (Abstractions)         │
 │  Depends on: Models only                        │
 └─────────────────────────────────────────────────┘
                       ▲
                       │
 ┌─────────────────────────────────────────────────┐
-│   YFinance.Implementation (Concrete Logic)      │
+│   YFinance.NET.Implementation (Concrete Logic)      │
 │  Depends on: Interfaces + Models                │
 └─────────────────────────────────────────────────┘
                       ▲
                       │
 ┌─────────────────────────────────────────────────┐
-│       YFinance.Tests (Unit + Integration)       │
+│       YFinance.NET.Tests (Unit + Integration)       │
 │  Depends on: All projects                       │
 └─────────────────────────────────────────────────┘
 ```
 
 ### Layered Design
 
-1. **Models Layer** (`YFinance.Models`)
+1. **Models Layer** (`YFinance.NET.Models`)
    - Pure data structures (POCOs)
    - Enums (Period, Interval, etc.)
    - Request objects
    - Exception hierarchy
    - Zero external dependencies
 
-2. **Interfaces Layer** (`YFinance.Interfaces`)
+2. **Interfaces Layer** (`YFinance.NET.Interfaces`)
    - Service contracts (`ITickerService`, `IMultiTickerService`)
    - HTTP client abstraction (`IYahooFinanceClient`)
    - Scraper interfaces (18 specialized scrapers)
    - Utility abstractions (parser, timezone, cache, etc.)
    - Only depends on Models
 
-3. **Implementation Layer** (`YFinance.Implementation`)
+3. **Implementation Layer** (`YFinance.NET.Implementation`)
    - Concrete implementations of all interfaces
    - HTTP client with retry/backoff logic
    - JSON parsing and data transformation
@@ -120,7 +120,7 @@ The project follows **Clean Architecture** principles with clear separation:
    - Rate limiting
    - Depends on Interfaces + Models
 
-4. **Tests Layer** (`YFinance.Tests`)
+4. **Tests Layer** (`YFinance.NET.Tests`)
    - Unit tests with mocked dependencies
    - Integration tests with live API calls
    - Test fixtures and builders
@@ -162,7 +162,7 @@ Yahoo Finance API
 │       ├── claude.yml                # Claude Code integration
 │       └── claude-code-review.yml    # Automated PR reviews
 │
-├── YFinance.Models/                  # Data models (0 dependencies)
+├── YFinance.NET.Models/                  # Data models (0 dependencies)
 │   ├── HistoricalData.cs
 │   ├── QuoteData.cs
 │   ├── FinancialStatement.cs
@@ -191,7 +191,7 @@ Yahoo Finance API
 │       ├── RateLimitException.cs
 │       └── DataParsingException.cs
 │
-├── YFinance.Interfaces/              # Service contracts
+├── YFinance.NET.Interfaces/              # Service contracts
 │   ├── ITickerService.cs             # Main facade (30+ methods)
 │   ├── IMultiTickerService.cs        # Batch operations
 │   ├── IYahooFinanceClient.cs        # HTTP client abstraction
@@ -218,7 +218,7 @@ Yahoo Finance API
 │       ├── ITimezoneHelper.cs        # Market timezone conversions
 │       └── IPriceRepair.cs           # Price data repair algorithms
 │
-├── YFinance.Implementation/          # Concrete implementations
+├── YFinance.NET.Implementation/          # Concrete implementations
 │   ├── TickerService.cs              # Main service (orchestrates scrapers)
 │   ├── MultiTickerService.cs         # Batch/parallel operations
 │   ├── YahooFinanceClient.cs         # HTTP client with retry/backoff
@@ -240,7 +240,7 @@ Yahoo Finance API
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs  # AddYFinance() method
 │
-└── YFinance.Tests/                   # Tests
+└── YFinance.NET.Tests/                   # Tests
     ├── Unit/                         # Fast, isolated tests
     │   ├── TickerServiceTests.cs
     │   ├── MultiTickerServiceTests.cs
@@ -258,7 +258,7 @@ Yahoo Finance API
 
 ### Project Files
 
-- **YFinance.sln**: Visual Studio solution file
+- **YFinance.NET.sln**: Visual Studio solution file
 - **global.json**: .NET SDK version pinning (10.0.101)
 - **README.md**: User-facing documentation
 - **CLAUDE.md**: This file (AI assistant guide)
@@ -313,10 +313,10 @@ Yahoo Finance API
 **CRITICAL**: Follow these dependency constraints:
 
 ```
-YFinance.Models → (no dependencies)
-YFinance.Interfaces → YFinance.Models
-YFinance.Implementation → YFinance.Interfaces + YFinance.Models
-YFinance.Tests → All projects
+YFinance.NET.Models → (no dependencies)
+YFinance.NET.Interfaces → YFinance.NET.Models
+YFinance.NET.Implementation → YFinance.NET.Interfaces + YFinance.NET.Models
+YFinance.NET.Tests → All projects
 ```
 
 **Never**:
@@ -332,11 +332,11 @@ YFinance.Tests → All projects
 
 Follow this checklist when adding support for a new Yahoo Finance endpoint:
 
-#### 1. Define the Model (`YFinance.Models`)
+#### 1. Define the Model (`YFinance.NET.Models`)
 
 ```csharp
-// YFinance.Models/NewDataType.cs
-namespace YFinance.Models;
+// YFinance.NET.Models/NewDataType.cs
+namespace YFinance.NET.Models;
 
 /// <summary>
 /// Represents new data from Yahoo Finance.
@@ -355,13 +355,13 @@ public sealed class NewDataType
 - [ ] Use `init` setters for immutability
 - [ ] Add XML documentation comments
 - [ ] Use appropriate nullable annotations
-- [ ] Add to namespace `YFinance.Models`
+- [ ] Add to namespace `YFinance.NET.Models`
 
 #### 2. Create Request Object (if needed)
 
 ```csharp
-// YFinance.Models/Requests/NewDataRequest.cs
-namespace YFinance.Models.Requests;
+// YFinance.NET.Models/Requests/NewDataRequest.cs
+namespace YFinance.NET.Models.Requests;
 
 /// <summary>
 /// Request parameters for fetching new data.
@@ -374,11 +374,11 @@ public sealed class NewDataRequest
 }
 ```
 
-#### 3. Define Scraper Interface (`YFinance.Interfaces`)
+#### 3. Define Scraper Interface (`YFinance.NET.Interfaces`)
 
 ```csharp
-// YFinance.Interfaces/Scrapers/INewDataScraper.cs
-namespace YFinance.Interfaces.Scrapers;
+// YFinance.NET.Interfaces/Scrapers/INewDataScraper.cs
+namespace YFinance.NET.Interfaces.Scrapers;
 
 /// <summary>
 /// Scraper for fetching new data from Yahoo Finance.
@@ -404,17 +404,17 @@ public interface INewDataScraper
 - [ ] Accept CancellationToken as last parameter with default
 - [ ] Use request object for complex parameters
 
-#### 4. Implement Scraper (`YFinance.Implementation`)
+#### 4. Implement Scraper (`YFinance.NET.Implementation`)
 
 ```csharp
-// YFinance.Implementation/Scrapers/NewDataScraper.cs
-using YFinance.Interfaces;
-using YFinance.Interfaces.Scrapers;
-using YFinance.Interfaces.Utils;
-using YFinance.Models;
-using YFinance.Models.Requests;
+// YFinance.NET.Implementation/Scrapers/NewDataScraper.cs
+using YFinance.NET.Interfaces;
+using YFinance.NET.Interfaces.Scrapers;
+using YFinance.NET.Interfaces.Utils;
+using YFinance.NET.Models;
+using YFinance.NET.Models.Requests;
 
-namespace YFinance.Implementation.Scrapers;
+namespace YFinance.NET.Implementation.Scrapers;
 
 /// <summary>
 /// Scraper implementation for new data.
@@ -476,10 +476,10 @@ internal sealed class NewDataScraper : INewDataScraper
 - [ ] Separate URL building and parsing into private methods
 - [ ] Add error handling (try/catch with custom exceptions)
 
-#### 5. Add Method to ITickerService (`YFinance.Interfaces`)
+#### 5. Add Method to ITickerService (`YFinance.NET.Interfaces`)
 
 ```csharp
-// YFinance.Interfaces/ITickerService.cs (add method)
+// YFinance.NET.Interfaces/ITickerService.cs (add method)
 /// <summary>
 /// Gets new data for the specified symbol.
 /// </summary>
@@ -488,10 +488,10 @@ Task<NewDataType> GetNewDataAsync(
     CancellationToken cancellationToken = default);
 ```
 
-#### 6. Implement in TickerService (`YFinance.Implementation`)
+#### 6. Implement in TickerService (`YFinance.NET.Implementation`)
 
 ```csharp
-// YFinance.Implementation/TickerService.cs (add method)
+// YFinance.NET.Implementation/TickerService.cs (add method)
 public async Task<NewDataType> GetNewDataAsync(
     NewDataRequest request,
     CancellationToken cancellationToken = default)
@@ -515,10 +515,10 @@ public TickerService(
 }
 ```
 
-#### 7. Register in DI Container (`YFinance.Implementation`)
+#### 7. Register in DI Container (`YFinance.NET.Implementation`)
 
 ```csharp
-// YFinance.Implementation/DependencyInjection/ServiceCollectionExtensions.cs
+// YFinance.NET.Implementation/DependencyInjection/ServiceCollectionExtensions.cs
 public static IServiceCollection AddYFinance(this IServiceCollection services)
 {
     // ... existing registrations ...
@@ -530,18 +530,18 @@ public static IServiceCollection AddYFinance(this IServiceCollection services)
 }
 ```
 
-#### 8. Write Unit Tests (`YFinance.Tests/Unit`)
+#### 8. Write Unit Tests (`YFinance.NET.Tests/Unit`)
 
 ```csharp
-// YFinance.Tests/Unit/Scrapers/NewDataScraperTests.cs
+// YFinance.NET.Tests/Unit/Scrapers/NewDataScraperTests.cs
 using Xunit;
 using Moq;
 using FluentAssertions;
-using YFinance.Implementation.Scrapers;
-using YFinance.Interfaces;
-using YFinance.Models.Requests;
+using YFinance.NET.Implementation.Scrapers;
+using YFinance.NET.Interfaces;
+using YFinance.NET.Models.Requests;
 
-namespace YFinance.Tests.Unit.Scrapers;
+namespace YFinance.NET.Tests.Unit.Scrapers;
 
 public class NewDataScraperTests
 {
@@ -583,10 +583,10 @@ public class NewDataScraperTests
 }
 ```
 
-#### 9. Write Integration Tests (`YFinance.Tests/Integration`)
+#### 9. Write Integration Tests (`YFinance.NET.Tests/Integration`)
 
 ```csharp
-// YFinance.Tests/Integration/TickerServiceIntegrationTests.cs (add test)
+// YFinance.NET.Tests/Integration/TickerServiceIntegrationTests.cs (add test)
 [Fact]
 public async Task GetNewDataAsync_AAPL_ReturnsValidData()
 {
@@ -641,7 +641,7 @@ public async Task GetNewDataAsync_AAPL_ReturnsValidData()
 ### Test Organization
 
 ```
-YFinance.Tests/
+YFinance.NET.Tests/
 ├── Unit/                          # Fast, isolated, mocked
 │   ├── TickerServiceTests.cs
 │   ├── Scrapers/
@@ -792,7 +792,7 @@ Task<HistoricalData> GetHistoryAsync(
 **Use custom exceptions**:
 
 ```csharp
-// YFinance.Models/Exceptions/
+// YFinance.NET.Models/Exceptions/
 YahooFinanceException        // Base
 ├── InvalidTickerException   // Bad symbol
 ├── RateLimitException       // Too many requests
@@ -848,7 +848,7 @@ public IReadOnlyList<NewsItem> GetNews(string symbol)
 **Centralize in Constants file**:
 
 ```csharp
-// YFinance.Implementation/Constants/YahooFinanceConstants.cs
+// YFinance.NET.Implementation/Constants/YahooFinanceConstants.cs
 internal static class YahooFinanceConstants
 {
     public const string BaseUrl = "https://query2.finance.yahoo.com";
@@ -907,7 +907,7 @@ services.AddTransient<ITimezoneHelper, TimezoneHelper>();
 **All services registered in one place**:
 
 ```csharp
-// YFinance.Implementation/DependencyInjection/ServiceCollectionExtensions.cs
+// YFinance.NET.Implementation/DependencyInjection/ServiceCollectionExtensions.cs
 public static IServiceCollection AddYFinance(this IServiceCollection services)
 {
     services.AddHttpClient();
@@ -1115,13 +1115,13 @@ Before committing, ensure:
 
 | File | Purpose | When to Modify |
 |------|---------|----------------|
-| `YFinance.Interfaces/ITickerService.cs` | Main service contract | Adding new API methods |
-| `YFinance.Implementation/TickerService.cs` | Main service implementation | Implementing new API methods |
-| `YFinance.Implementation/DependencyInjection/ServiceCollectionExtensions.cs` | DI registration | Adding new services/scrapers |
-| `YFinance.Implementation/Constants/YahooFinanceConstants.cs` | URLs, endpoints, headers | Adding new endpoints |
-| `YFinance.Models/Enums/Period.cs` | Time period enum | Adding new periods |
-| `YFinance.Models/Enums/Interval.cs` | Data interval enum | Adding new intervals |
-| `YFinance.Models/Exceptions/YahooFinanceException.cs` | Base exception | Adding exception types |
+| `YFinance.NET.Interfaces/ITickerService.cs` | Main service contract | Adding new API methods |
+| `YFinance.NET.Implementation/TickerService.cs` | Main service implementation | Implementing new API methods |
+| `YFinance.NET.Implementation/DependencyInjection/ServiceCollectionExtensions.cs` | DI registration | Adding new services/scrapers |
+| `YFinance.NET.Implementation/Constants/YahooFinanceConstants.cs` | URLs, endpoints, headers | Adding new endpoints |
+| `YFinance.NET.Models/Enums/Period.cs` | Time period enum | Adding new periods |
+| `YFinance.NET.Models/Enums/Interval.cs` | Data interval enum | Adding new intervals |
+| `YFinance.NET.Models/Exceptions/YahooFinanceException.cs` | Base exception | Adding exception types |
 | `.github/workflows/ci.yml` | CI/CD pipeline | Changing build/test process |
 | `README.md` | User documentation | Adding features, examples |
 | `CLAUDE.md` | This file | Updating conventions, guidelines |
@@ -1131,7 +1131,7 @@ Before committing, ensure:
 | File | Purpose |
 |------|---------|
 | `global.json` | .NET SDK version (10.0.101) |
-| `YFinance.sln` | Visual Studio solution |
+| `YFinance.NET.sln` | Visual Studio solution |
 | `*.csproj` | Project files with dependencies |
 | `.gitignore` | Git ignore rules |
 
@@ -1296,14 +1296,14 @@ public Task<HistoricalData> GetHistoryAsync()
 
 **DON'T**:
 ```
-YFinance.Models → YFinance.Implementation (CYCLE!)
+YFinance.NET.Models → YFinance.NET.Implementation (CYCLE!)
 ```
 
 **DO**:
 ```
-YFinance.Models → (nothing)
-YFinance.Interfaces → YFinance.Models
-YFinance.Implementation → YFinance.Interfaces + YFinance.Models
+YFinance.NET.Models → (nothing)
+YFinance.NET.Interfaces → YFinance.NET.Models
+YFinance.NET.Implementation → YFinance.NET.Interfaces + YFinance.NET.Models
 ```
 
 ---
@@ -1342,7 +1342,7 @@ dotnet format --verify-no-changes
 
 ```bash
 # Add project reference
-dotnet add YFinance.Implementation reference YFinance.Interfaces
+dotnet add YFinance.NET.Implementation reference YFinance.NET.Interfaces
 
 # Add NuGet package
 dotnet add package Microsoft.Extensions.Http
@@ -1395,14 +1395,14 @@ When working on this codebase:
 
 ### Quick Checklist for New Features
 
-- [ ] Model defined in `YFinance.Models`
-- [ ] Request object (if needed) in `YFinance.Models/Requests`
-- [ ] Interface defined in `YFinance.Interfaces`
-- [ ] Implementation in `YFinance.Implementation`
+- [ ] Model defined in `YFinance.NET.Models`
+- [ ] Request object (if needed) in `YFinance.NET.Models/Requests`
+- [ ] Interface defined in `YFinance.NET.Interfaces`
+- [ ] Implementation in `YFinance.NET.Implementation`
 - [ ] Registered in `ServiceCollectionExtensions.cs`
 - [ ] Method added to `ITickerService` and `TickerService`
-- [ ] Unit tests in `YFinance.Tests/Unit`
-- [ ] Integration tests in `YFinance.Tests/Integration`
+- [ ] Unit tests in `YFinance.NET.Tests/Unit`
+- [ ] Integration tests in `YFinance.NET.Tests/Integration`
 - [ ] XML documentation on all public members
 - [ ] All tests pass (`dotnet test`)
 - [ ] Code formatted (`dotnet format`)

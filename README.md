@@ -1,4 +1,4 @@
-# YFinance - C# Port
+# YFinance.NET - C# Port
 
 [![CI](https://github.com/CalvinPangch/yfinance/actions/workflows/ci.yml/badge.svg)](https://github.com/CalvinPangch/yfinance/actions/workflows/ci.yml)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple)](https://dotnet.microsoft.com/download/dotnet/10.0)
@@ -60,22 +60,22 @@ dotnet build
 dotnet test
 
 # Run only unit tests
-dotnet test --filter "FullyQualifiedName~YFinance.Tests.Unit"
+dotnet test --filter "FullyQualifiedName~YFinance.NET.Tests.Unit"
 
 # Run only integration tests (requires internet)
-dotnet test --filter "FullyQualifiedName~YFinance.Tests.Integration"
+dotnet test --filter "FullyQualifiedName~YFinance.NET.Tests.Integration"
 ```
 
 ### Add to Your Project
 
-**Option 1: Project Reference** (if YFinance is in your solution)
+**Option 1: Project Reference** (if YFinance.NET is in your solution)
 ```bash
-dotnet add reference path/to/YFinance.Implementation/YFinance.Implementation.csproj
+dotnet add reference path/to/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj
 ```
 
 **Option 2: NuGet Package** (once published)
 ```bash
-dotnet add package YFinance
+dotnet add package YFinance.NET
 ```
 
 ## Quick Start
@@ -85,10 +85,10 @@ dotnet add package YFinance
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using YFinance.Interfaces;
-using YFinance.Implementation.DependencyInjection;
-using YFinance.Models.Enums;
-using YFinance.Models.Requests;
+using YFinance.NET.Interfaces;
+using YFinance.NET.Implementation.DependencyInjection;
+using YFinance.NET.Models.Enums;
+using YFinance.NET.Models.Requests;
 
 // Setup dependency injection
 var host = Host.CreateDefaultBuilder(args)
@@ -128,7 +128,7 @@ for (int i = Math.Max(0, history.Timestamps.Length - 5); i < history.Timestamps.
 
 **Program.cs:**
 ```csharp
-using YFinance.Implementation.DependencyInjection;
+using YFinance.NET.Implementation.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -144,10 +144,10 @@ app.Run();
 **StockController.cs:**
 ```csharp
 using Microsoft.AspNetCore.Mvc;
-using YFinance.Interfaces;
-using YFinance.Models;
-using YFinance.Models.Enums;
-using YFinance.Models.Requests;
+using YFinance.NET.Interfaces;
+using YFinance.NET.Models;
+using YFinance.NET.Models.Enums;
+using YFinance.NET.Models.Requests;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -282,7 +282,7 @@ var monthly = await tickerService.GetHistoryAsync("TSLA", new HistoryRequest
 ### Error Handling
 
 ```csharp
-using YFinance.Models.Exceptions;
+using YFinance.NET.Models.Exceptions;
 
 try
 {
@@ -422,14 +422,14 @@ var news = await tickerService.GetNewsAsync(new NewsRequest { Symbol = "AAPL", C
 ## Project Structure
 
 ```
-YFinance/
-├── YFinance.Interfaces/          # Service contracts and abstractions
+YFinance.NET/
+├── YFinance.NET.Interfaces/          # Service contracts and abstractions
 │   ├── IYahooFinanceClient.cs
 │   ├── ITickerService.cs
 │   └── Scrapers/
 │       ├── IHistoryScraper.cs
 │       └── ...
-├── YFinance.Models/              # Data models and DTOs
+├── YFinance.NET.Models/              # Data models and DTOs
 │   ├── HistoricalData.cs
 │   ├── QuoteData.cs
 │   ├── Enums/
@@ -439,14 +439,14 @@ YFinance/
 │   │   └── HistoryRequest.cs
 │   └── Exceptions/
 │       └── YahooFinanceException.cs
-├── YFinance.Implementation/      # Concrete implementations
+├── YFinance.NET.Implementation/      # Concrete implementations
 │   ├── YahooFinanceClient.cs
 │   ├── TickerService.cs
 │   ├── Scrapers/
 │   │   └── HistoryScraper.cs
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs
-└── YFinance.Tests/               # Unit and integration tests
+└── YFinance.NET.Tests/               # Unit and integration tests
     ├── Unit/
     └── Integration/
 ```
