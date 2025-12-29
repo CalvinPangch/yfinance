@@ -1,6 +1,7 @@
 using System.Text.Json;
 using YFinance.NET.Interfaces;
 using YFinance.NET.Interfaces.Scrapers;
+using YFinance.NET.Interfaces.Utils;
 using YFinance.NET.Models;
 
 namespace YFinance.NET.Implementation.Scrapers;
