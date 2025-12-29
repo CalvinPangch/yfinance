@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
 using YFinance.Models;
 using YFinance.Models.Requests;
