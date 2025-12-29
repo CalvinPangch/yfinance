@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
 using YFinance.Models;
 using YFinance.Models.Requests;
@@ -11,12 +10,12 @@ namespace YFinance.Implementation;
 /// </summary>
 public class MultiTickerService : IMultiTickerService
 {
-    private readonly ITickerService _tickerService;
+    private readonly IHistoryScraper _historyScraper;
     private readonly INewsScraper _newsScraper;
 
-    public MultiTickerService(ITickerService tickerService, INewsScraper newsScraper)
+    public MultiTickerService(IHistoryScraper historyScraper, INewsScraper newsScraper)
     {
-        _tickerService = tickerService ?? throw new ArgumentNullException(nameof(tickerService));
+        _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
         _newsScraper = newsScraper ?? throw new ArgumentNullException(nameof(newsScraper));
     }
 
@@ -31,7 +30,7 @@ public class MultiTickerService : IMultiTickerService
 
         return await FetchBatchAsync(
             symbols,
-            symbol => _tickerService.GetHistoryAsync(symbol, request, cancellationToken),
+            symbol => _historyScraper.GetHistoryAsync(symbol, request, cancellationToken),
             maxConcurrency,
             cancellationToken).ConfigureAwait(false);
     }
