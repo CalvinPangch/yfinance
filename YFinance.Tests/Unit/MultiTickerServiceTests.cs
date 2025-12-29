@@ -1,6 +1,7 @@
 using Moq;
 using Xunit;
 using YFinance.Implementation;
+using YFinance.Interfaces;
 using YFinance.Interfaces.Scrapers;
 using YFinance.Models;
 using YFinance.Models.Enums;
@@ -16,12 +17,13 @@ public class MultiTickerServiceTests
         // Arrange
         var historyScraper = new Mock<IHistoryScraper>();
         var newsScraper = new Mock<INewsScraper>();
+        var tickerService = new Mock<ITickerService>();
         var request = new HistoryRequest { Period = Period.OneDay, Interval = Interval.OneDay };
 
         historyScraper.Setup(s => s.GetHistoryAsync(It.IsAny<string>(), request, It.IsAny<CancellationToken>()))
             .ReturnsAsync((string symbol, HistoryRequest _, CancellationToken _) => new HistoricalData { Symbol = symbol });
 
-        var service = new MultiTickerService(historyScraper.Object, newsScraper.Object);
+        var service = new MultiTickerService(historyScraper.Object, newsScraper.Object, tickerService.Object);
 
         // Act
         var result = await service.GetHistoryAsync(new[] { "AAPL", "MSFT" }, request, maxConcurrency: 1);
@@ -39,12 +41,13 @@ public class MultiTickerServiceTests
     {
         var historyScraper = new Mock<IHistoryScraper>();
         var newsScraper = new Mock<INewsScraper>();
+        var tickerService = new Mock<ITickerService>();
         var expected = new List<NewsItem> { new NewsItem { Title = "News" } };
 
         newsScraper.Setup(s => s.GetNewsAsync(It.IsAny<NewsRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
 
-        var service = new MultiTickerService(historyScraper.Object, newsScraper.Object);
+        var service = new MultiTickerService(historyScraper.Object, newsScraper.Object, tickerService.Object);
 
         var result = await service.GetNewsAsync(new[] { "AAPL", "MSFT" }, count: 5, maxConcurrency: 1);
 

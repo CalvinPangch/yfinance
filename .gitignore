@@ -54,6 +54,6 @@ TestResult.xml
 nunit-*.xml
 
 # Claude Code
-CLAUDE.md
+# CLAUDE.md - Now tracked for AI assistant documentation
 .claude/
 .serena/
