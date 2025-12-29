@@ -19,11 +19,17 @@ public class HolderData
     // Insider transactions
     public List<InsiderTransaction>? InsiderTransactions { get; set; }
 
+    // Insider purchases summary
+    public InsiderPurchaseActivity? InsiderPurchases { get; set; }
+
     // Insider holders
     public List<InsiderHolder>? InsiderHolders { get; set; }
 
     // Fund ownership
     public List<FundHolder>? FundHolders { get; set; }
+
+    // Major direct holders
+    public List<MajorDirectHolder>? MajorDirectHolders { get; set; }
 }
 
 public class InstitutionalHolder
@@ -65,4 +71,27 @@ public class FundHolder
     public DateTime DateReported { get; set; }
     public decimal PercentOut { get; set; }
     public decimal Value { get; set; }
+}
+
+public class MajorDirectHolder
+{
+    public string Holder { get; set; } = string.Empty;
+    public long Shares { get; set; }
+    public DateTime DateReported { get; set; }
+    public decimal Value { get; set; }
+}
+
+public class InsiderPurchaseActivity
+{
+    public string Period { get; set; } = string.Empty;
+    public decimal? BuyInfoShares { get; set; }
+    public decimal? SellInfoShares { get; set; }
+    public decimal? NetInfoShares { get; set; }
+    public decimal? TotalInsiderShares { get; set; }
+    public decimal? NetPercentInsiderShares { get; set; }
+    public decimal? BuyPercentInsiderShares { get; set; }
+    public decimal? SellPercentInsiderShares { get; set; }
+    public decimal? BuyInfoCount { get; set; }
+    public decimal? SellInfoCount { get; set; }
+    public decimal? NetInfoCount { get; set; }
 }

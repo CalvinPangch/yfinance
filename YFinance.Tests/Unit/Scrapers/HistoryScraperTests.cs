@@ -154,6 +154,42 @@ public class HistoryScraperTests
     }
 
     [Fact]
+    public async Task GetHistoryAsync_WithCapitalGains_IncludesCapitalGainsData()
+    {
+        // Arrange
+        var symbol = "FUND";
+        var gainDate = new DateTime(2024, 1, 15, 0, 0, 0, DateTimeKind.Utc);
+        var bars = new[]
+        {
+            new PriceBar(gainDate, 50m, 52m, 49m, 51m, 100000)
+        };
+        var gains = new Dictionary<DateTime, decimal>
+        {
+            { gainDate, 1.25m }
+        };
+
+        var response = TestDataBuilder.BuildChartResponseWithEvents(symbol, bars, null, null, gains);
+
+        _mockClient.Setup(c => c.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(response);
+
+        SetupDataParserMocks();
+
+        var request = new HistoryRequest { Period = Period.OneMonth, Interval = Interval.OneDay };
+
+        // Act
+        var result = await _scraper.GetHistoryAsync(symbol, request);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.CapitalGains.Should().ContainKey(gainDate);
+        result.CapitalGains[gainDate].Should().Be(1.25m);
+    }
+
+    [Fact]
     public async Task GetHistoryAsync_WithoutAdjustedClose_UsesRegularClose()
     {
         // Arrange

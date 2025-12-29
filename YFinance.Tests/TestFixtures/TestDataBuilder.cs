@@ -71,7 +71,8 @@ public static class TestDataBuilder
     /// </summary>
     public static string BuildChartResponseWithEvents(string symbol, PriceBar[] bars,
         Dictionary<DateTime, decimal>? dividends = null,
-        Dictionary<DateTime, (decimal numerator, decimal denominator)>? splits = null)
+        Dictionary<DateTime, (decimal numerator, decimal denominator)>? splits = null,
+        Dictionary<DateTime, decimal>? capitalGains = null)
     {
         var timestamps = bars.Select(b => new DateTimeOffset(b.Date).ToUnixTimeSeconds()).ToArray();
         var opens = bars.Select(b => b.Open).ToArray();
@@ -111,6 +112,21 @@ public static class TestDataBuilder
                 };
             }
             eventsObj["splits"] = splitsDict;
+        }
+
+        if (capitalGains != null && capitalGains.Count > 0)
+        {
+            var gainsDict = new Dictionary<string, object>();
+            foreach (var gain in capitalGains)
+            {
+                var key = new DateTimeOffset(gain.Key).ToUnixTimeSeconds().ToString();
+                gainsDict[key] = new
+                {
+                    date = new DateTimeOffset(gain.Key).ToUnixTimeSeconds(),
+                    amount = gain.Value
+                };
+            }
+            eventsObj["capitalGains"] = gainsDict;
         }
 
         var resultObj = new
@@ -980,6 +996,33 @@ public static class TestDataBuilder
                                     value = new { raw = 200000m }
                                 }
                             }
+                        },
+                        majorDirectHolders = new
+                        {
+                            holders = new object[]
+                            {
+                                new
+                                {
+                                    organization = "Direct Holder",
+                                    positionDirect = 1500L,
+                                    reportDate = 1700000000,
+                                    valueDirect = new { raw = 150000m }
+                                }
+                            }
+                        },
+                        netSharePurchaseActivity = new
+                        {
+                            period = "6m",
+                            buyInfoShares = new { raw = 100m },
+                            sellInfoShares = new { raw = 50m },
+                            netInfoShares = new { raw = 50m },
+                            totalInsiderShares = new { raw = 10000m },
+                            netPercentInsiderShares = new { raw = 0.01m },
+                            buyPercentInsiderShares = new { raw = 0.02m },
+                            sellPercentInsiderShares = new { raw = 0.01m },
+                            buyInfoCount = new { raw = 5m },
+                            sellInfoCount = new { raw = 2m },
+                            netInfoCount = new { raw = 3m }
                         }
                     }
                 }

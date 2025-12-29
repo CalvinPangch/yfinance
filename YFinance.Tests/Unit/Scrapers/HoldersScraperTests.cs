@@ -45,7 +45,14 @@ public class HoldersScraperTests
         var fundHolders = result.FundHolders;
         fundHolders.Should().NotBeNull();
         fundHolders!.Should().ContainSingle();
+        var directHolders = result.MajorDirectHolders;
+        directHolders.Should().NotBeNull();
+        directHolders!.Should().ContainSingle();
+        var insiderPurchases = result.InsiderPurchases;
+        insiderPurchases.Should().NotBeNull();
         insiderHolders![0].Name.Should().Be("Insider Holder");
         fundHolders![0].Holder.Should().Be("Fund A");
+        directHolders![0].Holder.Should().Be("Direct Holder");
+        insiderPurchases!.Period.Should().Be("6m");
     }
 }

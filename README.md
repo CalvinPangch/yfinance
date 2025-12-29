@@ -10,9 +10,9 @@ A C# port of the popular [yfinance Python library](https://github.com/ranaroussi
 
 ## Features
 
-- ✅ **Historical Price Data** - OHLC prices, volume, dividends, stock splits
+- ✅ **Historical Price Data** - OHLC prices, volume, dividends, splits, capital gains
 - ✅ **Real-time Quotes** - Current prices and market data
-- ✅ **Fast Info** - Lightweight quick access to essential ticker metrics
+- ✅ **Info & Fast Info** - Full quote summary plus fast snapshot fields
 - ✅ **Financial Statements** - Income statements, balance sheets, cash flow
 - ✅ **Analyst Data** - Recommendations, upgrades/downgrades, earnings estimates
 - ✅ **Holder Information** - Institutional holdings, insider transactions, fund holders
@@ -25,8 +25,10 @@ A C# port of the popular [yfinance Python library](https://github.com/ranaroussi
 - ✅ **Corporate Actions** - Combined dividends and splits timeline
 - ✅ **News** - Latest ticker news items
 - ✅ **Funds Data** - Fund profile and holdings
-- ✅ **Batch Operations** - Parallel downloads for multiple tickers
-- ✅ **Tickers Class** - Convenient multi-ticker management
+- ✅ **Search/Lookup/Screener** - Market-wide discovery and filters
+- ✅ **Domain Data** - Sector, industry, and market overviews
+- ✅ **ISIN Lookup** - Map tickers to ISIN identifiers
+- ✅ **Live Market Streaming** - Websocket updates for price data
 - ✅ **Dependency Injection** - Full DI support for ASP.NET Core and console apps
 - ✅ **Async/Await** - Fully asynchronous API
 - ✅ **Timezone Support** - Proper handling of market timezones
@@ -579,9 +581,9 @@ Data granularity:
 ## Roadmap
 
 ### Implemented ✅
-- [x] Historical price data (OHLC, volume, dividends, splits)
+- [x] Historical price data (OHLC, volume, dividends, splits, capital gains)
 - [x] Quote data (real-time prices)
-- [x] Fast info (lightweight quick access to key metrics)
+- [x] Info + fast info endpoints
 - [x] Financial statements (income, balance sheet, cash flow)
 - [x] Analyst data (recommendations, upgrades/downgrades, earnings estimates)
 - [x] Holder information (institutional, insider, fund holders)
@@ -594,8 +596,10 @@ Data granularity:
 - [x] Corporate actions (combined dividends and splits timeline)
 - [x] News endpoints
 - [x] Funds data (profile, holdings)
-- [x] **Multiple ticker batch downloads** (parallel operations)
-- [x] **Tickers class** (multi-ticker management)
+- [x] Search, lookup, and screener endpoints
+- [x] Sector, industry, and market domain summaries
+- [x] ISIN lookup
+- [x] Live market streaming
 - [x] Dependency injection setup
 - [x] Async/await pattern
 - [x] Integration tests
@@ -610,10 +614,6 @@ Data granularity:
 - [ ] Complete screener/query implementation
 
 ### Planned 📋
-- [ ] WebSocket support for live streaming data
-- [ ] Sector and Industry classes
-- [ ] Market class for market-level information
-- [ ] Enhanced search/lookup features
 - [ ] NuGet package publication
 
 ### Python yfinance Parity: ~85% ✅

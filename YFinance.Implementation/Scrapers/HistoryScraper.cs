@@ -55,6 +55,22 @@ public class HistoryScraper : IHistoryScraper
         return ParseHistoricalData(symbol, jsonResponse, request);
     }
 
+    public async Task<HistoryMetadata> GetHistoryMetadataAsync(string symbol, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+
+        var queryParams = new Dictionary<string, string>
+        {
+            { "range", "1d" },
+            { "interval", "1d" }
+        };
+
+        var endpoint = $"/v8/finance/chart/{symbol}";
+        var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken).ConfigureAwait(false);
+        return ParseHistoryMetadata(symbol, jsonResponse);
+    }
+
     private Dictionary<string, string> BuildQueryParameters(HistoryRequest request)
     {
         var parameters = new Dictionary<string, string>();
@@ -178,6 +194,7 @@ public class HistoryScraper : IHistoryScraper
         // Get dividends and splits
         var dividends = new Dictionary<DateTime, decimal>();
         var splits = new Dictionary<DateTime, decimal>();
+        var capitalGains = new Dictionary<DateTime, decimal>();
         var dividendsByDate = new Dictionary<DateTime, decimal>();
         var splitsByDate = new Dictionary<DateTime, decimal>();
 
@@ -212,6 +229,20 @@ public class HistoryScraper : IHistoryScraper
                     splitsByDate[normalizedDate] = ratio;
                 }
             }
+
+            if (events.TryGetProperty("capitalGains", out var gainsElement))
+            {
+                foreach (var gain in gainsElement.EnumerateObject())
+                {
+                    var gainData = gain.Value;
+                    if (!gainData.TryGetProperty("date", out var gainDate) || gainDate.ValueKind != JsonValueKind.Number)
+                        continue;
+
+                    var date = DateTimeOffset.FromUnixTimeSeconds(gainDate.GetInt64()).UtcDateTime;
+                    if (gainData.TryGetProperty("amount", out var amount) && amount.ValueKind == JsonValueKind.Number)
+                        capitalGains[date] = amount.GetDecimal();
+                }
+            }
         }
 
         var timestampArray = _timezoneHelper.FixDstIssues(timestamps.ToArray(), timezone);
@@ -242,7 +273,7 @@ public class HistoryScraper : IHistoryScraper
 
         if (request.Interval == Interval.OneWeek || request.Interval == Interval.OneMonth || request.Interval == Interval.ThreeMonths)
         {
-            return ResampleHistoricalData(symbol, timestampArray, open, high, low, close, adjClose, volume, dividends, splits, timezone, request.Interval);
+            return ResampleHistoricalData(symbol, timestampArray, open, high, low, close, adjClose, volume, dividends, splits, capitalGains, timezone, request.Interval);
         }
 
         return new HistoricalData
@@ -257,8 +288,78 @@ public class HistoryScraper : IHistoryScraper
             Volume = volume,
             Dividends = dividends,
             StockSplits = splits,
+            CapitalGains = capitalGains,
             TimeZone = timezone
         };
+    }
+
+    private static HistoryMetadata ParseHistoryMetadata(string symbol, string jsonResponse)
+    {
+        using var document = JsonDocument.Parse(jsonResponse);
+        var root = document.RootElement;
+
+        if (!root.TryGetProperty("chart", out var chart) ||
+            !chart.TryGetProperty("result", out var results) ||
+            results.GetArrayLength() == 0)
+        {
+            return new HistoryMetadata { Symbol = symbol };
+        }
+
+        var result = results[0];
+        if (!result.TryGetProperty("meta", out var meta))
+            return new HistoryMetadata { Symbol = symbol };
+
+        return new HistoryMetadata
+        {
+            Symbol = symbol,
+            Currency = meta.TryGetProperty("currency", out var currency) ? currency.GetString() : null,
+            ExchangeName = meta.TryGetProperty("exchangeName", out var exchangeName) ? exchangeName.GetString() : null,
+            ExchangeTimezoneName = meta.TryGetProperty("exchangeTimezoneName", out var timezone) ? timezone.GetString() : null,
+            InstrumentType = meta.TryGetProperty("instrumentType", out var instrumentType) ? instrumentType.GetString() : null,
+            FirstTradeDate = meta.TryGetProperty("firstTradeDate", out var firstTrade) && firstTrade.ValueKind == JsonValueKind.Number
+                ? firstTrade.GetInt64()
+                : null,
+            RegularMarketTime = meta.TryGetProperty("regularMarketTime", out var marketTime) && marketTime.ValueKind == JsonValueKind.Number
+                ? marketTime.GetInt64()
+                : null,
+            GmtOffset = meta.TryGetProperty("gmtoffset", out var offset) && offset.ValueKind == JsonValueKind.Number
+                ? offset.GetInt32()
+                : null,
+            CurrentTradingPeriod = ParseTradingPeriods(meta)
+        };
+    }
+
+    private static TradingPeriods? ParseTradingPeriods(JsonElement meta)
+    {
+        if (!meta.TryGetProperty("currentTradingPeriod", out var tradingPeriod))
+            return null;
+
+        return new TradingPeriods
+        {
+            Pre = ParseTradingPeriod(tradingPeriod, "pre"),
+            Regular = ParseTradingPeriod(tradingPeriod, "regular"),
+            Post = ParseTradingPeriod(tradingPeriod, "post")
+        };
+    }
+
+    private static TradingPeriod? ParseTradingPeriod(JsonElement tradingPeriod, string propertyName)
+    {
+        if (!tradingPeriod.TryGetProperty(propertyName, out var period))
+            return null;
+
+        return new TradingPeriod
+        {
+            Start = ExtractPeriodDate(period, "start"),
+            End = ExtractPeriodDate(period, "end")
+        };
+    }
+
+    private static DateTime? ExtractPeriodDate(JsonElement period, string propertyName)
+    {
+        if (!period.TryGetProperty(propertyName, out var value) || value.ValueKind != JsonValueKind.Number)
+            return null;
+
+        return DateTimeOffset.FromUnixTimeSeconds(value.GetInt64()).UtcDateTime;
     }
 
     private static void ApplyAutoAdjust(decimal[] open, decimal[] high, decimal[] low, decimal[] close, decimal[] adjClose)
@@ -342,6 +443,7 @@ public class HistoryScraper : IHistoryScraper
         long[] volume,
         Dictionary<DateTime, decimal> dividends,
         Dictionary<DateTime, decimal> splits,
+        Dictionary<DateTime, decimal> capitalGains,
         string timezone,
         Interval interval)
     {
@@ -359,6 +461,7 @@ public class HistoryScraper : IHistoryScraper
                 Volume = Array.Empty<long>(),
                 Dividends = dividends,
                 StockSplits = splits,
+                CapitalGains = capitalGains,
                 TimeZone = timezone
             };
         }
@@ -404,6 +507,7 @@ public class HistoryScraper : IHistoryScraper
             Volume = resampledVolume.ToArray(),
             Dividends = dividends,
             StockSplits = splits,
+            CapitalGains = capitalGains,
             TimeZone = timezone
         };
     }
