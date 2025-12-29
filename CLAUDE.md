@@ -1083,6 +1083,37 @@ Located in `.github/workflows/`:
 
 **Purpose**: Claude reviews PRs for code quality, bugs, performance, security
 
+#### 4. **claude-auto-fix.yml** - Automated Build Failure Fixes
+
+**Triggers**:
+- When the CI workflow completes with failures
+- Runs on `main`, `develop`, and `claude/**` branches
+
+**Purpose**: Automatically detects build failures and attempts to fix them
+
+**Workflow**:
+1. Downloads workflow logs and error messages
+2. Triggers Claude to analyze the failures
+3. Claude reads error logs, identifies root causes
+4. Makes necessary code changes following CLAUDE.md conventions
+5. Verifies fixes by running:
+   - `dotnet restore`
+   - `dotnet build --configuration Release`
+   - `dotnet test --filter "FullyQualifiedName~Unit"`
+   - `dotnet format`
+6. Commits and pushes fixes if all checks pass
+7. Comments on associated PR (if exists)
+
+**Error Handling**:
+- Uses exponential backoff for git push (2s, 4s, 8s, 16s delays)
+- Only fixes Claude-created branches (`claude/**` pattern)
+- Creates detailed issue if unable to fix automatically
+
+**Permissions**:
+- `contents: write` - Push fixes to the repository
+- `actions: read` - Read workflow logs
+- `pull-requests: write` - Comment on PRs
+
 ### Pre-commit Checklist
 
 Before committing, ensure:
@@ -1123,6 +1154,7 @@ Before committing, ensure:
 | `YFinance.NET.Models/Enums/Interval.cs` | Data interval enum | Adding new intervals |
 | `YFinance.NET.Models/Exceptions/YahooFinanceException.cs` | Base exception | Adding exception types |
 | `.github/workflows/ci.yml` | CI/CD pipeline | Changing build/test process |
+| `.github/workflows/claude-auto-fix.yml` | Auto-fix build failures | Configuring auto-fix behavior |
 | `README.md` | User documentation | Adding features, examples |
 | `CLAUDE.md` | This file | Updating conventions, guidelines |
 

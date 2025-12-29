@@ -1,0 +1,161 @@
+name: Claude Auto-Fix Build Failures
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches:
+      - main
+      - develop
+      - 'claude/**'  # Auto-fix on Claude's own branches
+
+jobs:
+  auto-fix-build:
+    # Only run if the CI workflow failed
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # Required to push fixes
+      pull-requests: write   # Required to comment on PRs
+      actions: read          # Required to read workflow logs
+      checks: read           # Required to read check results
+      id-token: write        # Required for Claude Code action
+      issues: read           # Required for Claude to read issues
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0  # Full history for better context
+
+      - name: Download workflow logs
+        id: download-logs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // Get the workflow run that failed
+            const runId = context.payload.workflow_run.id;
+
+            // Get jobs for this workflow run
+            const { data: jobs } = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+            });
+
+            // Collect failed job information
+            const failedJobs = jobs.jobs.filter(job => job.conclusion === 'failure');
+
+            let errorSummary = `# Build Failure Summary\n\n`;
+            errorSummary += `Branch: ${context.payload.workflow_run.head_branch}\n`;
+            errorSummary += `Commit: ${context.payload.workflow_run.head_sha}\n`;
+            errorSummary += `Workflow: ${context.payload.workflow_run.name}\n\n`;
+
+            for (const job of failedJobs) {
+              errorSummary += `## Failed Job: ${job.name}\n\n`;
+
+              // Get logs for this job
+              try {
+                const logs = await github.rest.actions.downloadJobLogsForWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  job_id: job.id,
+                });
+
+                errorSummary += `\`\`\`\n${logs.data}\n\`\`\`\n\n`;
+              } catch (error) {
+                console.log(`Could not download logs for job ${job.id}: ${error.message}`);
+
+                // Fallback: get step information
+                const failedSteps = job.steps.filter(step => step.conclusion === 'failure');
+                for (const step of failedSteps) {
+                  errorSummary += `### Failed Step: ${step.name}\n`;
+                  errorSummary += `Status: ${step.conclusion}\n\n`;
+                }
+              }
+            }
+
+            // Write error summary to file
+            fs.writeFileSync('build-errors.md', errorSummary);
+
+            // Set output
+            core.setOutput('has_failures', failedJobs.length > 0);
+            core.setOutput('failed_job_count', failedJobs.length);
+
+      - name: Run Claude Auto-Fix
+        if: steps.download-logs.outputs.has_failures == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            🔧 **AUTO-FIX MODE: Build Failure Detected**
+
+            REPOSITORY: ${{ github.repository }}
+            BRANCH: ${{ github.event.workflow_run.head_branch }}
+            COMMIT: ${{ github.event.workflow_run.head_sha }}
+            WORKFLOW: ${{ github.event.workflow_run.name }}
+
+            The CI build has failed. Your task is to:
+
+            1. **Read the error logs**: Check the file `build-errors.md` for detailed error information
+
+            2. **Analyze the failures**: Identify the root cause of each build/test failure
+
+            3. **Fix the issues**: Make the necessary code changes to resolve all errors
+               - Follow the conventions in CLAUDE.md
+               - Ensure all changes align with the project architecture
+               - Fix build errors, compilation errors, test failures, etc.
+
+            4. **Verify the fixes**:
+               - Run `dotnet restore` to restore dependencies
+               - Run `dotnet build --configuration Release` to verify build succeeds
+               - Run `dotnet test --filter "FullyQualifiedName~Unit"` to verify unit tests pass
+               - Run `dotnet format` to ensure code formatting is correct
+
+            5. **Commit and push**: If all checks pass:
+               - Create a clear commit message describing what was fixed
+               - Use: `git add .`
+               - Use: `git commit -m "fix: auto-fix build failures - <brief description>"`
+               - Push with: `git push -u origin ${{ github.event.workflow_run.head_branch }}`
+
+            **IMPORTANT GUIDELINES:**
+            - Only fix what's broken - don't make unrelated changes
+            - Follow the project's coding standards (see CLAUDE.md)
+            - If you can't fix an issue automatically, create a detailed comment explaining why
+            - Use the retry logic for git push (up to 4 retries with exponential backoff: 2s, 4s, 8s, 16s)
+
+            **CRITICAL**:
+            - Before pushing, verify the branch name starts with 'claude/' and matches the session ID
+            - Current branch: ${{ github.event.workflow_run.head_branch }}
+            - If the branch doesn't match the pattern, create an issue instead of pushing
+
+            Begin analysis and fix the build failures now.
+
+          # Allow Claude to use git, build, and test commands
+          claude_args: '--allowed-tools "Bash(*)"'
+
+      - name: Comment on PR if exists
+        if: github.event.workflow_run.event == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: `${context.repo.owner}:${context.payload.workflow_run.head_branch}`
+            });
+
+            if (prs.length > 0) {
+              const pr = prs[0];
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `🤖 **Claude Auto-Fix**: Detected build failures and attempted automatic fixes on this branch. Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.`
+              });
+            }
