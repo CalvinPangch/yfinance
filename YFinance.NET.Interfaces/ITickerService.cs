@@ -152,6 +152,15 @@ public interface ITickerService
     Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(string symbol, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Gets aggregated recommendations summary by time period.
+    /// Mirrors Python yfinance's ticker.recommendations_summary.
+    /// </summary>
+    /// <param name="symbol">Ticker symbol</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Recommendations summary with period-based aggregation</returns>
+    Task<RecommendationsSummaryData> GetRecommendationsSummaryAsync(string symbol, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Gets analyst upgrades/downgrades history.
     /// </summary>
     Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(string symbol, CancellationToken cancellationToken = default);
