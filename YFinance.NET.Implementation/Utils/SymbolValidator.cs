@@ -81,19 +81,23 @@ internal sealed class SymbolValidator : ISymbolValidator
                 $"Symbol length must be between {MinSymbolLength} and {MaxSymbolLength} characters.",
                 parameterName);
 
-        if (symbol.IndexOfAny(DangerousCharacters) >= 0)
-            throw new ArgumentException(
-                "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed.",
-                parameterName);
-
+        // Check for path traversal BEFORE checking for dangerous characters
+        // to provide more specific error message
         if (ContainsPathTraversal(symbol))
             throw new ArgumentException(
                 "Symbol contains path traversal sequences which are not allowed.",
                 parameterName);
 
+        // Check for URL encoding BEFORE checking for dangerous characters
+        // to provide more specific error message
         if (ContainsUrlEncoding(symbol))
             throw new ArgumentException(
                 "Symbol contains URL-encoded characters which are not allowed.",
+                parameterName);
+
+        if (symbol.IndexOfAny(DangerousCharacters) >= 0)
+            throw new ArgumentException(
+                "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed.",
                 parameterName);
 
         try
@@ -128,14 +132,22 @@ internal sealed class SymbolValidator : ISymbolValidator
 
         // Remove any dangerous characters
         var sanitized = new System.Text.StringBuilder(symbol.Length);
+        bool hasAlphanumeric = false;
         foreach (char c in symbol)
         {
             // Only keep allowed characters
             if (char.IsLetterOrDigit(c) || c == '.' || c == '-' || c == '^' || c == '=' || c == '_')
             {
                 sanitized.Append(c);
+                if (char.IsLetterOrDigit(c))
+                    hasAlphanumeric = true;
             }
         }
+
+        // If there are no alphanumeric characters, return empty
+        // (symbols must contain at least one letter or digit)
+        if (!hasAlphanumeric)
+            return string.Empty;
 
         var result = sanitized.ToString();
 

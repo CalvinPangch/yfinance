@@ -21,6 +21,15 @@ public class QuoteScraperTests
         _mockDataParser = new Mock<IDataParser>();
         _mockSymbolValidator = new Mock<ISymbolValidator>();
         _mockSymbolValidator.Setup(v => v.IsValid(It.IsAny<string>())).Returns(true);
+
+        // Setup ValidateAndThrow to throw for null/empty/whitespace symbols
+        _mockSymbolValidator.Setup(v => v.ValidateAndThrow(null!, It.IsAny<string>()))
+            .Throws<ArgumentException>();
+        _mockSymbolValidator.Setup(v => v.ValidateAndThrow("", It.IsAny<string>()))
+            .Throws<ArgumentException>();
+        _mockSymbolValidator.Setup(v => v.ValidateAndThrow("   ", It.IsAny<string>()))
+            .Throws<ArgumentException>();
+
         _scraper = new QuoteScraper(_mockClient.Object, _mockDataParser.Object, _mockSymbolValidator.Object);
 
         // Setup default mock behaviors

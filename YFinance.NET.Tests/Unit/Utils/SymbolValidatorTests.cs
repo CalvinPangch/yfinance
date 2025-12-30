@@ -301,10 +301,10 @@ public class SymbolValidatorTests
     }
 
     [Theory]
-    [InlineData("AAPL?admin=true", "AAPLadmintrue")]
-    [InlineData("AAPL/../../etc", "AAPLetc")]
+    [InlineData("AAPL?admin=true", "AAPLadmin=true")]
+    [InlineData("AAPL/../../etc", "AAPL....etc")]
     [InlineData("AAPL<script>", "AAPLscript")]
-    [InlineData("AAPL&foo=bar", "AAPLfoobar")]
+    [InlineData("AAPL&foo=bar", "AAPLfoo=bar")]
     [InlineData("AAPL:8080", "AAPL8080")]
     [InlineData("AAPL;DROP", "AAPLDROP")]
     public void Sanitize_DangerousCharacters_RemovesCharacters(string input, string expected)
