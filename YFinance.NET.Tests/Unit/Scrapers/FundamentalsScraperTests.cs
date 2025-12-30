@@ -4,6 +4,7 @@ using Xunit;
 using YFinance.NET.Implementation.Scrapers;
 using YFinance.NET.Implementation.Utils;
 using YFinance.NET.Interfaces;
+using YFinance.NET.Interfaces.Utils;
 using YFinance.NET.Models;
 
 namespace YFinance.NET.Tests.Unit.Scrapers;
@@ -44,7 +45,10 @@ public class FundamentalsScraperTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(response);
 
-        var scraper = new FundamentalsScraper(client.Object, new DataParser());
+        var symbolValidator = new Mock<ISymbolValidator>();
+        symbolValidator.Setup(v => v.IsValid(It.IsAny<string>())).Returns(true);
+
+        var scraper = new FundamentalsScraper(client.Object, new DataParser(), symbolValidator.Object);
 
         // Act
         var result = await scraper.GetFinancialStatementsAsync(symbol);

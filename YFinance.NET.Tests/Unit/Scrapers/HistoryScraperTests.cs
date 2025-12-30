@@ -17,6 +17,7 @@ public class HistoryScraperTests
     private readonly Mock<IDataParser> _mockDataParser;
     private readonly Mock<IPriceRepair> _mockPriceRepair;
     private readonly Mock<ITimezoneHelper> _mockTimezoneHelper;
+    private readonly Mock<ISymbolValidator> _mockSymbolValidator;
     private readonly HistoryScraper _scraper;
 
     public HistoryScraperTests()
@@ -25,6 +26,7 @@ public class HistoryScraperTests
         _mockDataParser = new Mock<IDataParser>();
         _mockPriceRepair = new Mock<IPriceRepair>();
         _mockTimezoneHelper = new Mock<ITimezoneHelper>();
+        _mockSymbolValidator = new Mock<ISymbolValidator>();
 
         _mockTimezoneHelper
             .Setup(t => t.FixDstIssues(It.IsAny<DateTime[]>(), It.IsAny<string>()))
@@ -34,11 +36,14 @@ public class HistoryScraperTests
             .Setup(p => p.RepairPrices(It.IsAny<decimal[]>(), It.IsAny<DateTime[]>(), It.IsAny<Dictionary<DateTime, decimal>?>()))
             .Returns<decimal[], DateTime[], Dictionary<DateTime, decimal>?>((prices, _, _) => prices);
 
+        _mockSymbolValidator.Setup(v => v.IsValid(It.IsAny<string>())).Returns(true);
+
         _scraper = new HistoryScraper(
             _mockClient.Object,
             _mockDataParser.Object,
             _mockPriceRepair.Object,
-            _mockTimezoneHelper.Object);
+            _mockTimezoneHelper.Object,
+            _mockSymbolValidator.Object);
     }
 
     #region Happy Path Tests
@@ -247,7 +252,8 @@ public class HistoryScraperTests
             _mockClient.Object,
             new DataParser(),
             new PriceRepair(),
-            new TimezoneHelper());
+            new TimezoneHelper(),
+            _mockSymbolValidator.Object);
 
         var request = new HistoryRequest { Period = Period.OneMonth, Interval = Interval.OneDay, AutoAdjust = true };
 
@@ -283,7 +289,8 @@ public class HistoryScraperTests
             _mockClient.Object,
             new DataParser(),
             new PriceRepair(),
-            new TimezoneHelper());
+            new TimezoneHelper(),
+            _mockSymbolValidator.Object);
 
         var request = new HistoryRequest { Period = Period.OneMonth, Interval = Interval.OneWeek };
 
@@ -577,7 +584,7 @@ public class HistoryScraperTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(
-            () => new HistoryScraper(null!, _mockDataParser.Object, _mockPriceRepair.Object, _mockTimezoneHelper.Object));
+            () => new HistoryScraper(null!, _mockDataParser.Object, _mockPriceRepair.Object, _mockTimezoneHelper.Object, _mockSymbolValidator.Object));
     }
 
     [Fact]
@@ -585,7 +592,7 @@ public class HistoryScraperTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(
-            () => new HistoryScraper(_mockClient.Object, null!, _mockPriceRepair.Object, _mockTimezoneHelper.Object));
+            () => new HistoryScraper(_mockClient.Object, null!, _mockPriceRepair.Object, _mockTimezoneHelper.Object, _mockSymbolValidator.Object));
     }
 
     #endregion
