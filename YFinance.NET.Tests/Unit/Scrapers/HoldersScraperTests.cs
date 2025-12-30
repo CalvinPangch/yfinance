@@ -6,6 +6,7 @@ using Xunit;
 using YFinance.NET.Implementation.Scrapers;
 using YFinance.NET.Implementation.Utils;
 using YFinance.NET.Interfaces;
+using YFinance.NET.Interfaces.Utils;
 using YFinance.NET.Tests.TestFixtures;
 
 namespace YFinance.NET.Tests.Unit.Scrapers;
@@ -13,12 +14,15 @@ namespace YFinance.NET.Tests.Unit.Scrapers;
 public class HoldersScraperTests
 {
     private readonly Mock<IYahooFinanceClient> _mockClient;
+    private readonly Mock<ISymbolValidator> _mockSymbolValidator;
     private readonly HoldersScraper _scraper;
 
     public HoldersScraperTests()
     {
         _mockClient = new Mock<IYahooFinanceClient>();
-        _scraper = new HoldersScraper(_mockClient.Object, new DataParser());
+        _mockSymbolValidator = new Mock<ISymbolValidator>();
+        _mockSymbolValidator.Setup(v => v.IsValid(It.IsAny<string>())).Returns(true);
+        _scraper = new HoldersScraper(_mockClient.Object, new DataParser(), _mockSymbolValidator.Object);
     }
 
     [Fact]

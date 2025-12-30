@@ -1,6 +1,7 @@
 using System.Text.Json;
 using YFinance.NET.Interfaces;
 using YFinance.NET.Interfaces.Scrapers;
+using YFinance.NET.Interfaces.Utils;
 using YFinance.NET.Models;
 
 namespace YFinance.NET.Implementation.Scrapers;
@@ -11,16 +12,18 @@ namespace YFinance.NET.Implementation.Scrapers;
 public class InfoScraper : IInfoScraper
 {
     private readonly IYahooFinanceClient _client;
+    private readonly ISymbolValidator _symbolValidator;
 
-    public InfoScraper(IYahooFinanceClient client)
+    public InfoScraper(IYahooFinanceClient client, ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
+        _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
     public async Task<InfoData> GetInfoAsync(string symbol, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(symbol))
-            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+        // Validate symbol for security (prevents URL injection)
+        _symbolValidator.ValidateAndThrow(symbol, nameof(symbol));
 
         var summaryParams = new Dictionary<string, string>
         {

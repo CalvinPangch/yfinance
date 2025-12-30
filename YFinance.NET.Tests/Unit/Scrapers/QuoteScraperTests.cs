@@ -12,13 +12,25 @@ public class QuoteScraperTests
 {
     private readonly Mock<IYahooFinanceClient> _mockClient;
     private readonly Mock<IDataParser> _mockDataParser;
+    private readonly Mock<ISymbolValidator> _mockSymbolValidator;
     private readonly QuoteScraper _scraper;
 
     public QuoteScraperTests()
     {
         _mockClient = new Mock<IYahooFinanceClient>();
         _mockDataParser = new Mock<IDataParser>();
-        _scraper = new QuoteScraper(_mockClient.Object, _mockDataParser.Object);
+        _mockSymbolValidator = new Mock<ISymbolValidator>();
+        _mockSymbolValidator.Setup(v => v.IsValid(It.IsAny<string>())).Returns(true);
+
+        // Setup ValidateAndThrow to throw for null/empty/whitespace symbols
+        _mockSymbolValidator.Setup(v => v.ValidateAndThrow(null!, It.IsAny<string>()))
+            .Throws<ArgumentException>();
+        _mockSymbolValidator.Setup(v => v.ValidateAndThrow("", It.IsAny<string>()))
+            .Throws<ArgumentException>();
+        _mockSymbolValidator.Setup(v => v.ValidateAndThrow("   ", It.IsAny<string>()))
+            .Throws<ArgumentException>();
+
+        _scraper = new QuoteScraper(_mockClient.Object, _mockDataParser.Object, _mockSymbolValidator.Object);
 
         // Setup default mock behaviors
         _mockDataParser.Setup(p => p.ExtractDecimal(It.IsAny<System.Text.Json.JsonElement>()))
@@ -32,7 +44,7 @@ public class QuoteScraperTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
-            new QuoteScraper(null!, _mockDataParser.Object));
+            new QuoteScraper(null!, _mockDataParser.Object, _mockSymbolValidator.Object));
     }
 
     [Fact]
@@ -40,7 +52,7 @@ public class QuoteScraperTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
-            new QuoteScraper(_mockClient.Object, null!));
+            new QuoteScraper(_mockClient.Object, null!, _mockSymbolValidator.Object));
     }
 
     #endregion

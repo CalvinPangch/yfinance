@@ -6,6 +6,7 @@ using Xunit;
 using YFinance.NET.Implementation.Scrapers;
 using YFinance.NET.Implementation.Utils;
 using YFinance.NET.Interfaces;
+using YFinance.NET.Interfaces.Utils;
 using YFinance.NET.Models.Requests;
 using YFinance.NET.Tests.TestFixtures;
 
@@ -14,12 +15,15 @@ namespace YFinance.NET.Tests.Unit.Scrapers;
 public class SharesScraperTests
 {
     private readonly Mock<IYahooFinanceClient> _mockClient;
+    private readonly Mock<ISymbolValidator> _mockSymbolValidator;
     private readonly SharesScraper _scraper;
 
     public SharesScraperTests()
     {
         _mockClient = new Mock<IYahooFinanceClient>();
-        _scraper = new SharesScraper(_mockClient.Object, new DataParser());
+        _mockSymbolValidator = new Mock<ISymbolValidator>();
+        _mockSymbolValidator.Setup(v => v.IsValid(It.IsAny<string>())).Returns(true);
+        _scraper = new SharesScraper(_mockClient.Object, new DataParser(), _mockSymbolValidator.Object);
     }
 
     [Fact]

@@ -13,17 +13,19 @@ public class AnalysisScraper : IAnalysisScraper
 {
     private readonly IYahooFinanceClient _client;
     private readonly IDataParser _dataParser;
+    private readonly ISymbolValidator _symbolValidator;
 
-    public AnalysisScraper(IYahooFinanceClient client, IDataParser dataParser)
+    public AnalysisScraper(IYahooFinanceClient client, IDataParser dataParser, ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
+        _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
     public async Task<AnalystData> GetAnalystDataAsync(string symbol, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(symbol))
-            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+        // Validate symbol for security (prevents URL injection)
+        _symbolValidator.ValidateAndThrow(symbol, nameof(symbol));
 
         var queryParams = new Dictionary<string, string>
         {
@@ -39,8 +41,8 @@ public class AnalysisScraper : IAnalysisScraper
         string symbol,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(symbol))
-            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+        // Validate symbol for security (prevents URL injection)
+        _symbolValidator.ValidateAndThrow(symbol, nameof(symbol));
 
         var queryParams = new Dictionary<string, string>
         {
@@ -56,8 +58,8 @@ public class AnalysisScraper : IAnalysisScraper
         string symbol,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(symbol))
-            throw new ArgumentException("Symbol cannot be null or whitespace.", nameof(symbol));
+        // Validate symbol for security (prevents URL injection)
+        _symbolValidator.ValidateAndThrow(symbol, nameof(symbol));
 
         var queryParams = new Dictionary<string, string>
         {
