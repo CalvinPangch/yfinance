@@ -27,25 +27,25 @@ public class RecommendationsSummaryEntry
     /// <summary>
     /// Number of strong buy recommendations in this period.
     /// </summary>
-    public int StrongBuy { get; set; }
+    public int? StrongBuy { get; set; }
 
     /// <summary>
     /// Number of buy recommendations in this period.
     /// </summary>
-    public int Buy { get; set; }
+    public int? Buy { get; set; }
 
     /// <summary>
     /// Number of hold recommendations in this period.
     /// </summary>
-    public int Hold { get; set; }
+    public int? Hold { get; set; }
 
     /// <summary>
     /// Number of sell recommendations in this period.
     /// </summary>
-    public int Sell { get; set; }
+    public int? Sell { get; set; }
 
     /// <summary>
     /// Number of strong sell recommendations in this period.
     /// </summary>
-    public int StrongSell { get; set; }
+    public int? StrongSell { get; set; }
 }
