@@ -42,8 +42,57 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Create Git Push Retry Script
+        run: |
+          cat > git-push-retry.sh << 'SCRIPT_EOF'
+          #!/bin/bash
+          set -e
+
+          BRANCH="${1:-$(git branch --show-current)}"
+          MAX_RETRIES=4
+          RETRY_COUNT=0
+
+          echo "Pushing to branch: $BRANCH"
+
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            if git push -u origin "$BRANCH"; then
+              echo "✅ Push successful!"
+              exit 0
+            else
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                DELAY=$((2 ** RETRY_COUNT))  # Exponential backoff: 2s, 4s, 8s, 16s
+                echo "⚠️ Push failed. Retrying in ${DELAY}s... (Attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)"
+                sleep $DELAY
+              else
+                echo "❌ Push failed after $MAX_RETRIES attempts"
+                exit 1
+              fi
+            fi
+          done
+          SCRIPT_EOF
+
+          chmod +x git-push-retry.sh
+          echo "Created git-push-retry.sh with exponential backoff"
+
+      - name: Verify Branch Name
+        id: verify-branch
+        run: |
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          echo "Verifying branch: $BRANCH"
+
+          if [[ "$BRANCH" == "main" ]] || [[ "$BRANCH" == "develop" ]] || [[ "$BRANCH" == claude/* ]]; then
+            echo "✅ Branch verification passed: $BRANCH"
+            echo "branch_valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Branch verification failed: $BRANCH"
+            echo "Only main, develop, and claude/* branches are allowed for auto-fix"
+            echo "branch_valid=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Download workflow logs
         id: download-logs
+        if: steps.verify-branch.outputs.branch_valid == 'true'
         uses: actions/github-script@v7
         with:
           script: |
@@ -51,6 +100,7 @@ jobs:
 
             // Get the workflow run that failed
             const runId = context.payload.workflow_run.id;
+            const MAX_LOG_SIZE = 50000; // Limit log size to avoid context window issues
 
             // Get jobs for this workflow run
             const { data: jobs } = await github.rest.actions.listJobsForWorkflowRun({
@@ -65,7 +115,8 @@ jobs:
             let errorSummary = `# Build Failure Summary\n\n`;
             errorSummary += `Branch: ${context.payload.workflow_run.head_branch}\n`;
             errorSummary += `Commit: ${context.payload.workflow_run.head_sha}\n`;
-            errorSummary += `Workflow: ${context.payload.workflow_run.name}\n\n`;
+            errorSummary += `Workflow: ${context.payload.workflow_run.name}\n`;
+            errorSummary += `Failed Jobs: ${failedJobs.length}\n\n`;
 
             for (const job of failedJobs) {
               errorSummary += `## Failed Job: ${job.name}\n\n`;
@@ -78,21 +129,36 @@ jobs:
                   job_id: job.id,
                 });
 
-                errorSummary += `\`\`\`\n${logs.data}\n\`\`\`\n\n`;
+                let logData = logs.data;
+
+                // Truncate logs if too large
+                if (logData.length > MAX_LOG_SIZE) {
+                  const truncated = logData.length - MAX_LOG_SIZE;
+                  logData = logData.slice(-MAX_LOG_SIZE);
+                  errorSummary += `*Note: Log truncated, showing last ${MAX_LOG_SIZE} characters (${truncated} characters omitted)*\n\n`;
+                }
+
+                errorSummary += `\`\`\`\n${logData}\n\`\`\`\n\n`;
               } catch (error) {
-                console.log(`Could not download logs for job ${job.id}: ${error.message}`);
+                const errorMsg = `⚠️ Could not download logs for job ${job.id}: ${error.message}`;
+                console.log(errorMsg);
+                errorSummary += `${errorMsg}\n\n`;
 
                 // Fallback: get step information
                 const failedSteps = job.steps.filter(step => step.conclusion === 'failure');
-                for (const step of failedSteps) {
-                  errorSummary += `### Failed Step: ${step.name}\n`;
-                  errorSummary += `Status: ${step.conclusion}\n\n`;
+                if (failedSteps.length > 0) {
+                  errorSummary += `### Failed Steps:\n`;
+                  for (const step of failedSteps) {
+                    errorSummary += `- **${step.name}**: ${step.conclusion}\n`;
+                  }
+                  errorSummary += `\n`;
                 }
               }
             }
 
             // Write error summary to file
             fs.writeFileSync('build-errors.md', errorSummary);
+            console.log(`✅ Created build-errors.md with ${failedJobs.length} failed job(s)`);
 
             // Set output
             core.setOutput('has_failures', failedJobs.length > 0);
@@ -131,25 +197,31 @@ jobs:
 
             5. **Commit and push**: If all checks pass:
                - Create a clear commit message describing what was fixed
-               - Use: `git add .`
-               - Use: `git commit -m "fix: auto-fix build failures - <brief description>"`
-               - Push with: `git push -u origin ${{ github.event.workflow_run.head_branch }}`
+               - Stage changes: `git add .`
+               - Commit: `git commit -m "fix: auto-fix build failures - <brief description>"`
+               - Push using retry script: `bash git-push-retry.sh ${{ github.event.workflow_run.head_branch }}`
+               - The retry script implements exponential backoff (2s, 4s, 8s, 16s) automatically
 
             **IMPORTANT GUIDELINES:**
             - Only fix what's broken - don't make unrelated changes
             - Follow the project's coding standards (see CLAUDE.md)
-            - If you can't fix an issue automatically, create a detailed comment explaining why
-            - Use the retry logic for git push (up to 4 retries with exponential backoff: 2s, 4s, 8s, 16s)
+            - If you can't fix an issue automatically, provide detailed explanation
+            - The git-push-retry.sh script is already created and handles all retry logic
 
             **CRITICAL**:
-            - Before pushing, verify the branch name starts with 'claude/' and matches the session ID
             - Current branch: ${{ github.event.workflow_run.head_branch }}
-            - If the branch doesn't match the pattern, create an issue instead of pushing
+            - This branch has been pre-verified as safe for auto-fix
+            - Use the git-push-retry.sh script for pushing (it handles retries automatically)
+
+            **AVAILABLE TOOLS**:
+            - A git-push-retry.sh script is available in the root directory
+            - Use it with: bash git-push-retry.sh <branch-name>
+            - It will automatically retry up to 4 times with exponential backoff
 
             Begin analysis and fix the build failures now.
 
           # Restrict Claude to specific safe commands only
-          claude_args: '--allowed-tools "Bash(dotnet restore:*),Bash(dotnet build:*),Bash(dotnet test:*),Bash(dotnet format:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Read,Edit,Write,Grep,Glob"'
+          claude_args: '--allowed-tools "Bash(dotnet restore:*),Bash(dotnet build:*),Bash(dotnet test:*),Bash(dotnet format:*),Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(bash git-push-retry.sh:*),Bash(./git-push-retry.sh:*),Read,Edit,Write,Grep,Glob"'
 
       - name: Comment on PR if exists
         if: github.event.workflow_run.pull_requests.length > 0
