@@ -1083,6 +1083,76 @@ Located in `.github/workflows/`:
 
 **Purpose**: Claude reviews PRs for code quality, bugs, performance, security
 
+#### 4. **claude-auto-fix.yml** - Automated Build Failure Fixes
+
+**Triggers**:
+- When the CI workflow completes with failures
+- Job-level filtering for `main`, `develop`, and `claude/**` branches only
+
+**Purpose**: Automatically detects build failures and attempts to fix them
+
+**Workflow Steps**:
+1. **Setup Environment**:
+   - Checkout repository at failed commit
+   - Setup .NET 10.0 SDK
+   - Configure git with github-actions[bot] identity
+   - Create git-push-retry.sh script with exponential backoff
+
+2. **Branch Verification**:
+   - Validates branch name against allowed patterns
+   - Ensures only authorized branches receive auto-fixes
+   - Prevents accidental fixes to external contributor branches
+
+3. **Download & Analyze Logs**:
+   - Downloads workflow logs from failed jobs
+   - Truncates logs to 50,000 characters to avoid context window issues
+   - Creates build-errors.md with comprehensive error summary
+   - Includes fallback to step information if log download fails
+
+4. **Claude Auto-Fix** (with 30-minute timeout):
+   - Analyzes error logs and identifies root causes
+   - Makes necessary code changes following CLAUDE.md conventions
+   - Verifies fixes by running:
+     - `dotnet restore`
+     - `dotnet build --configuration Release`
+     - `dotnet test --filter "FullyQualifiedName~Unit"`
+     - `dotnet format`
+
+5. **Commit & Push**:
+   - Commits fixes with descriptive message
+   - Uses git-push-retry.sh script for reliable pushing
+   - Implements exponential backoff (2s, 4s, 8s, 16s delays)
+   - Up to 4 retry attempts for network resilience
+
+6. **PR Notification**:
+   - Comments on associated PR (if exists)
+   - Uses workflow_run.pull_requests for accurate PR detection
+
+**Security Features**:
+- **Restricted tool access**: Only whitelisted commands allowed
+  - Allowed: `dotnet` (restore, build, test, format)
+  - Allowed: `git` (add, commit, status, diff, log)
+  - Allowed: `bash git-push-retry.sh`
+  - Allowed: File tools (Read, Edit, Write, Grep, Glob)
+  - Blocked: All other bash commands
+- **Branch validation**: Double-checked at job and step level
+- **Timeout protection**: 30-minute limit prevents runaway jobs
+- **Log truncation**: Prevents context window attacks
+
+**Error Handling**:
+- Workflow-level retry script for git push operations
+- Log download failures fallback to step information
+- Comprehensive error messages in build-errors.md
+- Timeout prevents infinite loops
+
+**Permissions**:
+- `contents: write` - Push fixes to the repository
+- `actions: read` - Read workflow logs
+- `pull-requests: write` - Comment on PRs
+- `checks: read` - Read check results
+- `id-token: write` - Claude Code action authentication
+- `issues: read` - Read issues for context
+
 ### Pre-commit Checklist
 
 Before committing, ensure:
@@ -1123,6 +1193,7 @@ Before committing, ensure:
 | `YFinance.NET.Models/Enums/Interval.cs` | Data interval enum | Adding new intervals |
 | `YFinance.NET.Models/Exceptions/YahooFinanceException.cs` | Base exception | Adding exception types |
 | `.github/workflows/ci.yml` | CI/CD pipeline | Changing build/test process |
+| `.github/workflows/claude-auto-fix.yml` | Auto-fix build failures | Configuring auto-fix behavior |
 | `README.md` | User documentation | Adding features, examples |
 | `CLAUDE.md` | This file | Updating conventions, guidelines |
 
