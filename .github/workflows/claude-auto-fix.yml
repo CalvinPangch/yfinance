@@ -49,7 +49,7 @@ jobs:
           set -e
 
           BRANCH="${1:-$(git branch --show-current)}"
-          MAX_RETRIES=4
+          MAX_RETRIES=2
           RETRY_COUNT=0
 
           echo "Pushing to branch: $BRANCH"
