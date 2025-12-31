@@ -1,783 +1,643 @@
 # Build Failure Summary
 
-Branch: claude/fix-security-mjrem4hwy8i13ppr-qFXov
-Commit: ca8f4791000271c0b91413537c7203d59cdd81f9
+Branch: claude/compare-yfinance-features-hBw3G
+Commit: d8650052f7ff2fd444b6583803a0c6d3df6031ed
 Workflow: CI
-Failed Jobs: 2
+Failed Jobs: 3
 
 ## Failed Job: Build and Test
 
-*Note: Log truncated, showing last 50000 characters (79584 characters omitted)*
+```
+2025-12-30T06:02:48.8367615Z Current runner version: '2.330.0'
+2025-12-30T06:02:48.8392113Z ##[group]Runner Image Provisioner
+2025-12-30T06:02:48.8392978Z Hosted Compute Agent
+2025-12-30T06:02:48.8393528Z Version: 20251211.462
+2025-12-30T06:02:48.8394117Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+2025-12-30T06:02:48.8395060Z Build Date: 2025-12-11T16:28:49Z
+2025-12-30T06:02:48.8396020Z Worker ID: {2b179c06-d0de-480a-9449-c25711f5ea82}
+2025-12-30T06:02:48.8396702Z ##[endgroup]
+2025-12-30T06:02:48.8397209Z ##[group]Operating System
+2025-12-30T06:02:48.8397824Z Ubuntu
+2025-12-30T06:02:48.8398289Z 24.04.3
+2025-12-30T06:02:48.8398975Z LTS
+2025-12-30T06:02:48.8399509Z ##[endgroup]
+2025-12-30T06:02:48.8400030Z ##[group]Runner Image
+2025-12-30T06:02:48.8400533Z Image: ubuntu-24.04
+2025-12-30T06:02:48.8401082Z Version: 20251215.174.1
+2025-12-30T06:02:48.8402030Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-30T06:02:48.8403592Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+2025-12-30T06:02:48.8404909Z ##[endgroup]
+2025-12-30T06:02:48.8406239Z ##[group]GITHUB_TOKEN Permissions
+2025-12-30T06:02:48.8408090Z Checks: write
+2025-12-30T06:02:48.8408613Z Contents: read
+2025-12-30T06:02:48.8409169Z Metadata: read
+2025-12-30T06:02:48.8409719Z PullRequests: write
+2025-12-30T06:02:48.8410191Z Statuses: write
+2025-12-30T06:02:48.8410710Z ##[endgroup]
+2025-12-30T06:02:48.8413101Z Secret source: Actions
+2025-12-30T06:02:48.8413852Z Prepare workflow directory
+2025-12-30T06:02:48.8759672Z Prepare all required actions
+2025-12-30T06:02:48.8798995Z Getting action download info
+2025-12-30T06:02:49.2336609Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-30T06:02:49.3271738Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
+2025-12-30T06:02:49.7076006Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-12-30T06:02:49.8285580Z Download action repository 'dorny/test-reporter@v1' (SHA:d61b558e8df85cb60d09ca3e5b09653b4477cea7)
+2025-12-30T06:02:50.3635702Z Complete job name: Build and Test
+2025-12-30T06:02:50.4486247Z ##[group]Run actions/checkout@v4
+2025-12-30T06:02:50.4487534Z with:
+2025-12-30T06:02:50.4488406Z   repository: CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.4489729Z   token: ***
+2025-12-30T06:02:50.4490443Z   ssh-strict: true
+2025-12-30T06:02:50.4491241Z   ssh-user: git
+2025-12-30T06:02:50.4492057Z   persist-credentials: true
+2025-12-30T06:02:50.4492920Z   clean: true
+2025-12-30T06:02:50.4493686Z   sparse-checkout-cone-mode: true
+2025-12-30T06:02:50.4495009Z   fetch-depth: 1
+2025-12-30T06:02:50.4495781Z   fetch-tags: false
+2025-12-30T06:02:50.4496549Z   show-progress: true
+2025-12-30T06:02:50.4497334Z   lfs: false
+2025-12-30T06:02:50.4498043Z   submodules: false
+2025-12-30T06:02:50.4498830Z   set-safe-directory: true
+2025-12-30T06:02:50.4499946Z ##[endgroup]
+2025-12-30T06:02:50.5637996Z Syncing repository: CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.5642278Z ##[group]Getting Git version info
+2025-12-30T06:02:50.5645090Z Working directory is '/home/runner/work/YFinance.NET/YFinance.NET'
+2025-12-30T06:02:50.5647381Z [command]/usr/bin/git version
+2025-12-30T06:02:50.5718351Z git version 2.52.0
+2025-12-30T06:02:50.5746026Z ##[endgroup]
+2025-12-30T06:02:50.5762930Z Temporarily overriding HOME='/home/runner/work/_temp/562265c1-6bf4-42d1-82ca-67344296d153' before making global git config changes
+2025-12-30T06:02:50.5767830Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T06:02:50.5771747Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:02:50.5810708Z Deleting the contents of '/home/runner/work/YFinance.NET/YFinance.NET'
+2025-12-30T06:02:50.5814531Z ##[group]Initializing the repository
+2025-12-30T06:02:50.5819570Z [command]/usr/bin/git init /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:02:50.5921703Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-30T06:02:50.5924512Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-30T06:02:50.5927721Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-30T06:02:50.5930246Z hint: call:
+2025-12-30T06:02:50.5931490Z hint:
+2025-12-30T06:02:50.5933066Z hint: 	git config --global init.defaultBranch <name>
+2025-12-30T06:02:50.5935202Z hint:
+2025-12-30T06:02:50.5937088Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-30T06:02:50.5940232Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-30T06:02:50.5942614Z hint:
+2025-12-30T06:02:50.5943795Z hint: 	git branch -m <name>
+2025-12-30T06:02:50.5945381Z hint:
+2025-12-30T06:02:50.5946754Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-30T06:02:50.5948738Z Initialized empty Git repository in /home/runner/work/YFinance.NET/YFinance.NET/.git/
+2025-12-30T06:02:50.5952916Z [command]/usr/bin/git remote add origin https://github.com/CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.5975325Z ##[endgroup]
+2025-12-30T06:02:50.5977713Z ##[group]Disabling automatic garbage collection
+2025-12-30T06:02:50.5979882Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-30T06:02:50.6009481Z ##[endgroup]
+2025-12-30T06:02:50.6011697Z ##[group]Setting up auth
+2025-12-30T06:02:50.6017138Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T06:02:50.6049912Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T06:02:50.6380843Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T06:02:50.6411224Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T06:02:50.6641371Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T06:02:50.6675142Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T06:02:50.6895347Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-30T06:02:50.6929690Z ##[endgroup]
+2025-12-30T06:02:50.6932031Z ##[group]Fetching the repository
+2025-12-30T06:02:50.6941032Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +149da10551655e08884fd10692b7cd2d7cc993df:refs/remotes/pull/7/merge
+2025-12-30T06:02:50.9555717Z From https://github.com/CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.9559530Z  * [new ref]         149da10551655e08884fd10692b7cd2d7cc993df -> pull/7/merge
+2025-12-30T06:02:50.9602411Z ##[endgroup]
+2025-12-30T06:02:50.9604925Z ##[group]Determining the checkout info
+2025-12-30T06:02:50.9607395Z ##[endgroup]
+2025-12-30T06:02:50.9608797Z [command]/usr/bin/git sparse-checkout disable
+2025-12-30T06:02:50.9657463Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-30T06:02:50.9686066Z ##[group]Checking out the ref
+2025-12-30T06:02:50.9689360Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/7/merge
+2025-12-30T06:02:50.9809661Z Note: switching to 'refs/remotes/pull/7/merge'.
+2025-12-30T06:02:50.9810711Z 
+2025-12-30T06:02:50.9811641Z You are in 'detached HEAD' state. You can look around, make experimental
+2025-12-30T06:02:50.9813701Z changes and commit them, and you can discard any commits you make in this
+2025-12-30T06:02:50.9816815Z state without impacting any branches by switching back to a branch.
+2025-12-30T06:02:50.9818573Z 
+2025-12-30T06:02:50.9819692Z If you want to create a new branch to retain commits you create, you may
+2025-12-30T06:02:50.9822769Z do so (now or later) by using -c with the switch command. Example:
+2025-12-30T06:02:50.9824622Z 
+2025-12-30T06:02:50.9825282Z   git switch -c <new-branch-name>
+2025-12-30T06:02:50.9826314Z 
+2025-12-30T06:02:50.9826868Z Or undo this operation with:
+2025-12-30T06:02:50.9827807Z 
+2025-12-30T06:02:50.9828297Z   git switch -
+2025-12-30T06:02:50.9829004Z 
+2025-12-30T06:02:50.9830095Z Turn off this advice by setting config variable advice.detachedHead to false
+2025-12-30T06:02:50.9831191Z 
+2025-12-30T06:02:50.9832368Z HEAD is now at 149da10 Merge d8650052f7ff2fd444b6583803a0c6d3df6031ed into 71fb9da4e8d5107b786fc55175e6a45ef90f93e3
+2025-12-30T06:02:50.9836890Z ##[endgroup]
+2025-12-30T06:02:50.9856305Z [command]/usr/bin/git log -1 --format=%H
+2025-12-30T06:02:50.9878282Z 149da10551655e08884fd10692b7cd2d7cc993df
+2025-12-30T06:02:51.0279903Z ##[group]Run actions/setup-dotnet@v4
+2025-12-30T06:02:51.0280862Z with:
+2025-12-30T06:02:51.0281513Z   dotnet-version: 10.0.x
+2025-12-30T06:02:51.0282314Z   cache: false
+2025-12-30T06:02:51.0282972Z ##[endgroup]
+2025-12-30T06:02:51.2048102Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2025-12-30T06:02:51.4753626Z dotnet-install: .NET Core Runtime with version '10.0.1' is already installed.
+2025-12-30T06:02:51.4784851Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
+2025-12-30T06:02:51.7278326Z dotnet-install: .NET Core SDK with version '10.0.101' is already installed.
+2025-12-30T06:02:51.7445229Z ##[group]Run dotnet restore
+2025-12-30T06:02:51.7446234Z [36;1mdotnet restore[0m
+2025-12-30T06:02:51.7487617Z shell: /usr/bin/bash -e {0}
+2025-12-30T06:02:51.7488472Z env:
+2025-12-30T06:02:51.7489150Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:02:51.7490016Z ##[endgroup]
+2025-12-30T06:03:03.3980024Z   Determining projects to restore...
+2025-12-30T06:03:05.5324038Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj (in 516 ms).
+2025-12-30T06:03:05.5326189Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/YFinance.NET.Models.csproj (in 516 ms).
+2025-12-30T06:03:09.0578707Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj (in 4.11 sec).
+2025-12-30T06:03:09.1151478Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/YFinance.NET.Tests.csproj (in 4.17 sec).
+2025-12-30T06:03:09.1591742Z ##[group]Run dotnet build --configuration Release --no-restore
+2025-12-30T06:03:09.1592228Z [36;1mdotnet build --configuration Release --no-restore[0m
+2025-12-30T06:03:09.1624565Z shell: /usr/bin/bash -e {0}
+2025-12-30T06:03:09.1624812Z env:
+2025-12-30T06:03:09.1624999Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:03:09.1625239Z ##[endgroup]
+2025-12-30T06:03:18.2504944Z   YFinance.NET.Models -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/bin/Release/net10.0/YFinance.NET.Models.dll
+2025-12-30T06:03:18.7040035Z   YFinance.NET.Interfaces -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/bin/Release/net10.0/YFinance.NET.Interfaces.dll
+2025-12-30T06:03:20.2087321Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2109669Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2116614Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2122485Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2128582Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2134703Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2139737Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2145118Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2148082Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2151125Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2275450Z 
+2025-12-30T06:03:20.2275830Z Build FAILED.
+2025-12-30T06:03:20.2276101Z 
+2025-12-30T06:03:20.2279039Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2284783Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2288208Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2291061Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2293814Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2298647Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2302100Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2305778Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2309294Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2312769Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:20.2314809Z     5 Warning(s)
+2025-12-30T06:03:20.2315020Z     5 Error(s)
+2025-12-30T06:03:20.2315163Z 
+2025-12-30T06:03:20.2315294Z Time Elapsed 00:00:10.71
+2025-12-30T06:03:20.2770188Z ##[error]Process completed with exit code 1.
+2025-12-30T06:03:20.2851932Z ##[group]Run actions/upload-artifact@v4
+2025-12-30T06:03:20.2852239Z with:
+2025-12-30T06:03:20.2852417Z   name: test-results
+2025-12-30T06:03:20.2852643Z   path: **/TestResults/*.trx
+
+2025-12-30T06:03:20.2852877Z   retention-days: 30
+2025-12-30T06:03:20.2853099Z   if-no-files-found: warn
+2025-12-30T06:03:20.2853322Z   compression-level: 6
+2025-12-30T06:03:20.2853524Z   overwrite: false
+2025-12-30T06:03:20.2853729Z   include-hidden-files: false
+2025-12-30T06:03:20.2853958Z env:
+2025-12-30T06:03:20.2854142Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:03:20.2854623Z ##[endgroup]
+2025-12-30T06:03:20.6214596Z ##[warning]No files were found with the provided path: **/TestResults/*.trx. No artifacts will be uploaded.
+2025-12-30T06:03:20.6399872Z ##[group]Run dorny/test-reporter@v1
+2025-12-30T06:03:20.6400360Z with:
+2025-12-30T06:03:20.6400699Z   name: Test Results
+2025-12-30T06:03:20.6401096Z   path: **/TestResults/*.trx
+2025-12-30T06:03:20.6401505Z   reporter: dotnet-trx
+2025-12-30T06:03:20.6401894Z   fail-on-error: false
+2025-12-30T06:03:20.6402282Z   path-replace-backslashes: false
+2025-12-30T06:03:20.6402688Z   list-suites: all
+2025-12-30T06:03:20.6402993Z   list-tests: all
+2025-12-30T06:03:20.6403323Z   max-annotations: 10
+2025-12-30T06:03:20.6403670Z   fail-on-empty: true
+2025-12-30T06:03:20.6404030Z   only-summary: false
+2025-12-30T06:03:20.6404789Z   token: ***
+2025-12-30T06:03:20.6405093Z env:
+2025-12-30T06:03:20.6405387Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:03:20.6405758Z ##[endgroup]
+2025-12-30T06:03:20.7936626Z Action was triggered by pull_request: using SHA from head of source branch
+2025-12-30T06:03:20.7937804Z Check runs will be created with SHA=d8650052f7ff2fd444b6583803a0c6d3df6031ed
+2025-12-30T06:03:20.7939628Z ##[group]Listing all files tracked by git
+2025-12-30T06:03:20.7971741Z [command]/usr/bin/git ls-files -z
+2025-12-30T06:03:20.8119161Z .github/workflows/ci.yml .github/workflows/claude-auto-fix.yml .github/workflows/claude-code-review.yml .github/workflows/claude.yml .gitignore CLAUDE.md PR_DESCRIPTION.md README.md SECURITY_FIX_SUMMARY.md YFinance.NET.Implementation/CalendarService.cs YFinance.NET.Implementation/Constants/YahooFinanceConstants.cs YFinance.NET.Implementation/DependencyInjection/ServiceCollectionExtensions.cs YFinance.NET.Implementation/DomainService.cs YFinance.NET.Implementation/IsinService.cs YFinance.NET.Implementation/LiveMarketService.cs YFinance.NET.Implementation/MarketService.cs YFinance.NET.Implementation/MultiTickerService.cs YFinance.NET.Implementation/Properties/AssemblyInfo.cs YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs YFinance.NET.Implementation/Scrapers/CalendarScraper.cs YFinance.NET.Implementation/Scrapers/CalendarVisualizationScraper.cs YFinance.NET.Implementation/Scrapers/EarningsScraper.cs YFinance.NET.Implementation/Scrapers/EsgScraper.cs YFinance.NET.Implementation/Scrapers/FastInfoScraper.cs YFinance.NET.Implementation/Scrapers/FundamentalsScraper.cs YFinance.NET.Implementation/Scrapers/FundsScraper.cs YFinance.NET.Implementation/Scrapers/HistoryScraper.cs YFinance.NET.Implementation/Scrapers/HoldersScraper.cs YFinance.NET.Implementation/Scrapers/InfoScraper.cs YFinance.NET.Implementation/Scrapers/LookupScraper.cs YFinance.NET.Implementation/Scrapers/NewsScraper.cs YFinance.NET.Implementation/Scrapers/OptionsScraper.cs YFinance.NET.Implementation/Scrapers/QuoteScraper.cs YFinance.NET.Implementation/Scrapers/ScreenerScraper.cs YFinance.NET.Implementation/Scrapers/SearchScraper.cs YFinance.NET.Implementation/Scrapers/SharesScraper.cs YFinance.NET.Implementation/Services/CacheService.cs YFinance.NET.Implementation/Services/CookieService.cs YFinance.NET.Implementation/Services/RateLimitService.cs YFinance.NET.Implementation/TickerService.cs YFinance.NET.Implementation/Tickers.cs YFinance.NET.Implementation/Utils/DataParser.cs YFinance.NET.Implementation/Utils/JsonElementExtensions.cs YFinance.NET.Implementation/Utils/PriceRepair.cs YFinance.NET.Implementation/Utils/SymbolValidator.cs YFinance.NET.Implementation/Utils/TimezoneHelper.cs YFinance.NET.Implementation/YFinance.NET.Implementation.csproj YFinance.NET.Implementation/YahooFinanceClient.cs YFinance.NET.Interfaces/ICalendarService.cs YFinance.NET.Interfaces/IDomainService.cs YFinance.NET.Interfaces/IIsinService.cs YFinance.NET.Interfaces/ILiveMarketService.cs YFinance.NET.Interfaces/IMarketService.cs YFinance.NET.Interfaces/IMultiTickerService.cs YFinance.NET.Interfaces/ITickerService.cs YFinance.NET.Interfaces/IYahooFinanceClient.cs YFinance.NET.Interfaces/Scrapers/IAnalysisScraper.cs YFinance.NET.Interfaces/Scrapers/ICalendarScraper.cs YFinance.NET.Interfaces/Scrapers/ICalendarVisualizationScraper.cs YFinance.NET.Interfaces/Scrapers/IEarningsScraper.cs YFinance.NET.Interfaces/Scrapers/IEsgScraper.cs YFinance.NET.Interfaces/Scrapers/IFastInfoScraper.cs YFinance.NET.Interfaces/Scrapers/IFundamentalsScraper.cs YFinance.NET.Interfaces/Scrapers/IFundsScraper.cs YFinance.NET.Interfaces/Scrapers/IHistoryScraper.cs YFinance.NET.Interfaces/Scrapers/IHoldersScraper.cs YFinance.NET.Interfaces/Scrapers/IInfoScraper.cs YFinance.NET.Interfaces/Scrapers/ILookupScraper.cs YFinance.NET.Interfaces/Scrapers/INewsScraper.cs YFinance.NET.Interfaces/Scrapers/IOptionsScraper.cs YFinance.NET.Interfaces/Scrapers/IQuoteScraper.cs YFinance.NET.Interfaces/Scrapers/IScreenerScraper.cs YFinance.NET.Interfaces/Scrapers/ISearchScraper.cs YFinance.NET.Interfaces/Scrapers/ISharesScraper.cs YFinance.NET.Interfaces/Services/ICacheService.cs YFinance.NET.Interfaces/Services/ICookieService.cs YFinance.NET.Interfaces/Services/IRateLimitService.cs YFinance.NET.Interfaces/Utils/IDataParser.cs YFinance.NET.Interfaces/Utils/IPriceRepair.cs YFinance.NET.Interfaces/Utils/ISymbolValidator.cs YFinance.NET.Interfaces/Utils/ITimezoneHelper.cs YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj YFinance.NET.Models/ActionData.cs YFinance.NET.Models/ActionsData.cs YFinance.NET.Models/AnalystData.cs YFinance.NET.Models/CalendarData.cs YFinance.NET.Models/CalendarQuery.cs YFinance.NET.Models/CalendarRequest.cs YFinance.NET.Models/CalendarResult.cs YFinance.NET.Models/DomainData.cs YFinance.NET.Models/EarningsData.cs YFinance.NET.Models/Enums/Interval.cs YFinance.NET.Models/Enums/LookupType.cs YFinance.NET.Models/Enums/Period.cs YFinance.NET.Models/Enums/StatementType.cs YFinance.NET.Models/EsgData.cs YFinance.NET.Models/Exceptions/DataParsingException.cs YFinance.NET.Models/Exceptions/InvalidTickerException.cs YFinance.NET.Models/Exceptions/RateLimitException.cs YFinance.NET.Models/Exceptions/YahooFinanceException.cs YFinance.NET.Models/FastInfo.cs YFinance.NET.Models/FastInfoData.cs YFinance.NET.Models/FinancialStatement.cs YFinance.NET.Models/FundsData.cs YFinance.NET.Models/HistoricalData.cs YFinance.NET.Models/HistoryMetadata.cs YFinance.NET.Models/HolderData.cs YFinance.NET.Models/InfoData.cs YFinance.NET.Models/LivePriceData.cs YFinance.NET.Models/LookupResult.cs YFinance.NET.Models/MajorHoldersData.cs YFinance.NET.Models/NewsItem.cs YFinance.NET.Models/OptionsData.cs YFinance.NET.Models/QuoteData.cs YFinance.NET.Models/RecommendationData.cs YFinance.NET.Models/RecommendationsSummaryData.cs YFinance.NET.Models/Requests/ActionsRequest.cs YFinance.NET.Models/Requests/EarningsDatesRequest.cs YFinance.NET.Models/Requests/HistoryRequest.cs YFinance.NET.Models/Requests/LookupRequest.cs YFinance.NET.Models/Requests/NewsRequest.cs YFinance.NET.Models/Requests/OptionChainRequest.cs YFinance.NET.Models/Requests/ScreenerRequest.cs YFinance.NET.Models/Requests/SearchRequest.cs YFinance.NET.Models/Requests/SharesHistoryRequest.cs YFinance.NET.Models/ScreenerPredefinedQueries.cs YFinance.NET.Models/ScreenerQuery.cs YFinance.NET.Models/ScreenerResult.cs YFinance.NET.Models/SearchResult.cs YFinance.NET.Models/SharesData.cs YFinance.NET.Models/YFinance.NET.Models.csproj YFinance.NET.Tests/Integration/TickerServiceIntegrationTests.cs YFinance.NET.Tests/TestFixtures/MockHttpMessageHandler.cs YFinance.NET.Tests/TestFixtures/MockYahooFinanceClient.cs YFinance.NET.Tests/TestFixtures/TestDataBuilder.cs YFinance.NET.Tests/Unit/MultiTickerServiceTests.cs YFinance.NET.Tests/Unit/Scrapers/AnalysisScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/CalendarScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/EarningsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/EsgScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/FundamentalsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/FundsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/HoldersScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/LookupScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/NewsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/OptionsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/QuoteScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/ScreenerScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/SearchScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/SharesScraperTests.cs YFinance.NET.Tests/Unit/Services/RateLimitServiceTests.cs YFinance.NET.Tests/Unit/TickerServiceTests.cs YFinance.NET.Tests/Unit/Utils/DataParserTests.cs YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs YFinance.NET.Tests/Unit/YahooFinanceClientTests.cs YFinance.NET.Tests/YFinance.NET.Tests.csproj YFinance.NET.sln build-errors.md build.log git-push-retry.sh global.json 
+2025-12-30T06:03:20.8176512Z ##[endgroup]
+2025-12-30T06:03:20.8176994Z Found 162 files tracked by GitHub
+2025-12-30T06:03:20.8177546Z Using test report parser 'dotnet-trx'
+2025-12-30T06:03:20.8221181Z ##[group]Creating test report Test Results
+2025-12-30T06:03:20.8228183Z ##[warning]No file matches path **/TestResults/*.trx
+2025-12-30T06:03:20.8229854Z ##[endgroup]
+2025-12-30T06:03:20.8238650Z ##[error]No test report files were found
+2025-12-30T06:03:20.8371935Z Post job cleanup.
+2025-12-30T06:03:20.9365072Z [command]/usr/bin/git version
+2025-12-30T06:03:20.9442035Z git version 2.52.0
+2025-12-30T06:03:20.9509118Z Temporarily overriding HOME='/home/runner/work/_temp/7afc89b5-0f15-49e0-82b0-ca58c06d8884' before making global git config changes
+2025-12-30T06:03:20.9511230Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T06:03:20.9517958Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:03:20.9578552Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T06:03:20.9622591Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T06:03:20.9886757Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T06:03:20.9912705Z http.https://github.com/.extraheader
+2025-12-30T06:03:20.9927518Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-30T06:03:20.9964401Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T06:03:21.0215845Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T06:03:21.0252382Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T06:03:21.0740158Z Cleaning up orphan processes
+2025-12-30T06:03:21.1077573Z Terminate orphan process: pid (2345) (dotnet)
+2025-12-30T06:03:21.1097415Z Terminate orphan process: pid (2346) (dotnet)
+2025-12-30T06:03:21.1116787Z Terminate orphan process: pid (2347) (dotnet)
+2025-12-30T06:03:21.1145494Z Terminate orphan process: pid (2468) (VBCSCompiler)
 
 ```
-tion.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:42.3853408Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:42.3855199Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3857464Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3859511Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3861971Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 215
-2025-12-30T04:02:42.3864095Z    at InvokeStub_SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(Object, Span`1)
-2025-12-30T04:02:42.3865997Z    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:42.3867851Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(symbol: "%2E") [< 1 ms]
-2025-12-30T04:02:42.3868992Z   Error Message:
-2025-12-30T04:02:42.3870375Z    Expected exception message to match the equivalent of "Symbol contains URL-encoded characters*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:42.3871164Z 
-2025-12-30T04:02:42.3871242Z   Stack Trace:
-2025-12-30T04:02:42.3871578Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:42.3872100Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:42.3872712Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:42.3873459Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:42.3874266Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3875838Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3876902Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3878207Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 215
-2025-12-30T04:02:42.3879401Z    at InvokeStub_SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(Object, Span`1)
-2025-12-30T04:02:42.3880281Z    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:42.3881202Z   Passed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_ValidSymbol_DoesNotThrow [< 1 ms]
-2025-12-30T04:02:42.3882205Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: OneHour, expectedInterval: "1h") [7 ms]
-2025-12-30T04:02:42.3883206Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_OnlyInvalidCharacters_ReturnsEmpty [< 1 ms]
-2025-12-30T04:02:42.3883715Z   Error Message:
-2025-12-30T04:02:42.3883928Z    Expected result to be empty, but found "^".
-2025-12-30T04:02:42.3884187Z   Stack Trace:
-2025-12-30T04:02:42.3884691Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:42.3885227Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:42.3885803Z    at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
-2025-12-30T04:02:42.3886386Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:42.3886918Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:42.3887472Z    at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
-2025-12-30T04:02:42.3888103Z    at FluentAssertions.Primitives.StringAssertions`1.BeEmpty(String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3889175Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_OnlyInvalidCharacters_ReturnsEmpty() in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 403
-2025-12-30T04:02:42.3890214Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
-2025-12-30T04:02:42.3890866Z    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-2025-12-30T04:02:42.3891561Z   Passed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.IsValid_ExactlyMaxLength_ReturnsTrue [< 1 ms]
-2025-12-30T04:02:42.3892451Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(symbol: "AAPL/../admin") [1 ms]
-2025-12-30T04:02:42.3893090Z   Error Message:
-2025-12-30T04:02:42.3893874Z    Expected exception message to match the equivalent of "Symbol contains path traversal sequences*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:42.3894808Z 
-2025-12-30T04:02:42.3894881Z   Stack Trace:
-2025-12-30T04:02:42.3895202Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:42.3895711Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:42.3896487Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:42.3897032Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:42.3897928Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3899117Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3900219Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3901527Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 201
-2025-12-30T04:02:42.3902671Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
-2025-12-30T04:02:42.3903424Z    at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
-2025-12-30T04:02:42.3904988Z [xUnit.net 00:00:00.72]       Expected exception message to match the equivalent of "Symbol contains path traversal sequences*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:42.3905910Z [xUnit.net 00:00:00.72]       
-2025-12-30T04:02:42.3906172Z [xUnit.net 00:00:00.72]       Stack Trace:
-2025-12-30T04:02:42.3906684Z [xUnit.net 00:00:00.72]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:42.3907383Z [xUnit.net 00:00:00.72]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:42.3908181Z [xUnit.net 00:00:00.72]            at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:42.3908892Z [xUnit.net 00:00:00.72]            at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:42.3909920Z [xUnit.net 00:00:00.72]            at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3911333Z [xUnit.net 00:00:00.72]            at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3912599Z [xUnit.net 00:00:00.72]            at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3914209Z [xUnit.net 00:00:00.72]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs(201,0): at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(String symbol)
-2025-12-30T04:02:42.3915814Z [xUnit.net 00:00:00.72]            at InvokeStub_SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(Object, Span`1)
-2025-12-30T04:02:42.3916937Z [xUnit.net 00:00:00.73]            at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:42.3918083Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(symbol: "../../../etc/passwd") [< 1 ms]
-2025-12-30T04:02:42.3918756Z   Error Message:
-2025-12-30T04:02:42.3919539Z    Expected exception message to match the equivalent of "Symbol contains path traversal sequences*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:42.3920872Z 
-2025-12-30T04:02:42.3921219Z   Stack Trace:
-2025-12-30T04:02:42.3921855Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:42.3923076Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:42.3924216Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:42.3925456Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:42.3926968Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3929266Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3931372Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:42.3933933Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 201
-2025-12-30T04:02:42.3936390Z    at InvokeStub_SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(Object, Span`1)
-2025-12-30T04:02:42.3938110Z    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:42.3940294Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: FiveDays, expectedInterval: "5d") [2 ms]
-2025-12-30T04:02:42.3942064Z   Passed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.IsValid_TooLongSymbol_ReturnsFalse [< 1 ms]
-2025-12-30T04:02:42.3943545Z   Passed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_OnlyLeadingInvalidChars_ReturnsEmpty [< 1 ms]
-2025-12-30T04:02:42.3945305Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_StatusCode429_ReturnsTrue [< 1 ms]
-2025-12-30T04:02:42.3947297Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: TwoMinutes, expectedInterval: "2m") [6 ms]
-2025-12-30T04:02:42.3949742Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: SixtyMinutes, expectedInterval: "60m") [6 ms]
-2025-12-30T04:02:42.3952140Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: FiveMinutes, expectedInterval: "5m") [8 ms]
-2025-12-30T04:02:42.3954762Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: OneMinute, expectedInterval: "1m") [4 ms]
-2025-12-30T04:02:42.3957149Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: OneDay, expectedInterval: "1d") [3 ms]
-2025-12-30T04:02:42.3959450Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: NinetyMinutes, expectedInterval: "90m") [4 ms]
-2025-12-30T04:02:42.3961502Z   Passed YFinance.NET.Tests.Unit.Scrapers.HoldersScraperTests.GetHoldersAsync_ValidResponse_ReturnsHoldersData [42 ms]
-2025-12-30T04:02:42.3963161Z   Passed YFinance.NET.Tests.Unit.Scrapers.FundsScraperTests.Constructor_NullDataParser_ThrowsArgumentNullException [1 ms]
-2025-12-30T04:02:42.3965418Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_VariousIntervals_BuildsCorrectQueryParam(interval: ThirtyMinutes, expectedInterval: "30m") [2 ms]
-2025-12-30T04:02:42.3967555Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_WithStartEndDates_BuildsUnixTimestamps [4 ms]
-2025-12-30T04:02:42.4047781Z [xUnit.net 00:00:00.77]     YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "   ") [FAIL]
-2025-12-30T04:02:42.4049479Z [xUnit.net 00:00:00.77]       Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:42.4050325Z [xUnit.net 00:00:00.77]       Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:42.4052289Z [xUnit.net 00:00:00.77]       Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:42.4054052Z [xUnit.net 00:00:00.77]       ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:42.4112104Z [xUnit.net 00:00:00.77]       Stack Trace:
-2025-12-30T04:02:42.4121511Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs(380,0): at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol)
-2025-12-30T04:02:42.4123813Z [xUnit.net 00:00:00.78]         --- End of stack trace from previous location ---
-2025-12-30T04:02:42.4124951Z [xUnit.net 00:00:00.78]         ----- Inner Stack Trace -----
-2025-12-30T04:02:42.4131731Z [xUnit.net 00:00:00.78]     YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: null) [FAIL]
-2025-12-30T04:02:42.4133405Z [xUnit.net 00:00:00.78]            at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:42.4134835Z [xUnit.net 00:00:00.78]            at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:42.4136210Z [xUnit.net 00:00:00.78]            at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:42.4138968Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs(149,0): at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request)
-2025-12-30T04:02:42.4142989Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs(61,0): at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken)
-2025-12-30T04:02:42.4170268Z [xUnit.net 00:00:00.78]     YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "") [FAIL]
-2025-12-30T04:02:42.4171953Z [xUnit.net 00:00:00.78]       Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:42.4172959Z [xUnit.net 00:00:00.78]       Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:42.4173918Z [xUnit.net 00:00:00.78]       Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:42.4175250Z [xUnit.net 00:00:00.78]       ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:42.4176177Z [xUnit.net 00:00:00.78]       Stack Trace:
-2025-12-30T04:02:42.4178517Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs(380,0): at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol)
-2025-12-30T04:02:42.4180833Z [xUnit.net 00:00:00.78]         --- End of stack trace from previous location ---
-2025-12-30T04:02:42.4181646Z [xUnit.net 00:00:00.78]         ----- Inner Stack Trace -----
-2025-12-30T04:02:42.4182529Z [xUnit.net 00:00:00.78]            at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:42.4183742Z [xUnit.net 00:00:00.78]            at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:42.4185354Z [xUnit.net 00:00:00.78]            at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:42.4188381Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs(149,0): at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request)
-2025-12-30T04:02:42.4192507Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs(61,0): at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken)
-2025-12-30T04:02:42.4195202Z [xUnit.net 00:00:00.78]       Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:42.4196173Z [xUnit.net 00:00:00.78]       Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:42.4197009Z [xUnit.net 00:00:00.78]       Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:42.4198082Z [xUnit.net 00:00:00.78]       ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:42.4198958Z [xUnit.net 00:00:00.78]       Stack Trace:
-2025-12-30T04:02:42.4201265Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs(380,0): at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol)
-2025-12-30T04:02:42.4203535Z [xUnit.net 00:00:00.78]         --- End of stack trace from previous location ---
-2025-12-30T04:02:42.4204713Z [xUnit.net 00:00:00.78]         ----- Inner Stack Trace -----
-2025-12-30T04:02:42.4205637Z [xUnit.net 00:00:00.78]            at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:42.4206864Z [xUnit.net 00:00:00.78]            at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:42.4208371Z [xUnit.net 00:00:00.78]            at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:42.4211192Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs(149,0): at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request)
-2025-12-30T04:02:42.4215356Z [xUnit.net 00:00:00.78]         /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs(61,0): at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken)
-2025-12-30T04:02:42.4232910Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_ValidResponse_ParsesCorrectly [14 ms]
-2025-12-30T04:02:42.4236267Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetEsgAsync_DelegatesToEsgScraper [29 ms]
-2025-12-30T04:02:42.4240674Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_EmptyResponse_ReturnsEmptyData [5 ms]
-2025-12-30T04:02:42.4242062Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetNewsAsync_DelegatesToNewsScraper [6 ms]
-2025-12-30T04:02:42.4243632Z   Failed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "   ") [1 ms]
-2025-12-30T04:02:42.4245066Z   Error Message:
-2025-12-30T04:02:42.4245527Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:42.4246742Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:42.4247455Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:42.4248302Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:42.4249012Z   Stack Trace:
-2025-12-30T04:02:42.4251047Z      at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs:line 380
-2025-12-30T04:02:42.4253075Z --- End of stack trace from previous location ---
-2025-12-30T04:02:42.4253630Z ----- Inner Stack Trace -----
-2025-12-30T04:02:42.4254571Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:42.4255430Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:42.4256424Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:42.4258637Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 149
-2025-12-30T04:02:42.4262070Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 61
-2025-12-30T04:02:42.4265078Z   Failed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: null) [7 ms]
-2025-12-30T04:02:42.4266288Z   Error Message:
-2025-12-30T04:02:42.4266795Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:42.4267520Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:42.4268154Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:42.4269062Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:42.4269752Z   Stack Trace:
-2025-12-30T04:02:42.4271390Z      at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs:line 380
-2025-12-30T04:02:42.4273483Z --- End of stack trace from previous location ---
-2025-12-30T04:02:42.4274048Z ----- Inner Stack Trace -----
-2025-12-30T04:02:42.4274847Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:42.4275715Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:42.4276765Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:42.4278980Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 149
-2025-12-30T04:02:42.4282470Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 61
-2025-12-30T04:02:42.4285161Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetQuoteAsync_DelegatesToQuoteScraper [9 ms]
-2025-12-30T04:02:42.4286852Z   Failed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "") [1 ms]
-2025-12-30T04:02:42.4288114Z   Error Message:
-2025-12-30T04:02:42.4288625Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:42.4289327Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:42.4289951Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:42.4290772Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:42.4291474Z   Stack Trace:
-2025-12-30T04:02:42.4293246Z      at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs:line 380
-2025-12-30T04:02:42.4309298Z --- End of stack trace from previous location ---
-2025-12-30T04:02:42.4309934Z ----- Inner Stack Trace -----
-2025-12-30T04:02:42.4310733Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:42.4311631Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:42.4312921Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:42.4316118Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 149
-2025-12-30T04:02:42.4319542Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 61
-2025-12-30T04:02:42.4376074Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetFundsDataAsync_DelegatesToFundsScraper [3 ms]
-2025-12-30T04:02:42.4378811Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetUpgradesDowngradesAsync_DelegatesToAnalysisScraper [2 ms]
-2025-12-30T04:02:42.4380524Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_WithoutAdjustedClose_UsesRegularClose [12 ms]
-2025-12-30T04:02:42.4382168Z   Passed YFinance.NET.Tests.Unit.Scrapers.FundsScraperTests.GetFundsDataAsync_ValidResponse_ParsesData [55 ms]
-2025-12-30T04:02:42.4383753Z   Passed YFinance.NET.Tests.Unit.Scrapers.FundsScraperTests.Constructor_NullClient_ThrowsArgumentNullException [< 1 ms]
-2025-12-30T04:02:42.4385547Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetCalendarAsync_DelegatesToCalendarScraper [6 ms]
-2025-12-30T04:02:42.4387071Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_WithStockSplits_IncludesSplitData [5 ms]
-2025-12-30T04:02:42.4587338Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetRecommendationsAsync_DelegatesToAnalysisScraper [3 ms]
-2025-12-30T04:02:42.4593988Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_CancellationRequested_PropagatesToken [2 ms]
-2025-12-30T04:02:42.4597069Z   Passed YFinance.NET.Tests.Unit.TickerServiceTests.GetSharesHistoryAsync_DelegatesToSharesScraper [7 ms]
-2025-12-30T04:02:42.4598790Z   Passed YFinance.NET.Tests.Unit.Scrapers.SharesScraperTests.GetSharesHistoryAsync_ValidResponse_ReturnsEntries [19 ms]
-2025-12-30T04:02:42.4600394Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseLongArray_WithNulls_ReturnsZeroForNulls [1 ms]
-2025-12-30T04:02:42.4601838Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseLongArray_ValidData_ReturnsCorrectArray [< 1 ms]
-2025-12-30T04:02:42.4603257Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ExtractDecimal_RawFormat_ReturnsRawValue [< 1 ms]
-2025-12-30T04:02:42.4647431Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_WeeklyInterval_ResamplesToWeeklyBars [16 ms]
-2025-12-30T04:02:42.4668661Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ExtractDecimal_StringNumber_ParsesCorrectly [< 1 ms]
-2025-12-30T04:02:42.4670079Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ExtractDecimal_Null_ReturnsNull [< 1 ms]
-2025-12-30T04:02:42.4671524Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.UnixTimestampToDateTime_Seconds_ConvertsCorrectly [< 1 ms]
-2025-12-30T04:02:42.4673178Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.UnixTimestampToDateTime_Milliseconds_ConvertsCorrectly [< 1 ms]
-2025-12-30T04:02:42.4675082Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_AlwaysIncludesDividendsAndSplits [3 ms]
-2025-12-30T04:02:42.4676807Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.Constructor_NullClient_ThrowsArgumentNullException [1 ms]
-2025-12-30T04:02:42.4678397Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseArray_WithDefaultValue_UsesDefaultForNulls [4 ms]
-2025-12-30T04:02:42.4796772Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseDecimalArray_MissingProperty_ReturnsEmptyArray [< 1 ms]
-2025-12-30T04:02:42.4798424Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidRequest_ThrowsArgumentException [3 ms]
-2025-12-30T04:02:42.4799813Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.Parse_ValidJson_DeserializesCorrectly [7 ms]
-2025-12-30T04:02:42.4800574Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_MissingTimezone_DefaultsToUTC [4 ms]
-2025-12-30T04:02:42.4801377Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseDecimalArray_WithNulls_ReturnsZeroForNulls [1 ms]
-2025-12-30T04:02:42.4802164Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseDecimalArray_EmptyArray_ReturnsEmptyArray [< 1 ms]
-2025-12-30T04:02:42.4803032Z   Passed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.Constructor_NullDataParser_ThrowsArgumentNullException [1 ms]
-2025-12-30T04:02:42.4803888Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseDecimalArray_ValidData_ReturnsCorrectArray [< 1 ms]
-2025-12-30T04:02:42.4804883Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ParseArray_GenericType_WorksCorrectly [< 1 ms]
-2025-12-30T04:02:43.9755171Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.Parse_EmptyString_ReturnsDefault [< 1 ms]
-2025-12-30T04:02:43.9756793Z   Passed YFinance.NET.Tests.Unit.Scrapers.OptionsScraperTests.GetOptionChainAsync_WithExpirationDate_UsesDateQueryParam [27 ms]
-2025-12-30T04:02:43.9758249Z   Passed YFinance.NET.Tests.Unit.Utils.DataParserTests.ExtractDecimal_DirectNumber_ReturnsValue [< 1 ms]
-2025-12-30T04:02:43.9759584Z   Passed YFinance.NET.Tests.Unit.Scrapers.OptionsScraperTests.GetExpirationsAsync_ValidResponse_ReturnsDates [3 ms]
-2025-12-30T04:02:43.9760984Z   Passed YFinance.NET.Tests.Unit.Scrapers.OptionsScraperTests.GetOptionChainAsync_ValidResponse_ReturnsChain [2 ms]
-2025-12-30T04:02:43.9761847Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_FirstRetry_Delays1Second [1 s]
-2025-12-30T04:02:43.9762721Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_RateLimitMixedCase_ReturnsTrue [< 1 ms]
-2025-12-30T04:02:51.3573937Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_FourthRetry_Delays8Seconds [8 s]
-2025-12-30T04:02:52.8582747Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_EmptyResponseBody_ReturnsFalse [< 1 ms]
-2025-12-30T04:02:52.8584823Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_ResponseContainsRateLimit_ReturnsTrue [< 1 ms]
-2025-12-30T04:02:52.8586447Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_CaseInsensitive_ReturnsTrue [< 1 ms]
-2025-12-30T04:02:52.8587394Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_FifthRetry_ThrowsRateLimitException [< 1 ms]
-2025-12-30T04:02:52.8588280Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_Status404_ReturnsFalse [< 1 ms]
-2025-12-30T04:02:52.8589189Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_ResponseContainsTooManyRequests_ReturnsTrue [< 1 ms]
-2025-12-30T04:02:52.8590094Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_NullResponseBody_ReturnsFalse [< 1 ms]
-2025-12-30T04:02:52.8590920Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.IsRateLimited_NormalResponse_ReturnsFalse [< 1 ms]
-2025-12-30T04:02:55.3609127Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_ThirdRetry_Delays4Seconds [4 s]
-2025-12-30T04:02:56.8615868Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_MaxRetries_ThrowsRateLimitException [< 1 ms]
-2025-12-30T04:02:57.8718518Z [xUnit.net 00:00:16.24]   Finished:    YFinance.NET.Tests
-2025-12-30T04:02:57.9273958Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_SecondRetry_Delays2Seconds [2 s]
-2025-12-30T04:02:57.9276095Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_CancellationDuringDelay_ThrowsTaskCanceledException [503 ms]
-2025-12-30T04:02:57.9277647Z   Passed YFinance.NET.Tests.Unit.Services.RateLimitServiceTests.HandleRateLimitAsync_CancellationRequested_ThrowsTaskCanceledException [< 1 ms]
-2025-12-30T04:02:57.9755697Z Results File: /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/TestResults/unit-test-results.trx
-2025-12-30T04:02:57.9758732Z 
-2025-12-30T04:02:57.9796563Z Test Run Failed.
-2025-12-30T04:02:57.9797000Z Total tests: 251
-2025-12-30T04:02:57.9797371Z      Passed: 236
-2025-12-30T04:02:57.9797742Z      Failed: 15
-2025-12-30T04:02:57.9859324Z  Total time: 16.6996 Seconds
-2025-12-30T04:02:57.9984699Z      1>Project "/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.sln" (1) is building "/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/YFinance.NET.Tests.csproj" (3) on node 2 (VSTest target(s)).
-2025-12-30T04:02:57.9985761Z      3>_VSTestConsole:
-2025-12-30T04:02:57.9986133Z          MSB4181: The "VSTestTask" task returned false but did not log an error.
-2025-12-30T04:02:58.0023366Z      3>Done Building Project "/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/YFinance.NET.Tests.csproj" (VSTest target(s)) -- FAILED.
-2025-12-30T04:02:58.0103413Z      1>Done Building Project "/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.sln" (VSTest target(s)) -- FAILED.
-2025-12-30T04:02:58.0230879Z 
-2025-12-30T04:02:58.0232258Z Build FAILED.
-2025-12-30T04:02:58.0232631Z     0 Warning(s)
-2025-12-30T04:02:58.0232955Z     0 Error(s)
-2025-12-30T04:02:58.0239931Z 
-2025-12-30T04:02:58.0244818Z Time Elapsed 00:00:18.56
-2025-12-30T04:02:58.0472367Z ##[error]Process completed with exit code 1.
-2025-12-30T04:02:58.0553284Z ##[group]Run actions/upload-artifact@v4
-2025-12-30T04:02:58.0553571Z with:
-2025-12-30T04:02:58.0553765Z   name: test-results
-2025-12-30T04:02:58.0553980Z   path: **/TestResults/*.trx
 
-2025-12-30T04:02:58.0554220Z   retention-days: 30
-2025-12-30T04:02:58.0554654Z   if-no-files-found: warn
-2025-12-30T04:02:58.0554874Z   compression-level: 6
-2025-12-30T04:02:58.0555082Z   overwrite: false
-2025-12-30T04:02:58.0555299Z   include-hidden-files: false
-2025-12-30T04:02:58.0555520Z env:
-2025-12-30T04:02:58.0555695Z   DOTNET_ROOT: /usr/share/dotnet
-2025-12-30T04:02:58.0555930Z ##[endgroup]
-2025-12-30T04:02:58.3263144Z With the provided path, there will be 1 file uploaded
-2025-12-30T04:02:58.3269328Z Artifact name is valid!
-2025-12-30T04:02:58.3270315Z Root directory input is valid!
-2025-12-30T04:02:58.4637302Z Beginning upload of artifact content to blob storage
-2025-12-30T04:02:58.6325067Z Uploaded bytes 57399
-2025-12-30T04:02:58.6702846Z Finished uploading artifact content to blob storage!
-2025-12-30T04:02:58.6706735Z SHA256 digest of uploaded artifact zip is 3b5c779449fdb6dd6b9570c1f98b2a7eb5d45fa7a2a326bf3255a60bf0baf201
-2025-12-30T04:02:58.6708552Z Finalizing artifact upload
-2025-12-30T04:02:58.8082156Z Artifact test-results.zip successfully finalized. Artifact ID 4988550213
-2025-12-30T04:02:58.8083532Z Artifact test-results has been successfully uploaded! Final size is 57399 bytes. Artifact ID is 4988550213
-2025-12-30T04:02:58.8090001Z Artifact download URL: https://github.com/CalvinPangch/YFinance.NET/actions/runs/20588535708/artifacts/4988550213
-2025-12-30T04:02:58.8219218Z ##[group]Run dorny/test-reporter@v1
-2025-12-30T04:02:58.8219492Z with:
-2025-12-30T04:02:58.8219682Z   name: Test Results
-2025-12-30T04:02:58.8219897Z   path: **/TestResults/*.trx
-2025-12-30T04:02:58.8220133Z   reporter: dotnet-trx
-2025-12-30T04:02:58.8220341Z   fail-on-error: false
-2025-12-30T04:02:58.8220565Z   path-replace-backslashes: false
-2025-12-30T04:02:58.8220805Z   list-suites: all
-2025-12-30T04:02:58.8220997Z   list-tests: all
-2025-12-30T04:02:58.8221187Z   max-annotations: 10
-2025-12-30T04:02:58.8221385Z   fail-on-empty: true
-2025-12-30T04:02:58.8221585Z   only-summary: false
-2025-12-30T04:02:58.8221885Z   token: ***
-2025-12-30T04:02:58.8222063Z env:
-2025-12-30T04:02:58.8222249Z   DOTNET_ROOT: /usr/share/dotnet
-2025-12-30T04:02:58.8222490Z ##[endgroup]
-2025-12-30T04:02:58.9388703Z Action was triggered by pull_request: using SHA from head of source branch
-2025-12-30T04:02:58.9399411Z Check runs will be created with SHA=ca8f4791000271c0b91413537c7203d59cdd81f9
-2025-12-30T04:02:58.9402967Z ##[group]Listing all files tracked by git
-2025-12-30T04:02:58.9443547Z [command]/usr/bin/git ls-files -z
-2025-12-30T04:02:58.9579624Z .github/workflows/ci.yml .github/workflows/claude-auto-fix.yml .github/workflows/claude-code-review.yml .github/workflows/claude.yml .gitignore CLAUDE.md PR_DESCRIPTION.md README.md SECURITY_FIX_SUMMARY.md YFinance.NET.Implementation/CalendarService.cs YFinance.NET.Implementation/Constants/YahooFinanceConstants.cs YFinance.NET.Implementation/DependencyInjection/ServiceCollectionExtensions.cs YFinance.NET.Implementation/DomainService.cs YFinance.NET.Implementation/IsinService.cs YFinance.NET.Implementation/LiveMarketService.cs YFinance.NET.Implementation/MarketService.cs YFinance.NET.Implementation/MultiTickerService.cs YFinance.NET.Implementation/Properties/AssemblyInfo.cs YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs YFinance.NET.Implementation/Scrapers/CalendarScraper.cs YFinance.NET.Implementation/Scrapers/CalendarVisualizationScraper.cs YFinance.NET.Implementation/Scrapers/EarningsScraper.cs YFinance.NET.Implementation/Scrapers/EsgScraper.cs YFinance.NET.Implementation/Scrapers/FastInfoScraper.cs YFinance.NET.Implementation/Scrapers/FundamentalsScraper.cs YFinance.NET.Implementation/Scrapers/FundsScraper.cs YFinance.NET.Implementation/Scrapers/HistoryScraper.cs YFinance.NET.Implementation/Scrapers/HoldersScraper.cs YFinance.NET.Implementation/Scrapers/InfoScraper.cs YFinance.NET.Implementation/Scrapers/LookupScraper.cs YFinance.NET.Implementation/Scrapers/NewsScraper.cs YFinance.NET.Implementation/Scrapers/OptionsScraper.cs YFinance.NET.Implementation/Scrapers/QuoteScraper.cs YFinance.NET.Implementation/Scrapers/ScreenerScraper.cs YFinance.NET.Implementation/Scrapers/SearchScraper.cs YFinance.NET.Implementation/Scrapers/SharesScraper.cs YFinance.NET.Implementation/Services/CacheService.cs YFinance.NET.Implementation/Services/CookieService.cs YFinance.NET.Implementation/Services/RateLimitService.cs YFinance.NET.Implementation/TickerService.cs YFinance.NET.Implementation/Tickers.cs YFinance.NET.Implementation/Utils/DataParser.cs YFinance.NET.Implementation/Utils/JsonElementExtensions.cs YFinance.NET.Implementation/Utils/PriceRepair.cs YFinance.NET.Implementation/Utils/SymbolValidator.cs YFinance.NET.Implementation/Utils/TimezoneHelper.cs YFinance.NET.Implementation/YFinance.NET.Implementation.csproj YFinance.NET.Implementation/YahooFinanceClient.cs YFinance.NET.Interfaces/ICalendarService.cs YFinance.NET.Interfaces/IDomainService.cs YFinance.NET.Interfaces/IIsinService.cs YFinance.NET.Interfaces/ILiveMarketService.cs YFinance.NET.Interfaces/IMarketService.cs YFinance.NET.Interfaces/IMultiTickerService.cs YFinance.NET.Interfaces/ITickerService.cs YFinance.NET.Interfaces/IYahooFinanceClient.cs YFinance.NET.Interfaces/Scrapers/IAnalysisScraper.cs YFinance.NET.Interfaces/Scrapers/ICalendarScraper.cs YFinance.NET.Interfaces/Scrapers/ICalendarVisualizationScraper.cs YFinance.NET.Interfaces/Scrapers/IEarningsScraper.cs YFinance.NET.Interfaces/Scrapers/IEsgScraper.cs YFinance.NET.Interfaces/Scrapers/IFastInfoScraper.cs YFinance.NET.Interfaces/Scrapers/IFundamentalsScraper.cs YFinance.NET.Interfaces/Scrapers/IFundsScraper.cs YFinance.NET.Interfaces/Scrapers/IHistoryScraper.cs YFinance.NET.Interfaces/Scrapers/IHoldersScraper.cs YFinance.NET.Interfaces/Scrapers/IInfoScraper.cs YFinance.NET.Interfaces/Scrapers/ILookupScraper.cs YFinance.NET.Interfaces/Scrapers/INewsScraper.cs YFinance.NET.Interfaces/Scrapers/IOptionsScraper.cs YFinance.NET.Interfaces/Scrapers/IQuoteScraper.cs YFinance.NET.Interfaces/Scrapers/IScreenerScraper.cs YFinance.NET.Interfaces/Scrapers/ISearchScraper.cs YFinance.NET.Interfaces/Scrapers/ISharesScraper.cs YFinance.NET.Interfaces/Services/ICacheService.cs YFinance.NET.Interfaces/Services/ICookieService.cs YFinance.NET.Interfaces/Services/IRateLimitService.cs YFinance.NET.Interfaces/Utils/IDataParser.cs YFinance.NET.Interfaces/Utils/IPriceRepair.cs YFinance.NET.Interfaces/Utils/ISymbolValidator.cs YFinance.NET.Interfaces/Utils/ITimezoneHelper.cs YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj YFinance.NET.Models/ActionData.cs YFinance.NET.Models/ActionsData.cs YFinance.NET.Models/AnalystData.cs YFinance.NET.Models/CalendarData.cs YFinance.NET.Models/CalendarQuery.cs YFinance.NET.Models/CalendarRequest.cs YFinance.NET.Models/CalendarResult.cs YFinance.NET.Models/DomainData.cs YFinance.NET.Models/EarningsData.cs YFinance.NET.Models/Enums/Interval.cs YFinance.NET.Models/Enums/LookupType.cs YFinance.NET.Models/Enums/Period.cs YFinance.NET.Models/Enums/StatementType.cs YFinance.NET.Models/EsgData.cs YFinance.NET.Models/Exceptions/DataParsingException.cs YFinance.NET.Models/Exceptions/InvalidTickerException.cs YFinance.NET.Models/Exceptions/RateLimitException.cs YFinance.NET.Models/Exceptions/YahooFinanceException.cs YFinance.NET.Models/FastInfo.cs YFinance.NET.Models/FastInfoData.cs YFinance.NET.Models/FinancialStatement.cs YFinance.NET.Models/FundsData.cs YFinance.NET.Models/HistoricalData.cs YFinance.NET.Models/HistoryMetadata.cs YFinance.NET.Models/HolderData.cs YFinance.NET.Models/InfoData.cs YFinance.NET.Models/LivePriceData.cs YFinance.NET.Models/LookupResult.cs YFinance.NET.Models/MajorHoldersData.cs YFinance.NET.Models/NewsItem.cs YFinance.NET.Models/OptionsData.cs YFinance.NET.Models/QuoteData.cs YFinance.NET.Models/RecommendationData.cs YFinance.NET.Models/Requests/ActionsRequest.cs YFinance.NET.Models/Requests/EarningsDatesRequest.cs YFinance.NET.Models/Requests/HistoryRequest.cs YFinance.NET.Models/Requests/LookupRequest.cs YFinance.NET.Models/Requests/NewsRequest.cs YFinance.NET.Models/Requests/OptionChainRequest.cs YFinance.NET.Models/Requests/ScreenerRequest.cs YFinance.NET.Models/Requests/SearchRequest.cs YFinance.NET.Models/Requests/SharesHistoryRequest.cs YFinance.NET.Models/ScreenerPredefinedQueries.cs YFinance.NET.Models/ScreenerQuery.cs YFinance.NET.Models/ScreenerResult.cs YFinance.NET.Models/SearchResult.cs YFinance.NET.Models/SharesData.cs YFinance.NET.Models/YFinance.NET.Models.csproj YFinance.NET.Tests/Integration/TickerServiceIntegrationTests.cs YFinance.NET.Tests/TestFixtures/MockHttpMessageHandler.cs YFinance.NET.Tests/TestFixtures/MockYahooFinanceClient.cs YFinance.NET.Tests/TestFixtures/TestDataBuilder.cs YFinance.NET.Tests/Unit/MultiTickerServiceTests.cs YFinance.NET.Tests/Unit/Scrapers/AnalysisScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/CalendarScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/EarningsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/EsgScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/FundamentalsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/FundsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/HoldersScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/LookupScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/NewsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/OptionsScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/QuoteScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/ScreenerScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/SearchScraperTests.cs YFinance.NET.Tests/Unit/Scrapers/SharesScraperTests.cs YFinance.NET.Tests/Unit/Services/RateLimitServiceTests.cs YFinance.NET.Tests/Unit/TickerServiceTests.cs YFinance.NET.Tests/Unit/Utils/DataParserTests.cs YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs YFinance.NET.Tests/Unit/YahooFinanceClientTests.cs YFinance.NET.Tests/YFinance.NET.Tests.csproj YFinance.NET.sln build-errors.md build.log git-push-retry.sh global.json 
-2025-12-30T04:02:58.9630840Z ##[endgroup]
-2025-12-30T04:02:58.9631285Z Found 161 files tracked by GitHub
-2025-12-30T04:02:58.9631831Z Using test report parser 'dotnet-trx'
-2025-12-30T04:02:58.9671644Z ##[group]Creating test report Test Results
-2025-12-30T04:02:58.9673904Z Processing test results for check run Test Results
-2025-12-30T04:02:59.0438641Z Creating check run Test Results
-2025-12-30T04:02:59.4728963Z Creating report summary
-2025-12-30T04:02:59.4729993Z Generating check run summary
-2025-12-30T04:02:59.4756235Z Creating annotations
-2025-12-30T04:02:59.4764634Z Updating check run conclusion (success) and output
-2025-12-30T04:02:59.9473364Z Check run create response: 200
-2025-12-30T04:02:59.9474192Z Check run URL: https://api.github.com/repos/CalvinPangch/YFinance.NET/check-runs/59129545806
-2025-12-30T04:02:59.9475311Z Check run HTML: https://github.com/CalvinPangch/YFinance.NET/runs/59129545806
-2025-12-30T04:02:59.9482436Z ##[endgroup]
-2025-12-30T04:02:59.9640516Z Post job cleanup.
-2025-12-30T04:03:00.0583836Z [command]/usr/bin/git version
-2025-12-30T04:03:00.0637007Z git version 2.52.0
-2025-12-30T04:03:00.0684992Z Temporarily overriding HOME='/home/runner/work/_temp/58a49971-fa15-48b3-b6ed-87ee09868cfa' before making global git config changes
-2025-12-30T04:03:00.0686450Z Adding repository directory to the temporary git global config as a safe directory
-2025-12-30T04:03:00.0691883Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
-2025-12-30T04:03:00.0732496Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-2025-12-30T04:03:00.0767332Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-2025-12-30T04:03:00.1022211Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-2025-12-30T04:03:00.1043998Z http.https://github.com/.extraheader
-2025-12-30T04:03:00.1056836Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
-2025-12-30T04:03:00.1087110Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-2025-12-30T04:03:00.1306279Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-2025-12-30T04:03:00.1336839Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-2025-12-30T04:03:00.1660363Z Cleaning up orphan processes
-2025-12-30T04:03:00.1943784Z Terminate orphan process: pid (2344) (dotnet)
-2025-12-30T04:03:00.1963182Z Terminate orphan process: pid (2345) (dotnet)
-2025-12-30T04:03:00.1981756Z Terminate orphan process: pid (2346) (dotnet)
-2025-12-30T04:03:00.2005040Z Terminate orphan process: pid (2462) (VBCSCompiler)
+## Failed Job: Code Quality Check
+
+```
+2025-12-30T06:02:52.2470241Z Current runner version: '2.330.0'
+2025-12-30T06:02:52.2493788Z ##[group]Runner Image Provisioner
+2025-12-30T06:02:52.2494683Z Hosted Compute Agent
+2025-12-30T06:02:52.2495205Z Version: 20251211.462
+2025-12-30T06:02:52.2496072Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+2025-12-30T06:02:52.2496883Z Build Date: 2025-12-11T16:28:49Z
+2025-12-30T06:02:52.2497560Z Worker ID: {afc05717-3e2a-447b-a36d-4ba0cdbe8dc7}
+2025-12-30T06:02:52.2498216Z ##[endgroup]
+2025-12-30T06:02:52.2498768Z ##[group]Operating System
+2025-12-30T06:02:52.2499304Z Ubuntu
+2025-12-30T06:02:52.2499772Z 24.04.3
+2025-12-30T06:02:52.2500247Z LTS
+2025-12-30T06:02:52.2500680Z ##[endgroup]
+2025-12-30T06:02:52.2501195Z ##[group]Runner Image
+2025-12-30T06:02:52.2501663Z Image: ubuntu-24.04
+2025-12-30T06:02:52.2502232Z Version: 20251215.174.1
+2025-12-30T06:02:52.2503190Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-30T06:02:52.2504761Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+2025-12-30T06:02:52.2505749Z ##[endgroup]
+2025-12-30T06:02:52.2507390Z ##[group]GITHUB_TOKEN Permissions
+2025-12-30T06:02:52.2509252Z Checks: write
+2025-12-30T06:02:52.2509820Z Contents: read
+2025-12-30T06:02:52.2510398Z Metadata: read
+2025-12-30T06:02:52.2510941Z PullRequests: write
+2025-12-30T06:02:52.2511409Z Statuses: write
+2025-12-30T06:02:52.2511966Z ##[endgroup]
+2025-12-30T06:02:52.2514327Z Secret source: Actions
+2025-12-30T06:02:52.2515019Z Prepare workflow directory
+2025-12-30T06:02:52.2848057Z Prepare all required actions
+2025-12-30T06:02:52.2885535Z Getting action download info
+2025-12-30T06:02:52.6621590Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-30T06:02:52.7814770Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
+2025-12-30T06:02:53.5702686Z Complete job name: Code Quality Check
+2025-12-30T06:02:53.6546831Z ##[group]Run actions/checkout@v4
+2025-12-30T06:02:53.6548226Z with:
+2025-12-30T06:02:53.6548969Z   repository: CalvinPangch/YFinance.NET
+2025-12-30T06:02:53.6550276Z   token: ***
+2025-12-30T06:02:53.6550971Z   ssh-strict: true
+2025-12-30T06:02:53.6551688Z   ssh-user: git
+2025-12-30T06:02:53.6552420Z   persist-credentials: true
+2025-12-30T06:02:53.6553258Z   clean: true
+2025-12-30T06:02:53.6553987Z   sparse-checkout-cone-mode: true
+2025-12-30T06:02:53.6554913Z   fetch-depth: 1
+2025-12-30T06:02:53.6555619Z   fetch-tags: false
+2025-12-30T06:02:53.6556500Z   show-progress: true
+2025-12-30T06:02:53.6557247Z   lfs: false
+2025-12-30T06:02:53.6557925Z   submodules: false
+2025-12-30T06:02:53.6558687Z   set-safe-directory: true
+2025-12-30T06:02:53.6559762Z ##[endgroup]
+2025-12-30T06:02:53.7685616Z Syncing repository: CalvinPangch/YFinance.NET
+2025-12-30T06:02:53.7690011Z ##[group]Getting Git version info
+2025-12-30T06:02:53.7692290Z Working directory is '/home/runner/work/YFinance.NET/YFinance.NET'
+2025-12-30T06:02:53.7694442Z [command]/usr/bin/git version
+2025-12-30T06:02:53.7825477Z git version 2.52.0
+2025-12-30T06:02:53.7855319Z ##[endgroup]
+2025-12-30T06:02:53.7873341Z Temporarily overriding HOME='/home/runner/work/_temp/2a7e2b56-32e5-4526-9d9a-ffa385e77bfb' before making global git config changes
+2025-12-30T06:02:53.7878247Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T06:02:53.7882173Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:02:53.7923238Z Deleting the contents of '/home/runner/work/YFinance.NET/YFinance.NET'
+2025-12-30T06:02:53.7927218Z ##[group]Initializing the repository
+2025-12-30T06:02:53.7933185Z [command]/usr/bin/git init /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:02:53.8044934Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-30T06:02:53.8048013Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-30T06:02:53.8051295Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-30T06:02:53.8053689Z hint: call:
+2025-12-30T06:02:53.8054801Z hint:
+2025-12-30T06:02:53.8056460Z hint: 	git config --global init.defaultBranch <name>
+2025-12-30T06:02:53.8058265Z hint:
+2025-12-30T06:02:53.8059892Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-30T06:02:53.8063076Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-30T06:02:53.8065451Z hint:
+2025-12-30T06:02:53.8066708Z hint: 	git branch -m <name>
+2025-12-30T06:02:53.8067976Z hint:
+2025-12-30T06:02:53.8069712Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-30T06:02:53.8072361Z Initialized empty Git repository in /home/runner/work/YFinance.NET/YFinance.NET/.git/
+2025-12-30T06:02:53.8075623Z [command]/usr/bin/git remote add origin https://github.com/CalvinPangch/YFinance.NET
+2025-12-30T06:02:53.8101608Z ##[endgroup]
+2025-12-30T06:02:53.8103806Z ##[group]Disabling automatic garbage collection
+2025-12-30T06:02:53.8106186Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-30T06:02:53.8136538Z ##[endgroup]
+2025-12-30T06:02:53.8138599Z ##[group]Setting up auth
+2025-12-30T06:02:53.8144705Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T06:02:53.8178323Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T06:02:53.8506530Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T06:02:53.8541462Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T06:02:53.8762774Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T06:02:53.8793701Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T06:02:53.9024006Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-30T06:02:53.9059319Z ##[endgroup]
+2025-12-30T06:02:53.9061540Z ##[group]Fetching the repository
+2025-12-30T06:02:53.9071184Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +149da10551655e08884fd10692b7cd2d7cc993df:refs/remotes/pull/7/merge
+2025-12-30T06:02:54.3568858Z From https://github.com/CalvinPangch/YFinance.NET
+2025-12-30T06:02:54.3571428Z  * [new ref]         149da10551655e08884fd10692b7cd2d7cc993df -> pull/7/merge
+2025-12-30T06:02:54.3601732Z ##[endgroup]
+2025-12-30T06:02:54.3603660Z ##[group]Determining the checkout info
+2025-12-30T06:02:54.3605939Z ##[endgroup]
+2025-12-30T06:02:54.3608485Z [command]/usr/bin/git sparse-checkout disable
+2025-12-30T06:02:54.3649634Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-30T06:02:54.3675488Z ##[group]Checking out the ref
+2025-12-30T06:02:54.3678089Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/7/merge
+2025-12-30T06:02:54.3799619Z Note: switching to 'refs/remotes/pull/7/merge'.
+2025-12-30T06:02:54.3801287Z 
+2025-12-30T06:02:54.3802437Z You are in 'detached HEAD' state. You can look around, make experimental
+2025-12-30T06:02:54.3804616Z changes and commit them, and you can discard any commits you make in this
+2025-12-30T06:02:54.3808140Z state without impacting any branches by switching back to a branch.
+2025-12-30T06:02:54.3809983Z 
+2025-12-30T06:02:54.3811155Z If you want to create a new branch to retain commits you create, you may
+2025-12-30T06:02:54.3813874Z do so (now or later) by using -c with the switch command. Example:
+2025-12-30T06:02:54.3815605Z 
+2025-12-30T06:02:54.3816489Z   git switch -c <new-branch-name>
+2025-12-30T06:02:54.3817836Z 
+2025-12-30T06:02:54.3818382Z Or undo this operation with:
+2025-12-30T06:02:54.3819276Z 
+2025-12-30T06:02:54.3819728Z   git switch -
+2025-12-30T06:02:54.3820416Z 
+2025-12-30T06:02:54.3821662Z Turn off this advice by setting config variable advice.detachedHead to false
+2025-12-30T06:02:54.3822818Z 
+2025-12-30T06:02:54.3824049Z HEAD is now at 149da10 Merge d8650052f7ff2fd444b6583803a0c6d3df6031ed into 71fb9da4e8d5107b786fc55175e6a45ef90f93e3
+2025-12-30T06:02:54.3829035Z ##[endgroup]
+2025-12-30T06:02:54.3847841Z [command]/usr/bin/git log -1 --format=%H
+2025-12-30T06:02:54.3870482Z 149da10551655e08884fd10692b7cd2d7cc993df
+2025-12-30T06:02:54.4186279Z ##[group]Run actions/setup-dotnet@v4
+2025-12-30T06:02:54.4187293Z with:
+2025-12-30T06:02:54.4187996Z   dotnet-version: 10.0.x
+2025-12-30T06:02:54.4188823Z   cache: false
+2025-12-30T06:02:54.4189543Z ##[endgroup]
+2025-12-30T06:02:54.5974244Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2025-12-30T06:02:55.1047559Z dotnet-install: .NET Core Runtime with version '10.0.1' is already installed.
+2025-12-30T06:02:55.1079936Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
+2025-12-30T06:02:55.4788990Z dotnet-install: .NET Core SDK with version '10.0.101' is already installed.
+2025-12-30T06:02:55.4944211Z ##[group]Run dotnet restore
+2025-12-30T06:02:55.4944735Z [36;1mdotnet restore[0m
+2025-12-30T06:02:55.4985152Z shell: /usr/bin/bash -e {0}
+2025-12-30T06:02:55.4985593Z env:
+2025-12-30T06:02:55.4986099Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:02:55.4986507Z ##[endgroup]
+2025-12-30T06:02:59.2414110Z   Determining projects to restore...
+2025-12-30T06:03:00.1943781Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/YFinance.NET.Models.csproj (in 169 ms).
+2025-12-30T06:03:00.1945443Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj (in 173 ms).
+2025-12-30T06:03:02.6447035Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj (in 2.65 sec).
+2025-12-30T06:03:02.7142978Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/YFinance.NET.Tests.csproj (in 2.72 sec).
+2025-12-30T06:03:02.7573410Z ##[group]Run dotnet build --configuration Release --no-restore /warnaserror
+2025-12-30T06:03:02.7573984Z [36;1mdotnet build --configuration Release --no-restore /warnaserror[0m
+2025-12-30T06:03:02.7606294Z shell: /usr/bin/bash -e {0}
+2025-12-30T06:03:02.7606559Z env:
+2025-12-30T06:03:02.7606733Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:03:02.7606966Z ##[endgroup]
+2025-12-30T06:03:08.7727740Z   YFinance.NET.Models -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/bin/Release/net10.0/YFinance.NET.Models.dll
+2025-12-30T06:03:09.2449536Z   YFinance.NET.Interfaces -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/bin/Release/net10.0/YFinance.NET.Interfaces.dll
+2025-12-30T06:03:10.6409071Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6422205Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6428447Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6434463Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6440733Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6446125Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6450968Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6456158Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6461047Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6466592Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6543448Z 
+2025-12-30T06:03:10.6550257Z Build FAILED.
+2025-12-30T06:03:10.6550589Z 
+2025-12-30T06:03:10.6553149Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6557260Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6563415Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6570102Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6576823Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6582637Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6586633Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6590480Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6594733Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6598760Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): error CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:10.6600657Z     0 Warning(s)
+2025-12-30T06:03:10.6600854Z     10 Error(s)
+2025-12-30T06:03:10.6600980Z 
+2025-12-30T06:03:10.6601108Z Time Elapsed 00:00:07.61
+2025-12-30T06:03:10.6881224Z ##[error]Process completed with exit code 1.
+2025-12-30T06:03:10.6991321Z Post job cleanup.
+2025-12-30T06:03:10.7940257Z [command]/usr/bin/git version
+2025-12-30T06:03:10.7983529Z git version 2.52.0
+2025-12-30T06:03:10.8027337Z Temporarily overriding HOME='/home/runner/work/_temp/781cbd6c-023d-41fb-a146-3469163eeb17' before making global git config changes
+2025-12-30T06:03:10.8028807Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T06:03:10.8033836Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:03:10.8068524Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T06:03:10.8100098Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T06:03:10.8324582Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T06:03:10.8349253Z http.https://github.com/.extraheader
+2025-12-30T06:03:10.8361767Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-30T06:03:10.8401508Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T06:03:10.8750419Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T06:03:10.8810046Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T06:03:10.9348591Z Cleaning up orphan processes
+2025-12-30T06:03:10.9668679Z Terminate orphan process: pid (2343) (dotnet)
+2025-12-30T06:03:10.9696464Z Terminate orphan process: pid (2344) (dotnet)
+2025-12-30T06:03:10.9734880Z Terminate orphan process: pid (2345) (dotnet)
+2025-12-30T06:03:10.9758665Z Terminate orphan process: pid (2467) (VBCSCompiler)
 
 ```
 
 ## Failed Job: Code Coverage
 
 ```
-2025-12-30T04:02:12.8628487Z Current runner version: '2.330.0'
-2025-12-30T04:02:12.8653267Z ##[group]Runner Image Provisioner
-2025-12-30T04:02:12.8654029Z Hosted Compute Agent
-2025-12-30T04:02:12.8654582Z Version: 20251211.462
-2025-12-30T04:02:12.8655256Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
-2025-12-30T04:02:12.8655926Z Build Date: 2025-12-11T16:28:49Z
-2025-12-30T04:02:12.8656576Z Worker ID: {6bc68540-968a-4dd5-9b96-670be6e78c29}
-2025-12-30T04:02:12.8657302Z ##[endgroup]
-2025-12-30T04:02:12.8657846Z ##[group]Operating System
-2025-12-30T04:02:12.8658395Z Ubuntu
-2025-12-30T04:02:12.8658907Z 24.04.3
-2025-12-30T04:02:12.8659336Z LTS
-2025-12-30T04:02:12.8659783Z ##[endgroup]
-2025-12-30T04:02:12.8660265Z ##[group]Runner Image
-2025-12-30T04:02:12.8660971Z Image: ubuntu-24.04
-2025-12-30T04:02:12.8661922Z Version: 20251215.174.1
-2025-12-30T04:02:12.8662859Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
-2025-12-30T04:02:12.8664466Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
-2025-12-30T04:02:12.8665474Z ##[endgroup]
-2025-12-30T04:02:12.8666730Z ##[group]GITHUB_TOKEN Permissions
-2025-12-30T04:02:12.8668826Z Checks: write
-2025-12-30T04:02:12.8669448Z Contents: read
-2025-12-30T04:02:12.8669942Z Metadata: read
-2025-12-30T04:02:12.8670396Z PullRequests: write
-2025-12-30T04:02:12.8670949Z Statuses: write
-2025-12-30T04:02:12.8671715Z ##[endgroup]
-2025-12-30T04:02:12.8673872Z Secret source: Actions
-2025-12-30T04:02:12.8674905Z Prepare workflow directory
-2025-12-30T04:02:12.9009710Z Prepare all required actions
-2025-12-30T04:02:12.9049906Z Getting action download info
-2025-12-30T04:02:13.2780416Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
-2025-12-30T04:02:13.6317976Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
-2025-12-30T04:02:14.1439528Z Download action repository 'codecov/codecov-action@v4' (SHA:b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238)
-2025-12-30T04:02:14.7290359Z Complete job name: Code Coverage
-2025-12-30T04:02:14.8123516Z ##[group]Run actions/checkout@v4
-2025-12-30T04:02:14.8124830Z with:
-2025-12-30T04:02:14.8125615Z   repository: CalvinPangch/YFinance.NET
-2025-12-30T04:02:14.8126950Z   token: ***
-2025-12-30T04:02:14.8127673Z   ssh-strict: true
-2025-12-30T04:02:14.8128422Z   ssh-user: git
-2025-12-30T04:02:14.8129174Z   persist-credentials: true
-2025-12-30T04:02:14.8130089Z   clean: true
-2025-12-30T04:02:14.8130860Z   sparse-checkout-cone-mode: true
-2025-12-30T04:02:14.8131985Z   fetch-depth: 1
-2025-12-30T04:02:14.8132721Z   fetch-tags: false
-2025-12-30T04:02:14.8133484Z   show-progress: true
-2025-12-30T04:02:14.8134253Z   lfs: false
-2025-12-30T04:02:14.8134967Z   submodules: false
-2025-12-30T04:02:14.8135768Z   set-safe-directory: true
-2025-12-30T04:02:14.8136876Z ##[endgroup]
-2025-12-30T04:02:14.9305872Z Syncing repository: CalvinPangch/YFinance.NET
-2025-12-30T04:02:14.9308546Z ##[group]Getting Git version info
-2025-12-30T04:02:14.9310788Z Working directory is '/home/runner/work/YFinance.NET/YFinance.NET'
-2025-12-30T04:02:14.9313620Z [command]/usr/bin/git version
-2025-12-30T04:02:14.9449806Z git version 2.52.0
-2025-12-30T04:02:14.9477394Z ##[endgroup]
-2025-12-30T04:02:14.9494206Z Temporarily overriding HOME='/home/runner/work/_temp/31c9ac5b-02e5-4e8c-b3f2-5de217e3a486' before making global git config changes
-2025-12-30T04:02:14.9499027Z Adding repository directory to the temporary git global config as a safe directory
-2025-12-30T04:02:14.9503528Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
-2025-12-30T04:02:14.9551733Z Deleting the contents of '/home/runner/work/YFinance.NET/YFinance.NET'
-2025-12-30T04:02:14.9555128Z ##[group]Initializing the repository
-2025-12-30T04:02:14.9559164Z [command]/usr/bin/git init /home/runner/work/YFinance.NET/YFinance.NET
-2025-12-30T04:02:14.9695891Z hint: Using 'master' as the name for the initial branch. This default branch name
-2025-12-30T04:02:14.9699521Z hint: will change to "main" in Git 3.0. To configure the initial branch name
-2025-12-30T04:02:14.9702750Z hint: to use in all of your new repositories, which will suppress this warning,
-2025-12-30T04:02:14.9704257Z hint: call:
-2025-12-30T04:02:14.9704992Z hint:
-2025-12-30T04:02:14.9705904Z hint: 	git config --global init.defaultBranch <name>
-2025-12-30T04:02:14.9707521Z hint:
-2025-12-30T04:02:14.9708595Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-2025-12-30T04:02:14.9710497Z hint: 'development'. The just-created branch can be renamed via this command:
-2025-12-30T04:02:14.9712410Z hint:
-2025-12-30T04:02:14.9713228Z hint: 	git branch -m <name>
-2025-12-30T04:02:14.9714075Z hint:
-2025-12-30T04:02:14.9715219Z hint: Disable this message with "git config set advice.defaultBranchName false"
-2025-12-30T04:02:14.9717233Z Initialized empty Git repository in /home/runner/work/YFinance.NET/YFinance.NET/.git/
-2025-12-30T04:02:14.9720474Z [command]/usr/bin/git remote add origin https://github.com/CalvinPangch/YFinance.NET
-2025-12-30T04:02:14.9749973Z ##[endgroup]
-2025-12-30T04:02:14.9751664Z ##[group]Disabling automatic garbage collection
-2025-12-30T04:02:14.9753328Z [command]/usr/bin/git config --local gc.auto 0
-2025-12-30T04:02:14.9781750Z ##[endgroup]
-2025-12-30T04:02:14.9783014Z ##[group]Setting up auth
-2025-12-30T04:02:14.9787699Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-2025-12-30T04:02:14.9817367Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-2025-12-30T04:02:15.0244934Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-2025-12-30T04:02:15.0278189Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-2025-12-30T04:02:15.0512407Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-2025-12-30T04:02:15.0543317Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-2025-12-30T04:02:15.0768870Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
-2025-12-30T04:02:15.0806713Z ##[endgroup]
-2025-12-30T04:02:15.0815022Z ##[group]Fetching the repository
-2025-12-30T04:02:15.0817755Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4c92d17c03dd6b3dcd8d205aea181e29ff667a0e:refs/remotes/pull/4/merge
-2025-12-30T04:02:15.4566277Z From https://github.com/CalvinPangch/YFinance.NET
-2025-12-30T04:02:15.4567310Z  * [new ref]         4c92d17c03dd6b3dcd8d205aea181e29ff667a0e -> pull/4/merge
-2025-12-30T04:02:15.4604176Z ##[endgroup]
-2025-12-30T04:02:15.4605268Z ##[group]Determining the checkout info
-2025-12-30T04:02:15.4606686Z ##[endgroup]
-2025-12-30T04:02:15.4612060Z [command]/usr/bin/git sparse-checkout disable
-2025-12-30T04:02:15.4657676Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
-2025-12-30T04:02:15.4685070Z ##[group]Checking out the ref
-2025-12-30T04:02:15.4689234Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/4/merge
-2025-12-30T04:02:15.4815881Z Note: switching to 'refs/remotes/pull/4/merge'.
-2025-12-30T04:02:15.4816758Z 
-2025-12-30T04:02:15.4817214Z You are in 'detached HEAD' state. You can look around, make experimental
-2025-12-30T04:02:15.4818315Z changes and commit them, and you can discard any commits you make in this
-2025-12-30T04:02:15.4819501Z state without impacting any branches by switching back to a branch.
-2025-12-30T04:02:15.4820245Z 
-2025-12-30T04:02:15.4820818Z If you want to create a new branch to retain commits you create, you may
-2025-12-30T04:02:15.4822079Z do so (now or later) by using -c with the switch command. Example:
-2025-12-30T04:02:15.4823440Z 
-2025-12-30T04:02:15.4823957Z   git switch -c <new-branch-name>
-2025-12-30T04:02:15.4824422Z 
-2025-12-30T04:02:15.4824742Z Or undo this operation with:
-2025-12-30T04:02:15.4825119Z 
-2025-12-30T04:02:15.4825355Z   git switch -
-2025-12-30T04:02:15.4825854Z 
-2025-12-30T04:02:15.4826442Z Turn off this advice by setting config variable advice.detachedHead to false
-2025-12-30T04:02:15.4827106Z 
-2025-12-30T04:02:15.4827816Z HEAD is now at 4c92d17 Merge ca8f4791000271c0b91413537c7203d59cdd81f9 into 06f9addc01c7a2bb4c339c037ebce9b43bf208cf
-2025-12-30T04:02:15.4830586Z ##[endgroup]
-2025-12-30T04:02:15.4866977Z [command]/usr/bin/git log -1 --format=%H
-2025-12-30T04:02:15.4890383Z 4c92d17c03dd6b3dcd8d205aea181e29ff667a0e
-2025-12-30T04:02:15.5127958Z ##[group]Run actions/setup-dotnet@v4
-2025-12-30T04:02:15.5128473Z with:
-2025-12-30T04:02:15.5128770Z   dotnet-version: 10.0.x
-2025-12-30T04:02:15.5129266Z   cache: false
-2025-12-30T04:02:15.5129579Z ##[endgroup]
-2025-12-30T04:02:15.7009529Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
-2025-12-30T04:02:16.2237093Z dotnet-install: .NET Core Runtime with version '10.0.1' is already installed.
-2025-12-30T04:02:16.2268150Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
-2025-12-30T04:02:16.6224190Z dotnet-install: .NET Core SDK with version '10.0.101' is already installed.
-2025-12-30T04:02:16.6466664Z ##[group]Run dotnet restore
-2025-12-30T04:02:16.6467043Z [36;1mdotnet restore[0m
-2025-12-30T04:02:16.6506497Z shell: /usr/bin/bash -e {0}
-2025-12-30T04:02:16.6506814Z env:
-2025-12-30T04:02:16.6507035Z   DOTNET_ROOT: /usr/share/dotnet
-2025-12-30T04:02:16.6507308Z ##[endgroup]
-2025-12-30T04:02:22.3567265Z   Determining projects to restore...
-2025-12-30T04:02:23.3960767Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/YFinance.NET.Models.csproj (in 187 ms).
-2025-12-30T04:02:25.7388238Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj (in 195 ms).
-2025-12-30T04:02:25.7391604Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj (in 2.53 sec).
-2025-12-30T04:02:25.9018462Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/YFinance.NET.Tests.csproj (in 2.72 sec).
-2025-12-30T04:02:25.9445333Z ##[group]Run dotnet test --configuration Release --collect:"XPlat Code Coverage" --results-directory ./coverage
-2025-12-30T04:02:25.9446184Z [36;1mdotnet test --configuration Release --collect:"XPlat Code Coverage" --results-directory ./coverage[0m
-2025-12-30T04:02:25.9480003Z shell: /usr/bin/bash -e {0}
-2025-12-30T04:02:25.9480270Z env:
-2025-12-30T04:02:25.9480453Z   DOTNET_ROOT: /usr/share/dotnet
-2025-12-30T04:02:25.9480698Z ##[endgroup]
-2025-12-30T04:02:27.2371491Z   Determining projects to restore...
-2025-12-30T04:02:27.8099549Z   All projects are up-to-date for restore.
-2025-12-30T04:02:34.0675070Z   YFinance.NET.Models -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/bin/Release/net10.0/YFinance.NET.Models.dll
-2025-12-30T04:02:34.3610716Z   YFinance.NET.Interfaces -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/bin/Release/net10.0/YFinance.NET.Interfaces.dll
-2025-12-30T04:02:35.9326366Z   YFinance.NET.Implementation -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/bin/Release/net10.0/YFinance.NET.Implementation.dll
-2025-12-30T04:02:38.0622160Z   YFinance.NET.Tests -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/bin/Release/net10.0/YFinance.NET.Tests.dll
-2025-12-30T04:02:38.0753005Z Test run for /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/bin/Release/net10.0/YFinance.NET.Tests.dll (.NETCoreApp,Version=v10.0)
-2025-12-30T04:02:38.2020690Z VSTest version 18.0.1 (x64)
-2025-12-30T04:02:38.2065392Z 
-2025-12-30T04:02:38.6198741Z Starting test execution, please wait...
-2025-12-30T04:02:38.6927651Z A total of 1 test files matched the specified pattern.
-2025-12-30T04:02:41.0325227Z [xUnit.net 00:00:00.69]     YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "   ") [FAIL]
-2025-12-30T04:02:41.0375667Z [xUnit.net 00:00:00.70]     YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: null) [FAIL]
-2025-12-30T04:02:41.0410267Z [xUnit.net 00:00:00.70]     YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "") [FAIL]
-2025-12-30T04:02:41.0528987Z   Failed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "   ") [4 ms]
-2025-12-30T04:02:41.0530448Z   Error Message:
-2025-12-30T04:02:41.0530938Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:41.0531922Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:41.0532506Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:41.0533320Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:41.0542349Z   Stack Trace:
-2025-12-30T04:02:41.0544161Z      at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs:line 380
-2025-12-30T04:02:41.0546225Z --- End of stack trace from previous location ---
-2025-12-30T04:02:41.0546782Z ----- Inner Stack Trace -----
-2025-12-30T04:02:41.0547317Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:41.0548134Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:41.0549107Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:41.0551448Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 149
-2025-12-30T04:02:41.0555450Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 61
-2025-12-30T04:02:41.0558325Z   Failed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: null) [1 ms]
-2025-12-30T04:02:41.0559531Z   Error Message:
-2025-12-30T04:02:41.0560025Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:41.0560705Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:41.0561541Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:41.0562396Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:41.0563108Z   Stack Trace:
-2025-12-30T04:02:41.0564881Z      at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs:line 380
-2025-12-30T04:02:41.0566921Z --- End of stack trace from previous location ---
-2025-12-30T04:02:41.0567478Z ----- Inner Stack Trace -----
-2025-12-30T04:02:41.0567999Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:41.0568817Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:41.0569758Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:41.0572119Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 149
-2025-12-30T04:02:41.0575759Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 61
-2025-12-30T04:02:41.0578453Z   Failed YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(invalidSymbol: "") [1 ms]
-2025-12-30T04:02:41.0579650Z   Error Message:
-2025-12-30T04:02:41.0580132Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:41.0580799Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:41.0581645Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:41.0582435Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:41.0583089Z   Stack Trace:
-2025-12-30T04:02:41.0584823Z      at YFinance.NET.Tests.Unit.Scrapers.HistoryScraperTests.GetHistoryAsync_InvalidSymbol_ThrowsArgumentException(String invalidSymbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/HistoryScraperTests.cs:line 380
-2025-12-30T04:02:41.0586828Z --- End of stack trace from previous location ---
-2025-12-30T04:02:41.0587383Z ----- Inner Stack Trace -----
-2025-12-30T04:02:41.0587920Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:41.0588759Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:41.0589752Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:41.0592126Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.ParseHistoricalData(String symbol, String jsonResponse, HistoryRequest request) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 149
-2025-12-30T04:02:41.0595571Z    at YFinance.NET.Implementation.Scrapers.HistoryScraper.GetHistoryAsync(String symbol, HistoryRequest request, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/HistoryScraper.cs:line 61
-2025-12-30T04:02:41.0763185Z [xUnit.net 00:00:00.74]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(input: "AAPL?admin=true", expected: "AAPLadmintrue") [FAIL]
-2025-12-30T04:02:41.0805137Z [xUnit.net 00:00:00.74]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(input: "AAPL&foo=bar", expected: "AAPLfoobar") [FAIL]
-2025-12-30T04:02:41.0890125Z [xUnit.net 00:00:00.75]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(input: "AAPL/../../etc", expected: "AAPLetc") [FAIL]
-2025-12-30T04:02:41.0892704Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(input: "AAPL?admin=true", expected: "AAPLadmintrue") [154 ms]
-2025-12-30T04:02:41.0894070Z   Error Message:
-2025-12-30T04:02:41.0894905Z    Expected result to be "AAPLadmintrue" with a length of 13, but "AAPLadmin=true" has a length of 14, differs near "=tr" (index 9).
-2025-12-30T04:02:41.0895856Z   Stack Trace:
-2025-12-30T04:02:41.0896450Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.0897471Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.0898539Z    at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
-2025-12-30T04:02:41.0899591Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.0900581Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.0901947Z    at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
-2025-12-30T04:02:41.0903447Z    at FluentAssertions.Primitives.StringValidator.Validate()
-2025-12-30T04:02:41.0904599Z    at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.0906927Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(String input, String expected) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 316
-2025-12-30T04:02:41.0909125Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
-2025-12-30T04:02:41.0910576Z    at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
-2025-12-30T04:02:41.0912753Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(input: "AAPL&foo=bar", expected: "AAPLfoobar") [3 ms]
-2025-12-30T04:02:41.0914040Z   Error Message:
-2025-12-30T04:02:41.0914833Z    Expected result to be "AAPLfoobar" with a length of 10, but "AAPLfoo=bar" has a length of 11, differs near "=ba" (index 7).
-2025-12-30T04:02:41.0915545Z   Stack Trace:
-2025-12-30T04:02:41.0915876Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.0916420Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.0917006Z    at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
-2025-12-30T04:02:41.0917601Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.0918142Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.0918757Z    at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
-2025-12-30T04:02:41.0919335Z    at FluentAssertions.Primitives.StringValidator.Validate()
-2025-12-30T04:02:41.0919905Z    at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.0921475Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(String input, String expected) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 316
-2025-12-30T04:02:41.0922711Z    at InvokeStub_SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(Object, Span`1)
-2025-12-30T04:02:41.0923834Z    at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:41.1067883Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(input: "AAPL/../../etc", expected: "AAPLetc") [< 1 ms]
-2025-12-30T04:02:41.1069739Z   Error Message:
-2025-12-30T04:02:41.1106994Z    Expected result to be "AAPLetc" with a length of 7, but "AAPL....etc" has a length of 11, differs near "..." (index 4).
-2025-12-30T04:02:41.1121820Z   Stack Trace:
-2025-12-30T04:02:41.1152111Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.1153338Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.1154833Z    at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
-2025-12-30T04:02:41.1156244Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.1157621Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.1159185Z    at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
-2025-12-30T04:02:41.1160499Z    at FluentAssertions.Primitives.StringValidator.Validate()
-2025-12-30T04:02:41.1162267Z    at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.1164886Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(String input, String expected) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 316
-2025-12-30T04:02:41.1167842Z    at InvokeStub_SymbolValidatorTests.Sanitize_DangerousCharacters_RemovesCharacters(Object, Span`1)
-2025-12-30T04:02:41.1169682Z    at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:41.2083685Z [xUnit.net 00:00:00.87]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(symbol: "%2F") [FAIL]
-2025-12-30T04:02:41.2234304Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(symbol: "%2F") [7 ms]
-2025-12-30T04:02:41.2236637Z [xUnit.net 00:00:00.87]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(symbol: "AAPL%20TEST") [FAIL]
-2025-12-30T04:02:41.2238974Z [xUnit.net 00:00:00.88]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(symbol: "%2E") [FAIL]
-2025-12-30T04:02:41.2240478Z   Error Message:
-2025-12-30T04:02:41.2242409Z    Expected exception message to match the equivalent of "Symbol contains URL-encoded characters*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:41.2244157Z 
-2025-12-30T04:02:41.2244464Z   Stack Trace:
-2025-12-30T04:02:41.2245246Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.2246755Z [xUnit.net 00:00:00.88]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_OnlyInvalidCharacters_ReturnsEmpty [FAIL]
-2025-12-30T04:02:41.2248920Z [xUnit.net 00:00:00.89]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(symbol: "AAPL/../admin") [FAIL]
-2025-12-30T04:02:41.2250685Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.2252421Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:41.2253621Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:41.2255741Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2258356Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2260640Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2263503Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 215
-2025-12-30T04:02:41.2266078Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
-2025-12-30T04:02:41.2267821Z    at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
-2025-12-30T04:02:41.2292408Z [xUnit.net 00:00:00.89]     YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(symbol: "../../../etc/passwd") [FAIL]
-2025-12-30T04:02:41.2477410Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(symbol: "AAPL%20TEST") [< 1 ms]
-2025-12-30T04:02:41.2478894Z   Error Message:
-2025-12-30T04:02:41.2480515Z    Expected exception message to match the equivalent of "Symbol contains URL-encoded characters*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:41.2482721Z 
-2025-12-30T04:02:41.2483061Z   Stack Trace:
-2025-12-30T04:02:41.2483863Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.2484942Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.2486185Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:41.2487261Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:41.2488819Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2491253Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2493341Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2495843Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 215
-2025-12-30T04:02:41.2498189Z    at InvokeStub_SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(Object, Span`1)
-2025-12-30T04:02:41.2499961Z    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:41.2514391Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(symbol: "%2E") [< 1 ms]
-2025-12-30T04:02:41.2515471Z   Error Message:
-2025-12-30T04:02:41.2516847Z    Expected exception message to match the equivalent of "Symbol contains URL-encoded characters*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:41.2518206Z 
-2025-12-30T04:02:41.2518319Z   Stack Trace:
-2025-12-30T04:02:41.2518839Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.2519732Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.2521002Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:41.2522180Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:41.2523590Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2525721Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2527698Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2530030Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 215
-2025-12-30T04:02:41.2532383Z    at InvokeStub_SymbolValidatorTests.ValidateAndThrow_UrlEncoded_ThrowsArgumentException(Object, Span`1)
-2025-12-30T04:02:41.2533930Z    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:41.2535527Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_OnlyInvalidCharacters_ReturnsEmpty [< 1 ms]
-2025-12-30T04:02:41.2536402Z   Error Message:
-2025-12-30T04:02:41.2536746Z    Expected result to be empty, but found "^".
-2025-12-30T04:02:41.2537387Z   Stack Trace:
-2025-12-30T04:02:41.2537901Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.2538783Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.2539761Z    at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
-2025-12-30T04:02:41.2540768Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.2541834Z    at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
-2025-12-30T04:02:41.2542789Z    at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
-2025-12-30T04:02:41.2543865Z    at FluentAssertions.Primitives.StringAssertions`1.BeEmpty(String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2545728Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.Sanitize_OnlyInvalidCharacters_ReturnsEmpty() in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 403
-2025-12-30T04:02:41.2547562Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
-2025-12-30T04:02:41.2548666Z    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-2025-12-30T04:02:41.2550161Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(symbol: "AAPL/../admin") [1 ms]
-2025-12-30T04:02:41.2551449Z   Error Message:
-2025-12-30T04:02:41.2552820Z    Expected exception message to match the equivalent of "Symbol contains path traversal sequences*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:41.2554177Z 
-2025-12-30T04:02:41.2554287Z   Stack Trace:
-2025-12-30T04:02:41.2554804Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.2555681Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.2556713Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:41.2557629Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:41.2559052Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2561452Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2563388Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2565709Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 201
-2025-12-30T04:02:41.2567720Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
-2025-12-30T04:02:41.2569040Z    at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
-2025-12-30T04:02:41.2570791Z   Failed YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(symbol: "../../../etc/passwd") [< 1 ms]
-2025-12-30T04:02:41.2572097Z   Error Message:
-2025-12-30T04:02:41.2573486Z    Expected exception message to match the equivalent of "Symbol contains path traversal sequences*", but "Symbol contains invalid characters. Only alphanumeric characters and .-^=_ are allowed. (Parameter 'symbol')" does not.
-2025-12-30T04:02:41.2574851Z 
-2025-12-30T04:02:41.2574972Z   Stack Trace:
-2025-12-30T04:02:41.2575492Z      at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
-2025-12-30T04:02:41.2576632Z    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
-2025-12-30T04:02:41.2577659Z    at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
-2025-12-30T04:02:41.2578582Z    at FluentAssertions.Execution.AssertionScope.Dispose()
-2025-12-30T04:02:41.2579973Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2582303Z    at FluentAssertions.Specialized.ExceptionAssertions`1.ExceptionMessageAssertion.Execute(IEnumerable`1 messages, String expectation, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2584207Z    at FluentAssertions.Specialized.ExceptionAssertions`1.WithMessage(String expectedWildcardPattern, String because, Object[] becauseArgs)
-2025-12-30T04:02:41.2586526Z    at YFinance.NET.Tests.Unit.Utils.SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Utils/SymbolValidatorTests.cs:line 201
-2025-12-30T04:02:41.2588651Z    at InvokeStub_SymbolValidatorTests.ValidateAndThrow_PathTraversal_ThrowsArgumentException(Object, Span`1)
-2025-12-30T04:02:41.2590219Z    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-2025-12-30T04:02:41.3637096Z [xUnit.net 00:00:00.92]     YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(symbol: "") [FAIL]
-2025-12-30T04:02:41.3648370Z [xUnit.net 00:00:00.92]     YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(symbol: "   ") [FAIL]
-2025-12-30T04:02:41.3663228Z [xUnit.net 00:00:00.93]     YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(symbol: null) [FAIL]
-2025-12-30T04:02:41.3693705Z   Failed YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(symbol: "") [1 ms]
-2025-12-30T04:02:41.3694833Z   Error Message:
-2025-12-30T04:02:41.3695326Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:41.3696036Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:41.3696655Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:41.3697869Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:41.3698634Z   Stack Trace:
-2025-12-30T04:02:41.3700320Z      at YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/QuoteScraperTests.cs:line 60
-2025-12-30T04:02:41.3702469Z --- End of stack trace from previous location ---
-2025-12-30T04:02:41.3703048Z ----- Inner Stack Trace -----
-2025-12-30T04:02:41.3703573Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:41.3704444Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:41.3705467Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:41.3707387Z    at YFinance.NET.Implementation.Scrapers.QuoteScraper.ParseQuoteData(String symbol, String jsonResponse) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/QuoteScraper.cs:line 77
-2025-12-30T04:02:41.3710338Z    at YFinance.NET.Implementation.Scrapers.QuoteScraper.GetQuoteAsync(String symbol, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/QuoteScraper.cs:line 46
-2025-12-30T04:02:41.3713012Z   Failed YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(symbol: "   ") [< 1 ms]
-2025-12-30T04:02:41.3714146Z   Error Message:
-2025-12-30T04:02:41.3714634Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:41.3715891Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:41.3716529Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:41.3717346Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:41.3718011Z   Stack Trace:
-2025-12-30T04:02:41.3719675Z      at YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/QuoteScraperTests.cs:line 60
-2025-12-30T04:02:41.3721798Z --- End of stack trace from previous location ---
-2025-12-30T04:02:41.3722360Z ----- Inner Stack Trace -----
-2025-12-30T04:02:41.3722890Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:41.3723714Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:41.3724736Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:41.3726739Z    at YFinance.NET.Implementation.Scrapers.QuoteScraper.ParseQuoteData(String symbol, String jsonResponse) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/QuoteScraper.cs:line 77
-2025-12-30T04:02:41.3729565Z    at YFinance.NET.Implementation.Scrapers.QuoteScraper.GetQuoteAsync(String symbol, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/QuoteScraper.cs:line 46
-2025-12-30T04:02:41.3731439Z   Failed YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(symbol: null) [1 ms]
-2025-12-30T04:02:41.3732063Z   Error Message:
-2025-12-30T04:02:41.3732343Z    Assert.Throws() Failure: Exception type was not an exact match
-2025-12-30T04:02:41.3732720Z Expected: typeof(System.ArgumentException)
-2025-12-30T04:02:41.3733050Z Actual:   typeof(System.ArgumentNullException)
-2025-12-30T04:02:41.3733495Z ---- System.ArgumentNullException : Value cannot be null. (Parameter 'json')
-2025-12-30T04:02:41.3733893Z   Stack Trace:
-2025-12-30T04:02:41.3734912Z      at YFinance.NET.Tests.Unit.Scrapers.QuoteScraperTests.GetQuoteAsync_InvalidSymbol_ThrowsArgumentException(String symbol) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/Unit/Scrapers/QuoteScraperTests.cs:line 60
-2025-12-30T04:02:41.3735942Z --- End of stack trace from previous location ---
-2025-12-30T04:02:41.3736546Z ----- Inner Stack Trace -----
-2025-12-30T04:02:41.3736864Z    at System.ArgumentNullException.Throw(String paramName)
-2025-12-30T04:02:41.3737333Z    at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
-2025-12-30T04:02:41.3737871Z    at System.Text.Json.JsonDocument.Parse(String json, JsonDocumentOptions options)
-2025-12-30T04:02:41.3738906Z    at YFinance.NET.Implementation.Scrapers.QuoteScraper.ParseQuoteData(String symbol, String jsonResponse) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/QuoteScraper.cs:line 77
-2025-12-30T04:02:41.3740478Z    at YFinance.NET.Implementation.Scrapers.QuoteScraper.GetQuoteAsync(String symbol, CancellationToken cancellationToken) in /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/QuoteScraper.cs:line 46
-2025-12-30T04:02:57.0292527Z 
-2025-12-30T04:02:57.0333584Z Failed!  - Failed:    15, Passed:   238, Skipped:     0, Total:   253, Duration: 15 s - YFinance.NET.Tests.dll (net10.0)
-2025-12-30T04:02:57.2393543Z 
-2025-12-30T04:02:57.2399188Z Attachments:
-2025-12-30T04:02:57.2401824Z   /home/runner/work/YFinance.NET/YFinance.NET/coverage/adff0726-e2e2-48df-81ad-abae3543c9b4/coverage.cobertura.xml
-2025-12-30T04:02:57.3023622Z ##[error]Process completed with exit code 1.
-2025-12-30T04:02:57.3136593Z Post job cleanup.
-2025-12-30T04:02:57.4087261Z [command]/usr/bin/git version
-2025-12-30T04:02:57.4132898Z git version 2.52.0
-2025-12-30T04:02:57.4174980Z Temporarily overriding HOME='/home/runner/work/_temp/3b5367e6-70c1-4e22-bf42-e5c7292a7f74' before making global git config changes
-2025-12-30T04:02:57.4176094Z Adding repository directory to the temporary git global config as a safe directory
-2025-12-30T04:02:57.4179954Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
-2025-12-30T04:02:57.4212781Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-2025-12-30T04:02:57.4244318Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-2025-12-30T04:02:57.4473674Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-2025-12-30T04:02:57.4494913Z http.https://github.com/.extraheader
-2025-12-30T04:02:57.4507040Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
-2025-12-30T04:02:57.4537027Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-2025-12-30T04:02:57.4761337Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-2025-12-30T04:02:57.4794056Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-2025-12-30T04:02:57.5132973Z Cleaning up orphan processes
-2025-12-30T04:02:57.5430128Z Terminate orphan process: pid (2332) (dotnet)
-2025-12-30T04:02:57.5448451Z Terminate orphan process: pid (2333) (dotnet)
-2025-12-30T04:02:57.5466141Z Terminate orphan process: pid (2334) (dotnet)
-2025-12-30T04:02:57.5495270Z Terminate orphan process: pid (2504) (VBCSCompiler)
+2025-12-30T06:02:48.7731824Z Current runner version: '2.330.0'
+2025-12-30T06:02:48.7754784Z ##[group]Runner Image Provisioner
+2025-12-30T06:02:48.7755753Z Hosted Compute Agent
+2025-12-30T06:02:48.7756440Z Version: 20251211.462
+2025-12-30T06:02:48.7757314Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+2025-12-30T06:02:48.7758318Z Build Date: 2025-12-11T16:28:49Z
+2025-12-30T06:02:48.7759083Z Worker ID: {510edacc-6741-4e10-b8e1-6dfe3e4cfb15}
+2025-12-30T06:02:48.7759762Z ##[endgroup]
+2025-12-30T06:02:48.7760224Z ##[group]Operating System
+2025-12-30T06:02:48.7760922Z Ubuntu
+2025-12-30T06:02:48.7761354Z 24.04.3
+2025-12-30T06:02:48.7761784Z LTS
+2025-12-30T06:02:48.7762172Z ##[endgroup]
+2025-12-30T06:02:48.7762658Z ##[group]Runner Image
+2025-12-30T06:02:48.7763147Z Image: ubuntu-24.04
+2025-12-30T06:02:48.7763579Z Version: 20251215.174.1
+2025-12-30T06:02:48.7764472Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-30T06:02:48.7765827Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+2025-12-30T06:02:48.7766714Z ##[endgroup]
+2025-12-30T06:02:48.7767865Z ##[group]GITHUB_TOKEN Permissions
+2025-12-30T06:02:48.7769741Z Checks: write
+2025-12-30T06:02:48.7770274Z Contents: read
+2025-12-30T06:02:48.7770802Z Metadata: read
+2025-12-30T06:02:48.7771263Z PullRequests: write
+2025-12-30T06:02:48.7771720Z Statuses: write
+2025-12-30T06:02:48.7772161Z ##[endgroup]
+2025-12-30T06:02:48.7774203Z Secret source: Actions
+2025-12-30T06:02:48.7775108Z Prepare workflow directory
+2025-12-30T06:02:48.8089057Z Prepare all required actions
+2025-12-30T06:02:48.8126122Z Getting action download info
+2025-12-30T06:02:49.1215022Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-30T06:02:49.2296671Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
+2025-12-30T06:02:49.6424116Z Download action repository 'codecov/codecov-action@v4' (SHA:b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238)
+2025-12-30T06:02:50.0628401Z Complete job name: Code Coverage
+2025-12-30T06:02:50.1421792Z ##[group]Run actions/checkout@v4
+2025-12-30T06:02:50.1422693Z with:
+2025-12-30T06:02:50.1423173Z   repository: CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.1424040Z   token: ***
+2025-12-30T06:02:50.1424468Z   ssh-strict: true
+2025-12-30T06:02:50.1424921Z   ssh-user: git
+2025-12-30T06:02:50.1425369Z   persist-credentials: true
+2025-12-30T06:02:50.1425896Z   clean: true
+2025-12-30T06:02:50.1426340Z   sparse-checkout-cone-mode: true
+2025-12-30T06:02:50.1426885Z   fetch-depth: 1
+2025-12-30T06:02:50.1427308Z   fetch-tags: false
+2025-12-30T06:02:50.1427752Z   show-progress: true
+2025-12-30T06:02:50.1428199Z   lfs: false
+2025-12-30T06:02:50.1428630Z   submodules: false
+2025-12-30T06:02:50.1429088Z   set-safe-directory: true
+2025-12-30T06:02:50.1429787Z ##[endgroup]
+2025-12-30T06:02:50.2441920Z Syncing repository: CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.2443937Z ##[group]Getting Git version info
+2025-12-30T06:02:50.2444834Z Working directory is '/home/runner/work/YFinance.NET/YFinance.NET'
+2025-12-30T06:02:50.2445931Z [command]/usr/bin/git version
+2025-12-30T06:02:50.2509573Z git version 2.52.0
+2025-12-30T06:02:50.2532448Z ##[endgroup]
+2025-12-30T06:02:50.2548130Z Temporarily overriding HOME='/home/runner/work/_temp/a0dd4272-ef82-4567-ba3c-54474c42eff1' before making global git config changes
+2025-12-30T06:02:50.2552106Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T06:02:50.2556323Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:02:50.2595669Z Deleting the contents of '/home/runner/work/YFinance.NET/YFinance.NET'
+2025-12-30T06:02:50.2599233Z ##[group]Initializing the repository
+2025-12-30T06:02:50.2603888Z [command]/usr/bin/git init /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:02:50.2702583Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-30T06:02:50.2704324Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-30T06:02:50.2705929Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-30T06:02:50.2707526Z hint: call:
+2025-12-30T06:02:50.2708363Z hint:
+2025-12-30T06:02:50.2709459Z hint: 	git config --global init.defaultBranch <name>
+2025-12-30T06:02:50.2710793Z hint:
+2025-12-30T06:02:50.2712000Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-30T06:02:50.2713923Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-30T06:02:50.2715397Z hint:
+2025-12-30T06:02:50.2716252Z hint: 	git branch -m <name>
+2025-12-30T06:02:50.2717282Z hint:
+2025-12-30T06:02:50.2718554Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-30T06:02:50.2720875Z Initialized empty Git repository in /home/runner/work/YFinance.NET/YFinance.NET/.git/
+2025-12-30T06:02:50.2724214Z [command]/usr/bin/git remote add origin https://github.com/CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.2749635Z ##[endgroup]
+2025-12-30T06:02:50.2751373Z ##[group]Disabling automatic garbage collection
+2025-12-30T06:02:50.2754313Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-30T06:02:50.2778371Z ##[endgroup]
+2025-12-30T06:02:50.2779864Z ##[group]Setting up auth
+2025-12-30T06:02:50.2785764Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T06:02:50.2811774Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T06:02:50.3124119Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T06:02:50.3149719Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T06:02:50.3328520Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T06:02:50.3353703Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T06:02:50.3525204Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-30T06:02:50.3554024Z ##[endgroup]
+2025-12-30T06:02:50.3555082Z ##[group]Fetching the repository
+2025-12-30T06:02:50.3561697Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +149da10551655e08884fd10692b7cd2d7cc993df:refs/remotes/pull/7/merge
+2025-12-30T06:02:50.6129202Z From https://github.com/CalvinPangch/YFinance.NET
+2025-12-30T06:02:50.6130194Z  * [new ref]         149da10551655e08884fd10692b7cd2d7cc993df -> pull/7/merge
+2025-12-30T06:02:50.6156971Z ##[endgroup]
+2025-12-30T06:02:50.6158540Z ##[group]Determining the checkout info
+2025-12-30T06:02:50.6160624Z ##[endgroup]
+2025-12-30T06:02:50.6164790Z [command]/usr/bin/git sparse-checkout disable
+2025-12-30T06:02:50.6203119Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-30T06:02:50.6225415Z ##[group]Checking out the ref
+2025-12-30T06:02:50.6229879Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/7/merge
+2025-12-30T06:02:50.6325919Z Note: switching to 'refs/remotes/pull/7/merge'.
+2025-12-30T06:02:50.6327143Z 
+2025-12-30T06:02:50.6327761Z You are in 'detached HEAD' state. You can look around, make experimental
+2025-12-30T06:02:50.6329118Z changes and commit them, and you can discard any commits you make in this
+2025-12-30T06:02:50.6329890Z state without impacting any branches by switching back to a branch.
+2025-12-30T06:02:50.6330349Z 
+2025-12-30T06:02:50.6330785Z If you want to create a new branch to retain commits you create, you may
+2025-12-30T06:02:50.6331541Z do so (now or later) by using -c with the switch command. Example:
+2025-12-30T06:02:50.6332576Z 
+2025-12-30T06:02:50.6332917Z   git switch -c <new-branch-name>
+2025-12-30T06:02:50.6333219Z 
+2025-12-30T06:02:50.6333396Z Or undo this operation with:
+2025-12-30T06:02:50.6333674Z 
+2025-12-30T06:02:50.6333834Z   git switch -
+2025-12-30T06:02:50.6334037Z 
+2025-12-30T06:02:50.6334383Z Turn off this advice by setting config variable advice.detachedHead to false
+2025-12-30T06:02:50.6334868Z 
+2025-12-30T06:02:50.6335412Z HEAD is now at 149da10 Merge d8650052f7ff2fd444b6583803a0c6d3df6031ed into 71fb9da4e8d5107b786fc55175e6a45ef90f93e3
+2025-12-30T06:02:50.6337088Z ##[endgroup]
+2025-12-30T06:02:50.6368686Z [command]/usr/bin/git log -1 --format=%H
+2025-12-30T06:02:50.6388748Z 149da10551655e08884fd10692b7cd2d7cc993df
+2025-12-30T06:02:50.6639182Z ##[group]Run actions/setup-dotnet@v4
+2025-12-30T06:02:50.6639684Z with:
+2025-12-30T06:02:50.6640026Z   dotnet-version: 10.0.x
+2025-12-30T06:02:50.6640543Z   cache: false
+2025-12-30T06:02:50.6640882Z ##[endgroup]
+2025-12-30T06:02:50.8306292Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2025-12-30T06:02:51.2115297Z dotnet-install: .NET Core Runtime with version '10.0.1' is already installed.
+2025-12-30T06:02:51.2161123Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
+2025-12-30T06:02:51.4638397Z dotnet-install: .NET Core SDK with version '10.0.101' is already installed.
+2025-12-30T06:02:51.4791143Z ##[group]Run dotnet restore
+2025-12-30T06:02:51.4792512Z [36;1mdotnet restore[0m
+2025-12-30T06:02:51.4821490Z shell: /usr/bin/bash -e {0}
+2025-12-30T06:02:51.4822704Z env:
+2025-12-30T06:02:51.4823675Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:02:51.4824901Z ##[endgroup]
+2025-12-30T06:02:57.7621494Z   Determining projects to restore...
+2025-12-30T06:02:59.4969568Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/YFinance.NET.Models.csproj (in 328 ms).
+2025-12-30T06:02:59.4973854Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj (in 337 ms).
+2025-12-30T06:03:01.4722353Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj (in 2.33 sec).
+2025-12-30T06:03:02.1263087Z   Restored /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Tests/YFinance.NET.Tests.csproj (in 2.99 sec).
+2025-12-30T06:03:02.1750334Z ##[group]Run dotnet test --configuration Release --collect:"XPlat Code Coverage" --results-directory ./coverage
+2025-12-30T06:03:02.1751340Z [36;1mdotnet test --configuration Release --collect:"XPlat Code Coverage" --results-directory ./coverage[0m
+2025-12-30T06:03:02.1770614Z shell: /usr/bin/bash -e {0}
+2025-12-30T06:03:02.1770878Z env:
+2025-12-30T06:03:02.1771061Z   DOTNET_ROOT: /usr/share/dotnet
+2025-12-30T06:03:02.1771287Z ##[endgroup]
+2025-12-30T06:03:03.3605782Z   Determining projects to restore...
+2025-12-30T06:03:03.8709542Z   All projects are up-to-date for restore.
+2025-12-30T06:03:12.2892743Z   YFinance.NET.Models -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Models/bin/Release/net10.0/YFinance.NET.Models.dll
+2025-12-30T06:03:12.6245755Z   YFinance.NET.Interfaces -> /home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Interfaces/bin/Release/net10.0/YFinance.NET.Interfaces.dll
+2025-12-30T06:03:14.0058049Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0072768Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0077939Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0081896Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0085024Z ##[error]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): error CS0266: Cannot implicitly convert type 'int?' to 'int'. An explicit conversion exists (are you missing a cast?) [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0088291Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(206,29): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0090981Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(207,23): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0093495Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(208,24): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0095985Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(209,24): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.0098611Z ##[warning]/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/Scrapers/AnalysisScraper.cs(210,30): warning CS8629: Nullable value type may be null. [/home/runner/work/YFinance.NET/YFinance.NET/YFinance.NET.Implementation/YFinance.NET.Implementation.csproj]
+2025-12-30T06:03:14.1028995Z ##[error]Process completed with exit code 1.
+2025-12-30T06:03:14.1137232Z Post job cleanup.
+2025-12-30T06:03:14.2011900Z [command]/usr/bin/git version
+2025-12-30T06:03:14.2052089Z git version 2.52.0
+2025-12-30T06:03:14.2089204Z Temporarily overriding HOME='/home/runner/work/_temp/4035489d-4f1a-43ea-b262-a8ee4c68de84' before making global git config changes
+2025-12-30T06:03:14.2090048Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T06:03:14.2093960Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/YFinance.NET/YFinance.NET
+2025-12-30T06:03:14.2124209Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T06:03:14.2151484Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T06:03:14.2335553Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T06:03:14.2353694Z http.https://github.com/.extraheader
+2025-12-30T06:03:14.2364539Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-30T06:03:14.2389159Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T06:03:14.2560934Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T06:03:14.2587406Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T06:03:14.2855449Z Cleaning up orphan processes
+2025-12-30T06:03:14.3075957Z Terminate orphan process: pid (2357) (dotnet)
+2025-12-30T06:03:14.3111839Z Terminate orphan process: pid (2358) (dotnet)
+2025-12-30T06:03:14.3146771Z Terminate orphan process: pid (2359) (dotnet)
+2025-12-30T06:03:14.3282747Z Terminate orphan process: pid (2533) (VBCSCompiler)
 
 ```
 

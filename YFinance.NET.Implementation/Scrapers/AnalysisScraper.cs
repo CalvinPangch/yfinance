@@ -54,6 +54,23 @@ public class AnalysisScraper : IAnalysisScraper
         return ParseRecommendationTrend(jsonResponse);
     }
 
+    public async Task<RecommendationsSummaryData> GetRecommendationsSummaryAsync(
+        string symbol,
+        CancellationToken cancellationToken = default)
+    {
+        // Validate symbol for security (prevents URL injection)
+        _symbolValidator.ValidateAndThrow(symbol, nameof(symbol));
+
+        var queryParams = new Dictionary<string, string>
+        {
+            { "modules", "recommendationTrend" }
+        };
+
+        var endpoint = $"/v10/finance/quoteSummary/{symbol}";
+        var jsonResponse = await _client.GetAsync(endpoint, queryParams, cancellationToken).ConfigureAwait(false);
+        return ParseRecommendationsSummary(symbol, jsonResponse);
+    }
+
     public async Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(
         string symbol,
         CancellationToken cancellationToken = default)
@@ -152,6 +169,50 @@ public class AnalysisScraper : IAnalysisScraper
         }
 
         return output;
+    }
+
+    private RecommendationsSummaryData ParseRecommendationsSummary(string symbol, string jsonResponse)
+    {
+        using var document = JsonDocument.Parse(jsonResponse);
+        var root = document.RootElement;
+
+        var summaryData = new RecommendationsSummaryData { Symbol = symbol };
+
+        if (!root.TryGetProperty("quoteSummary", out var quoteSummary) ||
+            !quoteSummary.TryGetProperty("result", out var results) ||
+            results.GetArrayLength() == 0)
+        {
+            return summaryData;
+        }
+
+        var result = results[0];
+        if (!result.TryGetProperty("recommendationTrend", out var trend) ||
+            !trend.TryGetProperty("trend", out var trendArray) ||
+            trendArray.ValueKind != JsonValueKind.Array)
+        {
+            return summaryData;
+        }
+
+        var summaries = new List<RecommendationsSummaryEntry>();
+        foreach (var entry in trendArray.EnumerateArray())
+        {
+            var period = entry.TryGetProperty("period", out var periodElement) && periodElement.ValueKind == JsonValueKind.String
+                ? periodElement.GetString() ?? string.Empty
+                : string.Empty;
+
+            summaries.Add(new RecommendationsSummaryEntry
+            {
+                Period = period,
+                StrongBuy = entry.GetIntPropertyOrDefault("strongBuy"),
+                Buy = entry.GetIntPropertyOrDefault("buy"),
+                Hold = entry.GetIntPropertyOrDefault("hold"),
+                Sell = entry.GetIntPropertyOrDefault("sell"),
+                StrongSell = entry.GetIntPropertyOrDefault("strongSell")
+            });
+        }
+
+        summaryData.Summaries = summaries;
+        return summaryData;
     }
 
     private IReadOnlyList<UpgradeDowngradeEntry> ParseUpgradeDowngradeHistory(string jsonResponse)

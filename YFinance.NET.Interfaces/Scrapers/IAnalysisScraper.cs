@@ -17,5 +17,13 @@ public interface IAnalysisScraper
 
     Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(string symbol, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Retrieves aggregated recommendations summary by time period.
+    /// </summary>
+    /// <param name="symbol">Ticker symbol</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Recommendations summary with period-based aggregation</returns>
+    Task<RecommendationsSummaryData> GetRecommendationsSummaryAsync(string symbol, CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(string symbol, CancellationToken cancellationToken = default);
 }
