@@ -607,16 +607,14 @@ Data granularity:
 - [x] Cookie and authentication management
 - [x] Response caching
 - [x] Rate limiting
-
-### In Progress 🚧
-- [ ] Price repair algorithms
-- [ ] Timezone DST edge-case handling
-- [ ] Complete screener/query implementation
+- [x] Price repair algorithms (100x errors, outliers, zero values, bad splits)
+- [x] Timezone DST edge-case handling (NodaTime-based)
+- [x] Complete screener/query implementation (predefined and custom)
 
 ### Planned 📋
 - [ ] NuGet package publication
 
-### Python yfinance Parity: ~85% ✅
+### Python yfinance Parity: ~95% ✅
 The C# implementation now has excellent coverage of core Python yfinance features including batch operations, fast info, and multi-ticker management.
 
 ## Contributing
