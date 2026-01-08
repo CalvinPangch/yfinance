@@ -57,3 +57,8 @@ nunit-*.xml
 # CLAUDE.md - Now tracked for AI assistant documentation
 .claude/
 .serena/
+
+# Build artifacts and CI/CD generated files
+build-errors.md
+build.log
+git-push-retry.sh
