@@ -23,7 +23,8 @@ public class YahooFinanceClient : IYahooFinanceClient
     /// </summary>
     /// <param name="cookieService">The cookie service for authentication.</param>
     /// <param name="rateLimitService">The rate limit service for handling API limits.</param>
-    /// <exception cref="ArgumentNullException">Thrown when any parameter is null.</exception>
+    /// <param name="cacheService">Optional cache service for response caching.</param>
+    /// <exception cref="ArgumentNullException">Thrown when required parameters are null.</exception>
     public YahooFinanceClient(
         ICookieService cookieService,
         IRateLimitService rateLimitService,
