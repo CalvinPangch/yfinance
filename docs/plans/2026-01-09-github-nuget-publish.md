@@ -2,18 +2,16 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Build and publish the YFinance.NET NuGet packages to GitHub Packages on release tags.
+**Goal:** Build and publish the single YFinance.NET NuGet package to GitHub Packages on release tags.
 
-**Architecture:** Make three packages (Models, Interfaces, Implementation) with shared metadata in `Directory.Build.props`, then add a GitHub Actions workflow that packs and pushes to GitHub Packages using the repo owner and the built-in `GITHUB_TOKEN`.
+**Architecture:** Make one package (`YFinance.NET.Implementation`) with shared metadata in `Directory.Build.props`, set its `PackageId` to `YFinance.NET`, and add a GitHub Actions workflow that packs and pushes to GitHub Packages using the repo owner and the built-in `GITHUB_TOKEN` when a `v*` tag is created.
 
 **Tech Stack:** .NET SDK 10, GitHub Actions, NuGet
 
-### Task 1: Add shared package metadata and per-project IDs
+### Task 1: Add shared package metadata and package ID
 
 **Files:**
 - Create: `Directory.Build.props`
-- Modify: `YFinance.NET.Models/YFinance.NET.Models.csproj`
-- Modify: `YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj`
 - Modify: `YFinance.NET.Implementation/YFinance.NET.Implementation.csproj`
 - Modify: `YFinance.NET.Tests/YFinance.NET.Tests.csproj`
 
@@ -41,21 +39,7 @@ Expected: Package builds but lacks expected metadata or versioning controls.
 </Project>
 ```
 
-**Step 3: Add `PackageId` and `Description` per project**
-
-```xml
-<PropertyGroup>
-  <PackageId>YFinance.NET.Models</PackageId>
-  <Description>Core models for YFinance.NET.</Description>
-</PropertyGroup>
-```
-
-```xml
-<PropertyGroup>
-  <PackageId>YFinance.NET.Interfaces</PackageId>
-  <Description>Service interfaces for YFinance.NET.</Description>
-</PropertyGroup>
-```
+**Step 3: Add `PackageId` and `Description` for the single package**
 
 ```xml
 <PropertyGroup>
@@ -80,7 +64,7 @@ Expected: `YFinance.NET.<version>.nupkg` exists and includes metadata fields.
 **Step 6: Commit**
 
 ```bash
-git add Directory.Build.props YFinance.NET.Models/YFinance.NET.Models.csproj YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj YFinance.NET.Implementation/YFinance.NET.Implementation.csproj YFinance.NET.Tests/YFinance.NET.Tests.csproj
+git add Directory.Build.props YFinance.NET.Implementation/YFinance.NET.Implementation.csproj YFinance.NET.Tests/YFinance.NET.Tests.csproj
 git commit -m "chore: add nuget package metadata"
 ```
 
@@ -126,10 +110,7 @@ jobs:
         run: dotnet restore
 
       - name: Pack
-        run: |
-          dotnet pack YFinance.NET.Models/YFinance.NET.Models.csproj -c Release -p:Version=${{ steps.version.outputs.version }}
-          dotnet pack YFinance.NET.Interfaces/YFinance.NET.Interfaces.csproj -c Release -p:Version=${{ steps.version.outputs.version }}
-          dotnet pack YFinance.NET.Implementation/YFinance.NET.Implementation.csproj -c Release -p:Version=${{ steps.version.outputs.version }}
+        run: dotnet pack YFinance.NET.Implementation/YFinance.NET.Implementation.csproj -c Release -p:Version=${{ steps.version.outputs.version }}
 
       - name: Add GitHub Packages source
         run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
@@ -184,8 +165,8 @@ git commit -m "docs: add github packages install notes"
 
 **Step 1: Run pack for all three packages**
 
-Run: `dotnet pack YFinance.NET.sln -c Release`
-Expected: `.nupkg` files for `YFinance.NET`, `YFinance.NET.Interfaces`, and `YFinance.NET.Models` in each project `bin/Release` folder.
+Run: `dotnet pack YFinance.NET.Implementation/YFinance.NET.Implementation.csproj -c Release`
+Expected: `YFinance.NET.<version>.nupkg` in `YFinance.NET.Implementation/bin/Release`.
 
 **Step 2: (Optional) Dry-run push with a local source**
 
