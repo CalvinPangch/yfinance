@@ -11,17 +11,36 @@ public class CalendarService : ICalendarService
 {
     private readonly ICalendarVisualizationScraper _scraper;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CalendarService"/> class.
+    /// </summary>
+    /// <param name="scraper">Calendar visualization scraper</param>
     public CalendarService(ICalendarVisualizationScraper scraper)
     {
         _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
     }
 
+    /// <summary>
+    /// Retrieves calendar data based on the specified request.
+    /// </summary>
+    /// <param name="request">Calendar request parameters</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Calendar result</returns>
     public Task<CalendarResult> GetCalendarAsync(CalendarRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
         return _scraper.GetCalendarAsync(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Retrieves earnings calendar events.
+    /// </summary>
+    /// <param name="start">Start date filter</param>
+    /// <param name="end">End date filter</param>
+    /// <param name="limit">Maximum number of results</param>
+    /// <param name="offset">Offset for pagination</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Calendar result with earnings events</returns>
     public Task<CalendarResult> GetEarningsCalendarAsync(DateTime? start = null, DateTime? end = null, int limit = 12, int offset = 0, CancellationToken cancellationToken = default)
     {
         var (startDate, endDate) = NormalizeDateRange(start, end);
@@ -44,6 +63,15 @@ public class CalendarService : ICalendarService
         return _scraper.GetCalendarAsync(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Retrieves IPO calendar events.
+    /// </summary>
+    /// <param name="start">Start date filter</param>
+    /// <param name="end">End date filter</param>
+    /// <param name="limit">Maximum number of results</param>
+    /// <param name="offset">Offset for pagination</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Calendar result with IPO events</returns>
     public Task<CalendarResult> GetIpoCalendarAsync(DateTime? start = null, DateTime? end = null, int limit = 12, int offset = 0, CancellationToken cancellationToken = default)
     {
         var (startDate, endDate) = NormalizeDateRange(start, end);
@@ -63,6 +91,15 @@ public class CalendarService : ICalendarService
         return _scraper.GetCalendarAsync(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Retrieves economic events calendar.
+    /// </summary>
+    /// <param name="start">Start date filter</param>
+    /// <param name="end">End date filter</param>
+    /// <param name="limit">Maximum number of results</param>
+    /// <param name="offset">Offset for pagination</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Calendar result with economic events</returns>
     public Task<CalendarResult> GetEconomicEventsCalendarAsync(DateTime? start = null, DateTime? end = null, int limit = 12, int offset = 0, CancellationToken cancellationToken = default)
     {
         var (startDate, endDate) = NormalizeDateRange(start, end);
@@ -81,6 +118,15 @@ public class CalendarService : ICalendarService
         return _scraper.GetCalendarAsync(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Retrieves stock splits calendar.
+    /// </summary>
+    /// <param name="start">Start date filter</param>
+    /// <param name="end">End date filter</param>
+    /// <param name="limit">Maximum number of results</param>
+    /// <param name="offset">Offset for pagination</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Calendar result with stock split events</returns>
     public Task<CalendarResult> GetSplitsCalendarAsync(DateTime? start = null, DateTime? end = null, int limit = 12, int offset = 0, CancellationToken cancellationToken = default)
     {
         var (startDate, endDate) = NormalizeDateRange(start, end);
