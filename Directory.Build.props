@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <Authors>YFinance.NET</Authors>
+    <Company>YFinance.NET</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/CalvinPangch/YFinance.NET</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/CalvinPangch/YFinance.NET</PackageProjectUrl>
+    <PackageTags>yfinance finance stocks quotes</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <VersionPrefix>0.1.0</VersionPrefix>
+  </PropertyGroup>
+</Project>
