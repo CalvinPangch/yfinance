@@ -16,12 +16,23 @@ public class FundsScraper : IFundsScraper
     private readonly IYahooFinanceClient _client;
     private readonly IDataParser _dataParser;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FundsScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
     public FundsScraper(IYahooFinanceClient client, IDataParser dataParser)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
     }
 
+    /// <summary>
+    /// Gets fund data (ETF or mutual fund) for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Fund data for the symbol.</returns>
     public async Task<FundsData> GetFundsDataAsync(string symbol, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(symbol))

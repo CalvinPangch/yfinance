@@ -15,6 +15,12 @@ public class AnalysisScraper : IAnalysisScraper
     private readonly IDataParser _dataParser;
     private readonly ISymbolValidator _symbolValidator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AnalysisScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
+    /// <param name="symbolValidator">The symbol validator for security.</param>
     public AnalysisScraper(IYahooFinanceClient client, IDataParser dataParser, ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -22,6 +28,12 @@ public class AnalysisScraper : IAnalysisScraper
         _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
+    /// <summary>
+    /// Gets analyst data including recommendations and price targets.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Analyst data for the symbol.</returns>
     public async Task<AnalystData> GetAnalystDataAsync(string symbol, CancellationToken cancellationToken = default)
     {
         // Validate symbol for security (prevents URL injection)
@@ -37,6 +49,12 @@ public class AnalysisScraper : IAnalysisScraper
         return ParseAnalystData(symbol, jsonResponse);
     }
 
+    /// <summary>
+    /// Gets analyst recommendation trends for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of recommendation trend entries.</returns>
     public async Task<IReadOnlyList<RecommendationTrendEntry>> GetRecommendationsAsync(
         string symbol,
         CancellationToken cancellationToken = default)
@@ -54,6 +72,12 @@ public class AnalysisScraper : IAnalysisScraper
         return ParseRecommendationTrend(jsonResponse);
     }
 
+    /// <summary>
+    /// Gets a summary of analyst recommendations.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Recommendations summary data.</returns>
     public async Task<RecommendationsSummaryData> GetRecommendationsSummaryAsync(
         string symbol,
         CancellationToken cancellationToken = default)
@@ -71,6 +95,12 @@ public class AnalysisScraper : IAnalysisScraper
         return ParseRecommendationsSummary(symbol, jsonResponse);
     }
 
+    /// <summary>
+    /// Gets analyst upgrades and downgrades history.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of upgrade/downgrade entries.</returns>
     public async Task<IReadOnlyList<UpgradeDowngradeEntry>> GetUpgradesDowngradesAsync(
         string symbol,
         CancellationToken cancellationToken = default)

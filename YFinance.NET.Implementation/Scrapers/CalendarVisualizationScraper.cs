@@ -77,11 +77,21 @@ public class CalendarVisualizationScraper : ICalendarVisualizationScraper
                 })
         };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CalendarVisualizationScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
     public CalendarVisualizationScraper(IYahooFinanceClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
+    /// <summary>
+    /// Gets calendar data for the specified request.
+    /// </summary>
+    /// <param name="request">The calendar request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Calendar result containing structured data.</returns>
     public async Task<CalendarResult> GetCalendarAsync(CalendarRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);

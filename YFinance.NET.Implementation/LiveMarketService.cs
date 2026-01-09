@@ -15,6 +15,13 @@ public class LiveMarketService : ILiveMarketService
     private const string StreamUrl = "wss://streamer.finance.yahoo.com/?version=2";
     private readonly ClientWebSocket _socket = new();
 
+    /// <summary>
+    /// Listens to live price updates for the specified symbols via WebSocket.
+    /// </summary>
+    /// <param name="symbols">Collection of symbols to listen to.</param>
+    /// <param name="onMessage">Optional callback invoked for each price update.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task ListenAsync(IEnumerable<string> symbols, Func<LivePriceData, Task>? onMessage = null, CancellationToken cancellationToken = default)
     {
         var symbolList = symbols?.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Distinct().ToList()

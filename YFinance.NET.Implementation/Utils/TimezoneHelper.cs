@@ -13,6 +13,12 @@ public class TimezoneHelper : ITimezoneHelper
 {
     private static readonly IDateTimeZoneProvider TimeZoneProvider = DateTimeZoneProviders.Tzdb;
 
+    /// <summary>
+    /// Converts a UTC datetime to the specified timezone.
+    /// </summary>
+    /// <param name="utcDateTime">The UTC datetime to convert.</param>
+    /// <param name="timeZoneId">The IANA timezone ID (e.g., "America/New_York").</param>
+    /// <returns>The datetime converted to the specified timezone.</returns>
     public DateTime ConvertToExchangeTime(DateTime utcDateTime, string timeZoneId)
     {
         var dateTimeZone = GetDateTimeZone(timeZoneId);
@@ -31,6 +37,12 @@ public class TimezoneHelper : ITimezoneHelper
         return zonedDateTime.ToDateTimeUnspecified();
     }
 
+    /// <summary>
+    /// Fixes daylight saving time issues in a timestamp array.
+    /// </summary>
+    /// <param name="timestamps">Array of timestamps to fix.</param>
+    /// <param name="timeZoneId">The IANA timezone ID.</param>
+    /// <returns>Timestamps with DST issues corrected.</returns>
     public DateTime[] FixDstIssues(DateTime[] timestamps, string timeZoneId)
     {
         if (timestamps.Length == 0)
@@ -119,6 +131,12 @@ public class TimezoneHelper : ITimezoneHelper
         return utc;
     }
 
+    /// <summary>
+    /// Gets the timezone offset (UTC difference) for a specific datetime in the specified timezone.
+    /// </summary>
+    /// <param name="dateTime">The datetime to get the offset for.</param>
+    /// <param name="timeZoneId">The IANA timezone ID.</param>
+    /// <returns>The UTC offset as a TimeSpan.</returns>
     public TimeSpan GetTimezoneOffset(DateTime dateTime, string timeZoneId)
     {
         var dateTimeZone = GetDateTimeZone(timeZoneId);

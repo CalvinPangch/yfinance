@@ -15,6 +15,12 @@ public class CalendarScraper : ICalendarScraper
     private readonly IDataParser _dataParser;
     private readonly ISymbolValidator _symbolValidator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CalendarScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
+    /// <param name="symbolValidator">The symbol validator for security.</param>
     public CalendarScraper(IYahooFinanceClient client, IDataParser dataParser, ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -22,6 +28,12 @@ public class CalendarScraper : ICalendarScraper
         _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
+    /// <summary>
+    /// Gets calendar events for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Calendar data for the symbol.</returns>
     public async Task<CalendarData> GetCalendarAsync(string symbol, CancellationToken cancellationToken = default)
     {
         // Validate symbol for security (prevents URL injection)

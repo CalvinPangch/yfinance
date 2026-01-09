@@ -15,6 +15,12 @@ public class FastInfoScraper : IFastInfoScraper
     private readonly IQuoteScraper _quoteScraper;
     private readonly ISharesScraper _sharesScraper;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FastInfoScraper"/> class.
+    /// </summary>
+    /// <param name="historyScraper">Scraper for historical price data.</param>
+    /// <param name="quoteScraper">Scraper for quote data.</param>
+    /// <param name="sharesScraper">Scraper for shares outstanding data.</param>
     public FastInfoScraper(
         IHistoryScraper historyScraper,
         IQuoteScraper quoteScraper,
@@ -25,6 +31,12 @@ public class FastInfoScraper : IFastInfoScraper
         _sharesScraper = sharesScraper ?? throw new ArgumentNullException(nameof(sharesScraper));
     }
 
+    /// <summary>
+    /// Gets fast info data derived from history, quotes, and shares data.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Fast info data for the symbol.</returns>
     public async Task<FastInfoData> GetFastInfoAsync(string symbol, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(symbol))

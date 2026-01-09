@@ -16,11 +16,21 @@ namespace YFinance.NET.Implementation.Scrapers;
 public class LookupScraper : ILookupScraper
 {
     private readonly IYahooFinanceClient _client;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LookupScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
     public LookupScraper(IYahooFinanceClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
+    /// <summary>
+    /// Looks up symbols matching the specified criteria.
+    /// </summary>
+    /// <param name="request">The lookup request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Lookup results containing matching symbols.</returns>
     public async Task<LookupResult> LookupAsync(LookupRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);

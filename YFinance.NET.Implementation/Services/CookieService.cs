@@ -49,6 +49,11 @@ public class CookieService : ICookieService
     /// <inheritdoc />
     public string? GetCrumb() => _crumb;
 
+    /// <summary>
+    /// Refreshes the authentication cookies and crumb token.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task RefreshAsync(CancellationToken cancellationToken = default)
     {
         await _authLock.WaitAsync(cancellationToken).ConfigureAwait(false);

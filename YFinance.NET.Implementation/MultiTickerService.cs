@@ -15,6 +15,12 @@ public class MultiTickerService : IMultiTickerService
     private readonly INewsScraper _newsScraper;
     private readonly ITickerService _tickerService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MultiTickerService"/> class.
+    /// </summary>
+    /// <param name="historyScraper">Scraper for historical price data.</param>
+    /// <param name="newsScraper">Scraper for news data.</param>
+    /// <param name="tickerService">Main ticker service for various data types.</param>
     public MultiTickerService(IHistoryScraper historyScraper, INewsScraper newsScraper, ITickerService tickerService)
     {
         _historyScraper = historyScraper ?? throw new ArgumentNullException(nameof(historyScraper));
@@ -22,6 +28,14 @@ public class MultiTickerService : IMultiTickerService
         _tickerService = tickerService ?? throw new ArgumentNullException(nameof(tickerService));
     }
 
+    /// <summary>
+    /// Gets historical price data for multiple symbols in parallel.
+    /// </summary>
+    /// <param name="symbols">Collection of ticker symbols.</param>
+    /// <param name="request">The historical data request parameters.</param>
+    /// <param name="maxConcurrency">Maximum number of concurrent requests. If null, uses processor count * 2.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Dictionary mapping symbols to their historical data.</returns>
     public async Task<Dictionary<string, HistoricalData>> GetHistoryAsync(
         IEnumerable<string> symbols,
         HistoryRequest request,
@@ -82,6 +96,14 @@ public class MultiTickerService : IMultiTickerService
         return results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     }
 
+    /// <summary>
+    /// Gets news for multiple symbols in parallel.
+    /// </summary>
+    /// <param name="symbols">Collection of ticker symbols.</param>
+    /// <param name="count">Number of news items to retrieve per symbol.</param>
+    /// <param name="maxConcurrency">Maximum number of concurrent requests. If null, uses processor count * 2.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Dictionary mapping symbols to their news items.</returns>
     public async Task<Dictionary<string, IReadOnlyList<NewsItem>>> GetNewsAsync(
         IEnumerable<string> symbols,
         int count = 10,
@@ -116,6 +138,13 @@ public class MultiTickerService : IMultiTickerService
         return results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     }
 
+    /// <summary>
+    /// Gets quote data for multiple symbols in parallel.
+    /// </summary>
+    /// <param name="symbols">Collection of ticker symbols.</param>
+    /// <param name="maxConcurrency">Maximum number of concurrent requests. If null, uses processor count * 2.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Dictionary mapping symbols to their quote data.</returns>
     public async Task<Dictionary<string, QuoteData>> GetQuotesAsync(
         IEnumerable<string> symbols,
         int? maxConcurrency = null,
@@ -130,6 +159,13 @@ public class MultiTickerService : IMultiTickerService
             cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Gets fast info data for multiple symbols in parallel.
+    /// </summary>
+    /// <param name="symbols">Collection of ticker symbols.</param>
+    /// <param name="maxConcurrency">Maximum number of concurrent requests. If null, uses processor count * 2.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Dictionary mapping symbols to their fast info data.</returns>
     public async Task<Dictionary<string, FastInfoData>> GetFastInfoAsync(
         IEnumerable<string> symbols,
         int? maxConcurrency = null,
@@ -144,6 +180,13 @@ public class MultiTickerService : IMultiTickerService
             cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Gets financial statements for multiple symbols in parallel.
+    /// </summary>
+    /// <param name="symbols">Collection of ticker symbols.</param>
+    /// <param name="maxConcurrency">Maximum number of concurrent requests. If null, uses processor count * 2.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Dictionary mapping symbols to their financial statements.</returns>
     public async Task<Dictionary<string, FinancialStatement>> GetFinancialStatementsAsync(
         IEnumerable<string> symbols,
         int? maxConcurrency = null,
@@ -158,6 +201,13 @@ public class MultiTickerService : IMultiTickerService
             cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Gets analyst data for multiple symbols in parallel.
+    /// </summary>
+    /// <param name="symbols">Collection of ticker symbols.</param>
+    /// <param name="maxConcurrency">Maximum number of concurrent requests. If null, uses processor count * 2.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Dictionary mapping symbols to their analyst data.</returns>
     public async Task<Dictionary<string, AnalystData>> GetAnalystDataAsync(
         IEnumerable<string> symbols,
         int? maxConcurrency = null,

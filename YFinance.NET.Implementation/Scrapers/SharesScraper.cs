@@ -19,6 +19,12 @@ public class SharesScraper : ISharesScraper
     private readonly IDataParser _dataParser;
     private readonly ISymbolValidator _symbolValidator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SharesScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
+    /// <param name="symbolValidator">The symbol validator for security.</param>
     public SharesScraper(IYahooFinanceClient client, IDataParser dataParser, ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -26,6 +32,12 @@ public class SharesScraper : ISharesScraper
         _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
+    /// <summary>
+    /// Gets shares outstanding history for the specified symbol.
+    /// </summary>
+    /// <param name="request">The shares history request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Shares outstanding history data.</returns>
     public async Task<SharesHistoryData> GetSharesHistoryAsync(
         SharesHistoryRequest request,
         CancellationToken cancellationToken = default)

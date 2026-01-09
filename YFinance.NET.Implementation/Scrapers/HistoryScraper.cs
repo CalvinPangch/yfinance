@@ -61,6 +61,12 @@ public class HistoryScraper : IHistoryScraper
         return ParseHistoricalData(symbol, jsonResponse, request);
     }
 
+    /// <summary>
+    /// Gets metadata about historical data availability for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Historical data metadata.</returns>
     public async Task<HistoryMetadata> GetHistoryMetadataAsync(string symbol, CancellationToken cancellationToken = default)
     {
         // Validate symbol for security (prevents URL injection)

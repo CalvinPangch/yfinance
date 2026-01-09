@@ -13,6 +13,11 @@ public class PriceRepair : IPriceRepair
     private const decimal OutlierThreshold = 5m; // 5x deviation from median
     private const int MedianWindowSize = 5; // Window size for median filter
 
+    /// <summary>
+    /// Detects and repairs 100x currency conversion errors in price data.
+    /// </summary>
+    /// <param name="prices">Array of prices to repair.</param>
+    /// <returns>Repaired prices with 100x errors corrected.</returns>
     public decimal[] Repair100xErrors(decimal[] prices)
     {
         if (prices.Length == 0)
@@ -141,6 +146,11 @@ public class PriceRepair : IPriceRepair
         return result;
     }
 
+    /// <summary>
+    /// Repairs zero or negative prices by forward and backward filling with the last good value.
+    /// </summary>
+    /// <param name="prices">Array of prices to repair.</param>
+    /// <returns>Repaired prices with zeros filled.</returns>
     public decimal[] RepairZeroValues(decimal[] prices)
     {
         if (prices.Length == 0)
@@ -179,6 +189,12 @@ public class PriceRepair : IPriceRepair
         return repaired;
     }
 
+    /// <summary>
+    /// Detects and repairs errors related to stock splits.
+    /// </summary>
+    /// <param name="prices">Array of prices to repair.</param>
+    /// <param name="splitDates">Dictionary mapping split dates to split ratios.</param>
+    /// <returns>Repaired prices with split errors corrected.</returns>
     public decimal[] RepairBadSplits(decimal[] prices, Dictionary<DateTime, decimal> splitDates)
     {
         if (prices.Length == 0 || splitDates.Count == 0)
@@ -216,6 +232,13 @@ public class PriceRepair : IPriceRepair
         return repaired;
     }
 
+    /// <summary>
+    /// Applies comprehensive price repairs including zero values, 100x errors, outliers, and splits.
+    /// </summary>
+    /// <param name="prices">Array of prices to repair.</param>
+    /// <param name="dates">Array of dates corresponding to prices.</param>
+    /// <param name="splitDates">Optional dictionary mapping split dates to split ratios.</param>
+    /// <returns>Fully repaired prices.</returns>
     public decimal[] RepairPrices(decimal[] prices, DateTime[] dates, Dictionary<DateTime, decimal>? splitDates = null)
     {
         var repaired = RepairZeroValues(prices);

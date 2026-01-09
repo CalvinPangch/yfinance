@@ -25,12 +25,23 @@ public class NewsScraper : INewsScraper
     private readonly IYahooFinanceClient _client;
     private readonly IDataParser _dataParser;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NewsScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
     public NewsScraper(IYahooFinanceClient client, IDataParser dataParser)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
     }
 
+    /// <summary>
+    /// Gets news items for the specified symbol.
+    /// </summary>
+    /// <param name="request">The news request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of news items.</returns>
     public async Task<IReadOnlyList<NewsItem>> GetNewsAsync(NewsRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);

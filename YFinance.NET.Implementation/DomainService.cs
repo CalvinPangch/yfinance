@@ -11,11 +11,21 @@ public class DomainService : IDomainService
 {
     private readonly IYahooFinanceClient _client;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DomainService"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance client.</param>
     public DomainService(IYahooFinanceClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
+    /// <summary>
+    /// Gets sector data for the specified sector key.
+    /// </summary>
+    /// <param name="sectorKey">The sector key.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The sector data.</returns>
     public async Task<SectorData> GetSectorAsync(string sectorKey, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(sectorKey))
@@ -26,6 +36,12 @@ public class DomainService : IDomainService
         return ParseSector(sectorKey, json);
     }
 
+    /// <summary>
+    /// Gets industry data for the specified industry key.
+    /// </summary>
+    /// <param name="industryKey">The industry key.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The industry data.</returns>
     public async Task<IndustryData> GetIndustryAsync(string industryKey, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(industryKey))
@@ -36,6 +52,12 @@ public class DomainService : IDomainService
         return ParseIndustry(industryKey, json);
     }
 
+    /// <summary>
+    /// Gets market data for the specified market.
+    /// </summary>
+    /// <param name="market">The market identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The market data.</returns>
     public async Task<MarketData> GetMarketAsync(string market, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(market))

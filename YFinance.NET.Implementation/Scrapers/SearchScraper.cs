@@ -17,12 +17,23 @@ public class SearchScraper : ISearchScraper
     private readonly IYahooFinanceClient _client;
     private readonly IDataParser _dataParser;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SearchScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
     public SearchScraper(IYahooFinanceClient client, IDataParser dataParser)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
     }
 
+    /// <summary>
+    /// Searches for symbols and other financial entities.
+    /// </summary>
+    /// <param name="request">The search request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Search results containing matching entities.</returns>
     public async Task<SearchResult> SearchAsync(SearchRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);

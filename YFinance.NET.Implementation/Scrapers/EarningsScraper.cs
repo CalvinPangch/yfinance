@@ -24,38 +24,79 @@ public class EarningsScraper : IEarningsScraper
     private readonly IYahooFinanceClient _client;
     private readonly IDataParser _dataParser;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EarningsScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
     public EarningsScraper(IYahooFinanceClient client, IDataParser dataParser)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _dataParser = dataParser ?? throw new ArgumentNullException(nameof(dataParser));
     }
 
+    /// <summary>
+    /// Gets earnings per share estimates for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of periodic earnings estimates.</returns>
     public Task<IReadOnlyList<PeriodicEstimate>> GetEarningsEstimateAsync(string symbol, CancellationToken cancellationToken = default)
     {
         return GetTrendEstimatesAsync(symbol, "earningsEstimate", cancellationToken);
     }
 
+    /// <summary>
+    /// Gets revenue estimates for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of periodic revenue estimates.</returns>
     public Task<IReadOnlyList<PeriodicEstimate>> GetRevenueEstimateAsync(string symbol, CancellationToken cancellationToken = default)
     {
         return GetTrendEstimatesAsync(symbol, "revenueEstimate", cancellationToken);
     }
 
+    /// <summary>
+    /// Gets historical earnings data for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of historical earnings entries.</returns>
     public async Task<IReadOnlyList<EarningsHistoryEntry>> GetEarningsHistoryAsync(string symbol, CancellationToken cancellationToken = default)
     {
         var result = await GetQuoteSummaryResultAsync(symbol, "earningsHistory", cancellationToken).ConfigureAwait(false);
         return result.HasValue ? ParseEarningsHistory(result.Value) : Array.Empty<EarningsHistoryEntry>();
     }
 
+    /// <summary>
+    /// Gets earnings per share trend data for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of EPS trend entries.</returns>
     public Task<IReadOnlyList<PeriodicEstimate>> GetEpsTrendAsync(string symbol, CancellationToken cancellationToken = default)
     {
         return GetTrendEstimatesAsync(symbol, "epsTrend", cancellationToken);
     }
 
+    /// <summary>
+    /// Gets earnings per share revisions for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of EPS revisions.</returns>
     public Task<IReadOnlyList<PeriodicEstimate>> GetEpsRevisionsAsync(string symbol, CancellationToken cancellationToken = default)
     {
         return GetTrendEstimatesAsync(symbol, "epsRevisions", cancellationToken);
     }
 
+    /// <summary>
+    /// Gets growth estimates for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of growth estimate entries.</returns>
     public async Task<IReadOnlyList<GrowthEstimateEntry>> GetGrowthEstimatesAsync(string symbol, CancellationToken cancellationToken = default)
     {
         var result = await GetQuoteSummaryResultAsync(
@@ -67,6 +108,12 @@ public class EarningsScraper : IEarningsScraper
         return result.HasValue ? ParseGrowthEstimates(result.Value) : Array.Empty<GrowthEstimateEntry>();
     }
 
+    /// <summary>
+    /// Gets upcoming earnings dates matching the specified criteria.
+    /// </summary>
+    /// <param name="request">The earnings dates request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of earnings date entries.</returns>
     public async Task<IReadOnlyList<EarningsDateEntry>> GetEarningsDatesAsync(
         EarningsDatesRequest request,
         CancellationToken cancellationToken = default)

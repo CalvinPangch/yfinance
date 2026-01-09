@@ -15,11 +15,21 @@ public class ScreenerScraper : IScreenerScraper
 {
     private readonly IYahooFinanceClient _client;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScreenerScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
     public ScreenerScraper(IYahooFinanceClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
+    /// <summary>
+    /// Screens the market based on specified criteria.
+    /// </summary>
+    /// <param name="request">The screening request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Screening results.</returns>
     public async Task<ScreenerResult> ScreenAsync(ScreenerRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);

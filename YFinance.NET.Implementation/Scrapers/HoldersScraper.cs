@@ -15,6 +15,12 @@ public class HoldersScraper : IHoldersScraper
     private readonly IDataParser _dataParser;
     private readonly ISymbolValidator _symbolValidator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HoldersScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
+    /// <param name="symbolValidator">The symbol validator for security.</param>
     public HoldersScraper(IYahooFinanceClient client, IDataParser dataParser, ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -22,6 +28,12 @@ public class HoldersScraper : IHoldersScraper
         _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
+    /// <summary>
+    /// Gets holder information including institutional, insider, and fund ownership.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Holder data for the symbol.</returns>
     public async Task<HolderData> GetHoldersAsync(string symbol, CancellationToken cancellationToken = default)
     {
         // Validate symbol for security (prevents URL injection)

@@ -16,6 +16,12 @@ public class OptionsScraper : IOptionsScraper
     private readonly IDataParser _dataParser;
     private readonly ISymbolValidator _symbolValidator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OptionsScraper"/> class.
+    /// </summary>
+    /// <param name="client">The Yahoo Finance HTTP client.</param>
+    /// <param name="dataParser">The data parser for JSON processing.</param>
+    /// <param name="symbolValidator">The symbol validator for security.</param>
     public OptionsScraper(IYahooFinanceClient client, IDataParser dataParser, ISymbolValidator symbolValidator)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -23,6 +29,12 @@ public class OptionsScraper : IOptionsScraper
         _symbolValidator = symbolValidator ?? throw new ArgumentNullException(nameof(symbolValidator));
     }
 
+    /// <summary>
+    /// Gets the complete option chain for the specified symbol and expiration.
+    /// </summary>
+    /// <param name="request">The option chain request parameters.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Option chain data including calls and puts.</returns>
     public async Task<OptionChain> GetOptionChainAsync(
         OptionChainRequest request,
         CancellationToken cancellationToken = default)
@@ -49,6 +61,12 @@ public class OptionsScraper : IOptionsScraper
         return ParseOptionChain(request.Symbol, jsonResponse);
     }
 
+    /// <summary>
+    /// Gets available option expiration dates for the specified symbol.
+    /// </summary>
+    /// <param name="symbol">The ticker symbol.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Collection of available expiration dates.</returns>
     public async Task<IReadOnlyList<DateTime>> GetExpirationsAsync(
         string symbol,
         CancellationToken cancellationToken = default)
