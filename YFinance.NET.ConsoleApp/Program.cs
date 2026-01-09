@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using YFinance.NET.Implementation.DependencyInjection;
 using YFinance.NET.Interfaces;
 using YFinance.NET.Models.Enums;
 using YFinance.NET.Models.Requests;
-using YFinance.NET.Implementation.DependencyInjection;
 
 // Create host with dependency injection
 var host = Host.CreateDefaultBuilder(args)
@@ -27,7 +27,7 @@ try
     var request = new HistoryRequest
     {
         Period = Period.FiveDays,
-        Interval = Interval.OneDay
+        Interval = Interval.OneHour
     };
 
     Console.WriteLine("Fetching data...\n");
@@ -35,20 +35,20 @@ try
     // Fetch historical data for Apple (AAPL)
     var history = await tickerService.GetHistoryAsync("AAPL", request);
 
-    if (history == null || history.Timestamps == null || history.Timestamps.Count == 0)
+    if (history == null || history.Timestamps == null || history.Timestamps.Length == 0)
     {
         Console.WriteLine("No data available for AAPL.");
         return;
     }
 
     Console.WriteLine($"Symbol: {history.Symbol}");
-    Console.WriteLine($"Data points retrieved: {history.Timestamps.Count}\n");
+    Console.WriteLine($"Data points retrieved: {history.Timestamps.Length}\n");
     Console.WriteLine("{0,-12} {1,10} {2,10} {3,10} {4,10} {5,15}",
         "Date", "Open", "High", "Low", "Close", "Volume");
     Console.WriteLine(new string('-', 75));
 
     // Display each day's data
-    for (int i = 0; i < history.Timestamps.Count; i++)
+    for (int i = 0; i < history.Timestamps.Length; i++)
     {
         var date = history.Timestamps[i];
         var open = history.Open?[i] ?? 0;
@@ -58,7 +58,7 @@ try
         var volume = history.Volume?[i] ?? 0;
 
         Console.WriteLine("{0,-12} {1,10:C2} {2,10:C2} {3,10:C2} {4,10:C2} {5,15:N0}",
-            date.ToString("yyyy-MM-dd"),
+            date.ToString("yyyy-MM-dd HH:mm:ss"),
             open,
             high,
             low,
@@ -69,7 +69,7 @@ try
     Console.WriteLine(new string('-', 75));
 
     // Display summary
-    if (history.Close != null && history.Close.Count > 0)
+    if (history.Close != null && history.Close.Length > 0)
     {
         var firstClose = history.Close[0];
         var lastClose = history.Close[^1];
@@ -85,6 +85,7 @@ try
     Console.WriteLine("\n==============================================");
     Console.WriteLine("  Data fetched successfully!");
     Console.WriteLine("==============================================");
+    Console.ReadLine();
 }
 catch (Exception ex)
 {
