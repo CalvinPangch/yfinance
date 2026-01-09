@@ -78,6 +78,12 @@ dotnet add reference path/to/YFinance.NET.Implementation/YFinance.NET.Implementa
 dotnet add package YFinance.NET
 ```
 
+### Install from GitHub Packages
+
+1. Authenticate to GitHub Packages.
+2. Add the source: `https://nuget.pkg.github.com/CalvinPangch/index.json`
+3. Install: `dotnet add package YFinance.NET --version <version>`
+
 ## Quick Start
 
 ### Console Application
